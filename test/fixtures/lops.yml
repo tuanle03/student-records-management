@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ma_lop: MyString
+  ten: MyString
+  ma_khoa: MyString
+  khoa_hoc: MyString
+  ma_nganh: MyString
+  ma_he_dt: MyString
+  ghi_chu: MyString
+  ma_cb: MyString
+
+two:
+  ma_lop: MyString
+  ten: MyString
+  ma_khoa: MyString
+  khoa_hoc: MyString
+  ma_nganh: MyString
+  ma_he_dt: MyString
+  ghi_chu: MyString
+  ma_cb: MyString

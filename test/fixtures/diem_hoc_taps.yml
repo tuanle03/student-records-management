@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ma_sv: MyString
+  ma_mon_hoc: MyString
+  ma_hoc_ky: MyString
+  ghi_chu: MyString
+  diem_gp: 9.99
+  diem_hp: 9.99
+  diem_tb: 9.99
+  diem_thi_lai_lan1: 9.99
+  diem_thi_lai_lan2: 9.99
+
+two:
+  ma_sv: MyString
+  ma_mon_hoc: MyString
+  ma_hoc_ky: MyString
+  ghi_chu: MyString
+  diem_gp: 9.99
+  diem_hp: 9.99
+  diem_tb: 9.99
+  diem_thi_lai_lan1: 9.99
+  diem_thi_lai_lan2: 9.99

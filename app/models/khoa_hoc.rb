@@ -1,0 +1,2 @@
+class KhoaHoc < ApplicationRecord
+end

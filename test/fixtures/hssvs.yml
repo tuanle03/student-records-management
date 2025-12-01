@@ -1,0 +1,89 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ma_sv: MyString
+  ho_dem: MyString
+  ten: MyString
+  ngay_sinh: 2025-12-01 11:49:05
+  gioi_tinh: false
+  anh: MyString
+  ma_huyen: MyString
+  dien_thoai: MyString
+  dan_toc: MyString
+  ton_giao: MyString
+  khu_vuc: MyString
+  doi_tuong: MyString
+  ngay_doan: 2025-12-01 11:49:05
+  ngay_dang: 2025-12-01 11:49:05
+  so_cmnd: MyString
+  ngay_cmnd: 2025-12-01 11:49:05
+  noi_cmnd: MyString
+  que_quan: MyString
+  tru_quan: MyString
+  ktk_l: MyString
+  tom_tat_qtct: MyText
+  ho_ten_cha: MyString
+  nam_sinh_cha: 2025-12-01 11:49:05
+  nghe_nghiep_cha: MyString
+  noi_lam_cha: MyString
+  ho_khau_cha: MyString
+  ho_ten_me: MyString
+  nam_sinh_me: 2025-12-01 11:49:05
+  nghe_nghiep_me: MyString
+  noi_lam_me: MyString
+  ho_khau_me: MyString
+  ho_ten_vo: MyString
+  nam_sinh_vo: 2025-12-01 11:49:05
+  nghe_nghiep_vo: MyString
+  noi_lam_vo: MyString
+  ho_khau_vo: MyString
+  anh_chiem: MyString
+  ma_lop: MyString
+  ma_khoa: MyString
+  ma_hdt: MyString
+  ma_nganh: MyString
+  ghi_chu: MyString
+
+two:
+  ma_sv: MyString
+  ho_dem: MyString
+  ten: MyString
+  ngay_sinh: 2025-12-01 11:49:05
+  gioi_tinh: false
+  anh: MyString
+  ma_huyen: MyString
+  dien_thoai: MyString
+  dan_toc: MyString
+  ton_giao: MyString
+  khu_vuc: MyString
+  doi_tuong: MyString
+  ngay_doan: 2025-12-01 11:49:05
+  ngay_dang: 2025-12-01 11:49:05
+  so_cmnd: MyString
+  ngay_cmnd: 2025-12-01 11:49:05
+  noi_cmnd: MyString
+  que_quan: MyString
+  tru_quan: MyString
+  ktk_l: MyString
+  tom_tat_qtct: MyText
+  ho_ten_cha: MyString
+  nam_sinh_cha: 2025-12-01 11:49:05
+  nghe_nghiep_cha: MyString
+  noi_lam_cha: MyString
+  ho_khau_cha: MyString
+  ho_ten_me: MyString
+  nam_sinh_me: 2025-12-01 11:49:05
+  nghe_nghiep_me: MyString
+  noi_lam_me: MyString
+  ho_khau_me: MyString
+  ho_ten_vo: MyString
+  nam_sinh_vo: 2025-12-01 11:49:05
+  nghe_nghiep_vo: MyString
+  noi_lam_vo: MyString
+  ho_khau_vo: MyString
+  anh_chiem: MyString
+  ma_lop: MyString
+  ma_khoa: MyString
+  ma_hdt: MyString
+  ma_nganh: MyString
+  ghi_chu: MyString

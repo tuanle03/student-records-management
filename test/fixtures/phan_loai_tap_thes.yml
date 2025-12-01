@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ma_lop: MyString
+  danh_hieu_de_nghi: MyString
+  phan_loai_tap_the: MyString
+  ma_nam_hoc: MyString
+
+two:
+  ma_lop: MyString
+  danh_hieu_de_nghi: MyString
+  phan_loai_tap_the: MyString
+  ma_nam_hoc: MyString

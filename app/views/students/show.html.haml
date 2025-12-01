@@ -1,0 +1,80 @@
+- content_for :title do
+  = @student.ho_ten
+
+%div.mb-4
+  = link_to "← Danh sách học viên", students_path, class: "text-sm text-slate-500 hover:text-indigo-600"
+
+%div.flex.flex-col.md:flex-row.gap-4
+  -# .md:w-1/3.rounded-2xl.bg-white.shadow-sm.p-4.flex.flex-col.gap-2
+  %div{ class: "md:w-1/3 rounded-2xl bg-white shadow-sm p-4 flex flex-col gap-2" }
+    %h1.text-xl.font-semibold.mb-1= @student.ho_ten
+    %div.text-xs.text-slate-500.font-mono
+      = @student.ma_sv
+
+    %dl.text-sm.mt-3.space-y-1
+      %div.flex.justify-between
+        %dt.text-slate-500 Lớp
+        %dd= @student.lop&.ten
+      %div.flex.justify-between
+        %dt.text-slate-500 Ngành
+        %dd= @student.nganh&.ten_nganh
+      %div.flex.justify-between
+        %dt.text-slate-500 Khóa
+        %dd= @student.khoa_hoc&.ten
+      %div.flex.justify-between
+        %dt.text-slate-500 Hệ
+        %dd= @student.he_dao_tao&.ten
+      %div.flex.justify-between
+        %dt.text-slate-500 Điện thoại
+        %dd= @student.dien_thoai
+      %div.flex.justify-between
+        %dt.text-slate-500 Quê quán
+        %dd= @student.que_quan
+
+  / --- Bảng điểm & rèn luyện ---
+  .md:flex-1.space-y-4
+    .rounded-2xl.bg-white.shadow-sm.p-4
+      .flex.items-center.justify-between.mb-2
+        %h2.text-lg.font-semibold Điểm học tập
+        = link_to "Chi tiết", student_diem_hoc_taps_path(@student.ma_sv), class: "text-xs text-indigo-600 hover:underline"
+
+      - if @diem_hoc_tap.any?
+        %table.min-w-full.text-xs
+          %thead.text-left.text-slate-500
+            %tr.border-b
+              %th.py-2.px-2 Học kỳ
+              %th Môn
+              %th.text-right GP
+              %th.text-right HP
+              %th.text-right TB
+          %tbody
+            - @diem_hoc_tap.first(5).each do |d|
+              %tr.border-b.last:border-0
+                %td.py-1.px-2= d.ma_hoc_ky
+                %td= d.mon_hoc&.ten
+                %td.text-right= d.diem_gp
+                %td.text-right= d.diem_hp
+                %td.text-right.font-semibold= d.diem_tb
+      - else
+        %p.text-sm.text-slate-500 Chưa có dữ liệu điểm học tập.
+
+    .rounded-2xl.bg-white.shadow-sm.p-4
+      .flex.items-center.justify-between.mb-2
+        %h2.text-lg.font-semibold Điểm rèn luyện
+        = link_to "Chi tiết", student_diem_ren_luyens_path(@student.ma_sv), class: "text-xs text-indigo-600 hover:underline"
+
+      - if @diem_ren_luyen.any?
+        %table.min-w-full.text-xs
+          %thead.text-left.text-slate-500
+            %tr.border-b
+              %th.py-2.px-2 Năm học
+              %th Tháng
+              %th.text-right Điểm
+          %tbody
+            - @diem_ren_luyen.first(6).each do |d|
+              %tr.border-b.last:border-0
+                %td.py-1.px-2= d.ma_nam_hoc
+                %td= d.thang
+                %td.text-right.font-semibold= d.diem
+      - else
+        %p.text-sm.text-slate-500 Chưa có dữ liệu điểm rèn luyện.

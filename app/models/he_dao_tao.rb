@@ -1,0 +1,2 @@
+class HeDaoTao < ApplicationRecord
+end

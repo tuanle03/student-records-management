@@ -1,0 +1,45 @@
+#screen-login.screen.w-full.h-full.bg-gradient-to-br.from-slate-900.via-slate-800.to-slate-900.flex.items-center.justify-center.p-4
+  .w-full.max-w-md
+    -# .bg-slate-800/90.backdrop-blur-sm.border-2.border-slate-700.rounded-3xl.shadow-2xl.shadow-slate-900/60.p-8
+    %div{ class: "bg-slate-800/90 backdrop-blur-sm border-2 border-slate-700 rounded-3xl shadow-2xl shadow-slate-900/60 p-8" }
+      / Logo/Icon
+      .flex.justify-center.mb-6
+        .w-20.h-20.bg-gradient-to-br.from-amber-400.to-amber-600.rounded-2xl.flex.items-center.justify-center.shadow-lg.shadow-amber-500/40
+          %svg.w-12.h-12.text-slate-900{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" }
+
+      %h1#login-title.text-2xl.font-bold.text-center.text-amber-300.mb-2
+        Hệ thống quản lý học viên
+      %p#login-subtitle.text-sm.text-center.text-slate-400.mb-8
+        Chào mừng bạn đến với hệ thống quản lý
+
+      = form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: "login-form", class: "space-y-5" }) do |f|
+        .field
+          = f.label :email, "Tên đăng nhập", class: "block text-sm font-medium text-slate-300 mb-2"
+          = f.email_field :email,
+                          autofocus: true,
+                          required: true,
+                          class: "focus-outline w-full px-4 py-3 bg-slate-900/70 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                          placeholder: "Nhập email"
+
+        .field
+          = f.label :password, "Mật khẩu", class: "block text-sm font-medium text-slate-300 mb-2"
+          = f.password_field :password,
+                             required: true,
+                             class: "focus-outline w-full px-4 py-3 bg-slate-900/70 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                             placeholder: "Nhập mật khẩu"
+
+        .flex.items-center.justify-between.text-sm
+          %label.flex.items-center.text-slate-400.cursor-pointer
+            = f.check_box :remember_me, class: "mr-2 rounded border-slate-600 text-amber-400 focus:ring-amber-400" if devise_mapping.rememberable?
+            %span Ghi nhớ đăng nhập
+          %span.text-amber-400.text-xs
+            (Liên hệ admin nếu quên mật khẩu)
+
+        = f.submit "Đăng nhập",
+                   id: "login-button",
+                   class: "focus-outline w-full py-3 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 font-semibold rounded-xl shadow-lg shadow-amber-500/40 hover:from-amber-300 hover:to-amber-400 transition transform hover:scale-[1.02]"
+
+      .mt-6.pt-6.border-t.border-slate-700.text-center.text-xs.text-slate-500
+        Đăng nhập bằng tài khoản được cấp trong hệ thống

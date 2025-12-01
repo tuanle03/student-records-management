@@ -1,0 +1,25 @@
+- content_for :title do
+  = "Điểm rèn luyện - #{@student.ho_ten}"
+
+%div.mb-4
+  = link_to "← Thông tin học viên", student_path(@student.ma_sv), class: "text-sm text-slate-500 hover:text-indigo-600"
+
+%h1.text-2xl.font-semibold.mb-2
+  Điểm rèn luyện
+%p.text-sm.text-slate-500.mb-4= @student.ho_ten
+
+.rounded-2xl.bg-white.shadow-sm.overflow-hidden
+  %table.min-w-full.text-sm
+    %thead.bg-slate-50.text-left.text-slate-500
+      %tr
+        %th.py-2.px-3 Năm học
+        %th Tháng
+        %th.text-right Điểm
+        %th Ghi chú
+    %tbody
+      - @diem_ren_luyen.each do |d|
+        %tr.border-t.last:border-b-0
+          %td.py-2.px-3= d.ma_nam_hoc
+          %td= d.thang
+          %td.text-right.font-semibold= d.diem
+          %td= d.ghi_chu

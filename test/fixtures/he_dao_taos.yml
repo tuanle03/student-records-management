@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ma_he_dt: MyString
+  ten: MyString
+  thoi_gian_hoc: 1
+  don_vi_tg: MyString
+  ghi_chu: MyString
+
+two:
+  ma_he_dt: MyString
+  ten: MyString
+  thoi_gian_hoc: 1
+  don_vi_tg: MyString
+  ghi_chu: MyString

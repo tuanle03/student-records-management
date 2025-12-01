@@ -1,0 +1,2 @@
+class Nganh < ApplicationRecord
+end

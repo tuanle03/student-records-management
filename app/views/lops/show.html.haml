@@ -1,0 +1,27 @@
+- content_for :title do
+  = @lop.ten
+
+%div.mb-4
+  = link_to "← Danh sách lớp", lops_path, class: "text-sm text-slate-500 hover:text-indigo-600"
+
+%h1.text-2xl.font-semibold.mb-2= @lop.ten
+%p.text-sm.text-slate-500.mb-4
+  Mã lớp:
+  %span.font-mono= @lop.ma_lop
+
+.rounded-2xl.bg-white.shadow-sm.overflow-hidden
+  %table.min-w-full.text-sm
+    %thead.bg-slate-50.text-left.text-slate-500
+      %tr
+        %th.py-2.px-3 Mã SV
+        %th Họ tên
+        %th Ngành
+        %th.text-right
+    %tbody
+      - @students.each do |s|
+        %tr.border-t.last:border-b-0.hover:bg-slate-50
+          %td.py-2.px-3.font-mono.text-xs= s.ma_sv
+          %td= s.ho_ten
+          %td= s.nganh&.ten_nganh
+          %td.py-2.px-3.text-right
+            = link_to "Xem", student_path(s.ma_sv), class: "text-indigo-600 text-xs font-medium hover:underline"

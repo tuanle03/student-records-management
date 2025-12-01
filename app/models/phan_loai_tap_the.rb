@@ -1,0 +1,2 @@
+class PhanLoaiTapThe < ApplicationRecord
+end
