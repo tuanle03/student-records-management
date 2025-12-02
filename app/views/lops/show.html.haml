@@ -18,7 +18,7 @@
           = " #{@lop.ten}"
         %p.mb-1
           %span.font-medium Khóa học:
-          = " #{@lop.khoa_hoc || @lop.khoa_hoc&.ten}"
+          = " #{@lop.khoa_hoc&.ten || @lop.khoa_hoc}"
         %p.mb-1
           %span.font-medium Ngành:
           = " #{@lop.nganh&.ten_nganh}"

@@ -1,6 +1,9 @@
 class Hssv < ApplicationRecord
   self.primary_key = "ma_sv"
 
+  # Validations
+  validates :ma_sv, presence: true, uniqueness: true
+
   # Associations
   belongs_to :lop,        foreign_key: :ma_lop,   primary_key: :ma_lop,   optional: true
   belongs_to :nganh,      foreign_key: :ma_nganh, primary_key: :ma_nganh, optional: true
@@ -24,7 +27,7 @@ class Hssv < ApplicationRecord
 
   scope :search, ->(q) {
     if q.present?
-      where("ma_sv ILIKE :q OR ho_dem ILIKE :q OR ten ILIKE :q", q: "%#{q}%")
+      where("ma_sv ILIKE :q OR ho_dem ILIKE :q OR ten ILIKE :q", q: "%#{ActiveRecord::Base.sanitize_sql_like(q)}%")
     else
       all
     end

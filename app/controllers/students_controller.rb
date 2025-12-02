@@ -51,8 +51,7 @@ class StudentsController < ApplicationController
   private
 
   def set_student
-    key = params[:ma_sv] || params[:id]
-    @student = Hssv.find_by!(ma_sv: key)
+    @student = Hssv.find_by!(ma_sv: params[:ma_sv])
   end
 
   def student_params
