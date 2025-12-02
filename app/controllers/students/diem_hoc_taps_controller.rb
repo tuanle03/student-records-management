@@ -10,7 +10,7 @@ module Students
     private
 
     def set_student
-      @student = Hssv.find_by!(ma_sv: params[:student_id])
+      @student = Hssv.find_by!(ma_sv: params[:student_ma_sv])
     end
   end
 end

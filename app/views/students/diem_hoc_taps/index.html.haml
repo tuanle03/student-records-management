@@ -1,33 +1,46 @@
-- content_for :title do
-  = "Điểm học tập - #{@student.ho_ten}"
+#screen-student-grades.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to student_path(@student), class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300
+            Bảng điểm – #{@student.ho_ten}
+          %p.text-xs.text-slate-400
+            Mã SV: #{@student.ma_sv}
+      %div.text-right.text-xs.text-slate-400
+        %p= @student.lop&.ten
+        %p= @student.nganh&.ten_nganh
 
-%div.mb-4
-  = link_to "← Thông tin học viên", student_path(@student.ma_sv), class: "text-sm text-slate-500 hover:text-indigo-600"
-
-%h1.text-2xl.font-semibold.mb-2
-  Điểm học tập
-%p.text-sm.text-slate-500.mb-4= @student.ho_ten
-
-.rounded-2xl.bg-white.shadow-sm.overflow-hidden
-  %table.min-w-full.text-sm
-    %thead.bg-slate-50.text-left.text-slate-500
-      %tr
-        %th.py-2.px-3 Học kỳ
-        %th Mã môn
-        %th Tên môn
-        %th.text-right GP
-        %th.text-right HP
-        %th.text-right TB
-        %th.text-right Thi lại 1
-        %th.text-right Thi lại 2
-    %tbody
-      - @diem_hoc_tap.each do |d|
-        %tr.border-t.last:border-b-0
-          %td.py-2.px-3= d.ma_hoc_ky
-          %td.font-mono.text-xs= d.ma_mon_hoc
-          %td= d.mon_hoc&.ten
-          %td.text-right= d.diem_gp
-          %td.text-right= d.diem_hp
-          %td.text-right.font-semibold= d.diem_tb
-          %td.text-right= d.diem_thi_lai_lan1
-          %td.text-right= d.diem_thi_lai_lan2
+  %main.flex-1.overflow-auto.p-6
+    .max-w-7xl.mx-auto
+      .bg-slate-800.border.border-slate-700.rounded-xl.overflow-hidden
+        .overflow-x-auto.table-scroll
+          %table.w-full
+            %thead{ class: "bg-slate-900/80" }
+              %tr
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Học kỳ
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Mã môn
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Tên môn học
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm GK (GP)
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm HP
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm TB
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thi lại lần 1
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thi lại lần 2
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Ghi chú
+            %tbody
+              - @diem_hoc_tap.each do |g|
+                - tb = g.diem_tb || g.tinh_diem_tb
+                %tr{ class: "hover:bg-slate-700/30 transition" }
+                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= g.ma_hoc_ky
+                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= g.ma_mon_hoc
+                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= g.mon_hoc&.ten
+                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_gp
+                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_hp
+                  %td.px-4.py-3.text-sm.text-center.text-emerald-300.border-b.border-slate-700.font-semibold= tb
+                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_thi_lai_lan1
+                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_thi_lai_lan2
+                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= g.ghi_chu

@@ -8,8 +8,8 @@ Rails.application.routes.draw do
 
   root "dashboard#index"
 
-  resources :lops, only: [:index, :show]
-  resources :students, only: [:index, :show] do
+  resources :lops
+  resources :students, param: :ma_sv do
     scope module: :students do
       resources :diem_hoc_taps, only: :index
       resources :diem_ren_luyens, only: :index

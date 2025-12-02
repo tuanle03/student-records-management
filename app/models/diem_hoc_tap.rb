@@ -1,15 +1,11 @@
 class DiemHocTap < ApplicationRecord
-  belongs_to :hssv, foreign_key: :ma_sv
-  belongs_to :mon_hoc, foreign_key: :ma_mon_hoc
+  belongs_to :hssv,    foreign_key: :ma_sv,       primary_key: :ma_sv
+  belongs_to :mon_hoc, foreign_key: :ma_mon_hoc, primary_key: :ma_mon_hoc
 
-  before_save :compute_diem_tb
+  def tinh_diem_tb
+    return diem_tb if diem_tb.present?
+    return if diem_gp.blank? || diem_hp.blank?
 
-  private
-
-  def compute_diem_tb
-    # ví dụ: TB = 0.3 * GP + 0.7 * HP (tuỳ bạn chỉnh)
-    if diem_gp.present? && diem_hp.present?
-      self.diem_tb = (0.3 * diem_gp + 0.7 * diem_hp).round(2)
-    end
+    (diem_gp * 0.4 + diem_hp * 0.6).round(2)
   end
 end

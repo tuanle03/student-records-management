@@ -1,0 +1,275 @@
+- form_title = @student.new_record? ? "Thêm sinh viên" : "Chỉnh sửa sinh viên"
+- form_url   = @student.new_record? ? students_path : student_path(@student)
+
+.max-w-5xl.mx-auto
+  %div{ class: "bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl shadow-slate-900/40" }
+    %h2.text-xl.font-semibold.text-amber-300.mb-4= form_title
+
+    - if @student.errors.any?
+      %div{ class: "mb-4 rounded-lg bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }
+        %p.font-semibold.mb-1
+          Có #{pluralize(@student.errors.count, "lỗi")}:
+        %ul.list-disc.list-inside
+          - @student.errors.full_messages.each do |msg|
+            %li= msg
+
+    = form_with model: @student, url: form_url, local: true do |f|
+      / ================== THÔNG TIN CƠ BẢN ==================
+      %h3.text-sm.font-semibold.text-slate-200.mb-2 Thông tin cơ bản
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_sv, "Mã sinh viên", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_sv,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                         placeholder: "VD: SV001",
+                         readonly: !@student.new_record?
+
+        .space-y-1
+          = f.label :ho_dem, "Họ đệm", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_dem,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                         placeholder: "Nguyễn Văn"
+
+        .space-y-1
+          = f.label :ten, "Tên", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ten,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                         placeholder: "A"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ngay_sinh, "Ngày sinh", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :ngay_sinh,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :gioi_tinh, "Giới tính", class: "block text-sm font-medium text-slate-200"
+          = f.select :gioi_tinh,
+                     [["Nam", true], ["Nữ", false]],
+                     { include_blank: "Chọn giới tính" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :anh, "Link ảnh (tuỳ chọn)", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :anh,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500",
+                         placeholder: "URL hoặc tên file ảnh"
+
+      / ================== THÔNG TIN HỌC VỤ ==================
+      %h3.text-sm.font-semibold.text-slate-200.mb-2 Thông tin học vụ
+      .grid.grid-cols-1.md:grid-cols-4.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_lop, "Lớp", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_lop,
+                     @lops.map { |lop| ["#{lop.ma_lop} - #{lop.ten}", lop.ma_lop] },
+                     { include_blank: "Chọn lớp" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ma_nganh, "Ngành", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_nganh,
+                     @nganhs.map { |n| ["#{n.ma_nganh} - #{n.ten_nganh}", n.ma_nganh] },
+                     { include_blank: "Chọn ngành" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ma_khoa, "Khóa học", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_khoa,
+                     @khoa_hocs.map { |k| ["#{k.ma_khoa} - #{k.ten}", k.ma_khoa] },
+                     { include_blank: "Chọn khóa" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ma_hdt, "Hệ đào tạo", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_hdt,
+                     @he_dao_taos.map { |h| ["#{h.ma_he_dt} - #{h.ten}", h.ma_he_dt] },
+                     { include_blank: "Chọn hệ đào tạo" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      / ================== LIÊN HỆ & ĐỐI TƯỢNG ==================
+      %h3.text-sm.font-semibold.text-slate-200.mb-2 Liên hệ & đối tượng
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :dien_thoai, "Điện thoại", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :dien_thoai,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
+                         placeholder: "0123 456 789"
+
+        .space-y-1
+          = f.label :dan_toc, "Dân tộc", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :dan_toc,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ton_giao, "Tôn giáo", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ton_giao,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :khu_vuc, "Khu vực", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :khu_vuc,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
+                         placeholder: "KV1/KV2/…"
+
+        .space-y-1
+          = f.label :doi_tuong, "Đối tượng", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :doi_tuong,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ma_huyen, "Mã huyện", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_huyen,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :que_quan, "Quê quán", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :que_quan,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :tru_quan, "Trú quán", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :tru_quan,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      / ================== ĐOÀN / ĐẢNG & GIẤY TỜ ==================
+      %h3.text-sm.font-semibold.text-slate-200.mb-2 Đoàn, Đảng & giấy tờ
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ngay_doan, "Ngày vào Đoàn", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :ngay_doan,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ngay_dang, "Ngày vào Đảng", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :ngay_dang,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ktk_l, "KTKL", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ktk_l,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
+                         placeholder: "Khen thưởng / Kỷ luật"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :so_cmnd, "Số CMND/CCCD", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :so_cmnd,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ngay_cmnd, "Ngày cấp", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :ngay_cmnd,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :noi_cmnd, "Nơi cấp", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :noi_cmnd,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .mb-4
+        = f.label :tom_tat_qtct, "Tóm tắt quá trình công tác / học tập", class: "block text-sm font-medium text-slate-200 mb-1"
+        = f.text_area :tom_tat_qtct,
+                      rows: 3,
+                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition"
+
+      / ================== GIA ĐÌNH ==================
+      %h3.text-sm.font-semibold.text-slate-200.mb-2 Thông tin gia đình
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ho_ten_cha, "Họ tên cha", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_ten_cha,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :nam_sinh_cha, "Năm sinh cha", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :nam_sinh_cha,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :nghe_nghiep_cha, "Nghề nghiệp cha", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :nghe_nghiep_cha,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :noi_lam_cha, "Nơi làm việc cha", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :noi_lam_cha,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :ho_khau_cha, "Hộ khẩu cha", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_khau_cha,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ho_ten_me, "Họ tên mẹ", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_ten_me,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :nam_sinh_me, "Năm sinh mẹ", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :nam_sinh_me,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :nghe_nghiep_me, "Nghề nghiệp mẹ", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :nghe_nghiep_me,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :noi_lam_me, "Nơi làm việc mẹ", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :noi_lam_me,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :ho_khau_me, "Hộ khẩu mẹ", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_khau_me,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ho_ten_vo, "Họ tên vợ/chồng", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_ten_vo,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :nam_sinh_vo, "Năm sinh vợ/chồng", class: "block text-sm font-medium text-slate-200"
+          = f.date_field :nam_sinh_vo,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :nghe_nghiep_vo, "Nghề nghiệp vợ/chồng", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :nghe_nghiep_vo,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :noi_lam_vo, "Nơi làm việc vợ/chồng", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :noi_lam_vo,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :ho_khau_vo, "Hộ khẩu vợ/chồng", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ho_khau_vo,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .mb-4
+        = f.label :anh_chiem, "Thông tin anh/chị/em", class: "block text-sm font-medium text-slate-200 mb-1"
+        = f.text_area :anh_chiem,
+                      rows: 3,
+                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition"
+
+      .mb-4
+        = f.label :ghi_chu, "Ghi chú", class: "block text-sm font-medium text-slate-200 mb-1"
+        = f.text_area :ghi_chu,
+                      rows: 3,
+                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                      placeholder: "Thông tin thêm (nếu có)"
+
+      .flex.items-center.justify-between.gap-3.mt-6
+        = link_to "Quay lại danh sách",
+                  students_path,
+                  class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition"
+        .flex.items-center.gap-3
+          - unless @student.new_record?
+            = link_to "Xoá",
+                      student_path(@student),
+                      data: { turbo_method: :delete, turbo_confirm: "Xoá sinh viên này?" },
+                      class: "focus-outline px-4 py-2 bg-red-500/80 hover:bg-red-500 text-white rounded-lg text-sm transition"
+          = f.submit (@student.new_record? ? "Tạo sinh viên" : "Lưu thay đổi"),
+                    class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"
