@@ -6,9 +6,9 @@ class LopsController < ApplicationController
   def index
     @q = params[:q]
     @lops = Lop.includes(:khoa_hoc, :nganh, :he_dao_tao)
-               .yield_self { |scope|
+               .then { |scope|
                   if @q.present?
-                    scope.where("ma_lop ILIKE :q OR ten ILIKE :q", q: "%#{@q}%")
+                    scope.where("ma_lop ILIKE :q OR ten ILIKE :q", q: "%#{ActiveRecord::Base.sanitize_sql_like(@q)}%")
                   else
                     scope
                   end

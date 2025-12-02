@@ -68,7 +68,7 @@ puts "✅ Đã seed KhoaHoc, Nganh, HeDaoTao"
 lop_ctk44a = Lop.find_or_create_by!(ma_lop: "CTK44A") do |lop|
   lop.ten       = "Công nghệ thông tin K44A"
   lop.ma_khoa   = k44.ma_khoa
-  lop[:khoa_hoc] = "2021–2025"   # 👈 SỬA
+  lop.khoa_hoc  = "2021–2025"
   lop.ma_nganh  = cntt.ma_nganh
   lop.ma_he_dt  = cd_chinh_quy.ma_he_dt
   lop.ma_cb     = "GV001"
@@ -78,7 +78,7 @@ end
 lop_ctk44b = Lop.find_or_create_by!(ma_lop: "CTK44B") do |lop|
   lop.ten       = "Công nghệ thông tin K44B"
   lop.ma_khoa   = k44.ma_khoa
-  lop[:khoa_hoc] = "2021–2025"   # 👈 SỬA
+  lop.khoa_hoc  = "2021–2025"
   lop.ma_nganh  = cntt.ma_nganh
   lop.ma_he_dt  = cd_chinh_quy.ma_he_dt
   lop.ma_cb     = "GV002"
@@ -88,7 +88,7 @@ end
 lop_qtk45a = Lop.find_or_create_by!(ma_lop: "QTK45A") do |lop|
   lop.ten       = "Quản trị kinh doanh K45A"
   lop.ma_khoa   = k45.ma_khoa
-  lop[:khoa_hoc] = "2022–2026"   # 👈 SỬA
+  lop.khoa_hoc  = "2022–2026"
   lop.ma_nganh  = qtkd.ma_nganh
   lop.ma_he_dt  = vhlt.ma_he_dt
   lop.ma_cb     = "GV010"
@@ -170,7 +170,7 @@ sv3 = Hssv.find_or_create_by!(ma_sv: "SV003") do |sv|
   sv.ghi_chu     = ""
 end
 
-sv4 = Hssv.find_or_create_by!(ma_sv: "SV010") do |sv|
+Hssv.find_or_create_by!(ma_sv: "SV010") do |sv|
   sv.ho_dem      = "Phạm Thị"
   sv.ten         = "D"
   sv.ngay_sinh   = Date.new(2003, 5, 10)
@@ -199,7 +199,7 @@ def seed_diem(ma_sv, mon, hoc_ky:, diem_gp:, diem_hp:, thi_lai1: nil, thi_lai2: 
   ) do |d|
     d.diem_gp           = diem_gp
     d.diem_hp           = diem_hp
-    d.diem_tb           = ((diem_gp.to_f + diem_hp.to_f) / 2.0).round(2)
+    d.diem_tb           = (diem_gp * 0.4 + diem_hp * 0.6).round(2)
     d.diem_thi_lai_lan1 = thi_lai1
     d.diem_thi_lai_lan2 = thi_lai2
     d.ghi_chu           = "Seed demo"
