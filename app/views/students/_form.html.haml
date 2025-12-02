@@ -234,8 +234,9 @@
         .space-y-1
           = f.label :nam_sinh_vo, "Năm sinh vợ/chồng", class: "block text-sm font-medium text-slate-200"
           = f.number_field :nam_sinh_vo,
-                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
-                         min: 1900, max: Time.current.year
+                           min: 1900,
+                           max: Time.current.year,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
         .space-y-1
           = f.label :nghe_nghiep_vo, "Nghề nghiệp vợ/chồng", class: "block text-sm font-medium text-slate-200"
           = f.text_field :nghe_nghiep_vo,
