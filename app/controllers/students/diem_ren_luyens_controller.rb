@@ -4,13 +4,13 @@ module Students
     before_action :set_student
 
     def index
-      @diem_ren_luyen = @student.diem_ren_luyens.order(:ma_nam_hoc, :thang)
+      @ren_luyens = @student.diem_ren_luyens.order(:ma_nam_hoc, :ma_hoc_ky, :thang)
     end
 
     private
 
     def set_student
-      @student = Hssv.find_by!(ma_sv: params[:student_id])
+      @student = Hssv.find(params[:student_ma_sv])
     end
   end
 end

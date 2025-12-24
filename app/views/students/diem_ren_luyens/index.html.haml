@@ -1,25 +1,37 @@
-- content_for :title do
-  = "Điểm rèn luyện - #{@student.ho_ten}"
+#screen-student-rl.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to student_path(@student), class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300
+            Điểm rèn luyện – #{@student.ho_ten}
+          %p.text-xs.text-slate-400
+            Mã SV: #{@student.ma_sv}
+      %div.text-right.text-xs.text-slate-400
+        %p= @student.lop&.ten
+        %p= @student.nganh&.ten_nganh
 
-%div.mb-4
-  = link_to "← Thông tin học viên", student_path(@student.ma_sv), class: "text-sm text-slate-500 hover:text-indigo-600"
-
-%h1.text-2xl.font-semibold.mb-2
-  Điểm rèn luyện
-%p.text-sm.text-slate-500.mb-4= @student.ho_ten
-
-.rounded-2xl.bg-white.shadow-sm.overflow-hidden
-  %table.min-w-full.text-sm
-    %thead.bg-slate-50.text-left.text-slate-500
-      %tr
-        %th.py-2.px-3 Năm học
-        %th Tháng
-        %th.text-right Điểm
-        %th Ghi chú
-    %tbody
-      - @diem_ren_luyen.each do |d|
-        %tr.border-t.last:border-b-0
-          %td.py-2.px-3= d.ma_nam_hoc
-          %td= d.thang
-          %td.text-right.font-semibold= d.diem
-          %td= d.ghi_chu
+  %main.flex-1.overflow-auto.p-6
+    .max-w-7xl.mx-auto
+      .bg-slate-800.border.border-slate-700.rounded-xl.overflow-hidden
+        .overflow-x-auto.table-scroll
+          %table.w-full
+            %thead{ class: "bg-slate-900/80" }
+              %tr
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Năm học
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Học kỳ
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Tháng
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Ghi chú
+            %tbody
+              - @ren_luyens.each do |r|
+                %tr{ class: "hover:bg-slate-700/30 transition" }
+                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= r.ma_nam_hoc
+                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= r.ma_hoc_ky
+                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= r.thang
+                  %td.px-4.py-3.text-sm.text-center.text-emerald-300.border-b.border-slate-700.font-semibold= r.diem
+                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= r.ghi_chu

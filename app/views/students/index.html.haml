@@ -12,9 +12,9 @@
           %h1#management-title.text-lg.font-bold.text-amber-300
             Quản lý sinh viên
           %p.text-xs.text-slate-400
-            Tìm kiếm, xem chi tiết hồ sơ
-      / Nút Thêm mới có thể trỏ sang ActiveAdmin hoặc form riêng nếu bạn làm CRUD
-      = link_to admin_hssvs_path,
+            Tìm kiếm, xem chi tiết, cập nhật thông tin
+      / Nút Thêm mới – dùng CRUD frontend, không trỏ sang ActiveAdmin nữa
+      = link_to new_student_path,
                 class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
         %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
           %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
@@ -24,11 +24,19 @@
   / Main Content
   %main.flex-1.overflow-auto.p-6
     .max-w-7xl.mx-auto
+      - if flash[:notice]
+        -# .mb-4.rounded-lg.bg-emerald-50/5.border.border-emerald-500/40.text-emerald-200.py-2.px-3.text-sm
+        %div{ class: "mb-4 rounded-lg bg-emerald-50/5 border border-emerald-500/40 text-emerald-200 py-2 px-3 text-sm" }
+          = flash[:notice]
+      - if flash[:alert]
+        -# .mb-4.rounded-lg.bg-rose-50/5.border.border-rose-500/40.text-rose-200.py-2.px-3.text-sm
+        %div{ class: "mb-4 rounded-lg bg-rose-50/5 border border-rose-500/40 text-rose-200 py-2 px-3 text-sm" }
+          = flash[:alert]
+
       / Search & Filter
       .bg-slate-800.border.border-slate-700.rounded-xl.p-4.mb-6.flex.items-center.gap-4
         .flex-1
           .relative
-            -# %svg.absolute.left-3.top-1/2.transform.-translate-y-1/2.w-5.h-5.text-slate-400{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
             %svg{ class: "absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
               %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
                      d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" }
@@ -45,7 +53,6 @@
       .bg-slate-800.border.border-slate-700.rounded-xl.overflow-hidden
         .overflow-x-auto.table-scroll
           %table.w-full#data-table
-            -# %thead.bg-slate-900/80
             %thead{ class: "bg-slate-900/80" }
               %tr#table-header
                 %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 #
@@ -57,9 +64,9 @@
                 %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thao tác
             %tbody#table-body
               - @students.each_with_index do |s, index|
-                - trang_thai = "Đang học" # TODO: map từ dữ liệu thực nếu có
+                - trang_thai = "Đang học" # TODO: map từ dữ liệu thực nếu có cột trạng thái
                 - status_color = case trang_thai when "Đang học" then "text-emerald-400" when "Bảo lưu"  then "text-amber-400" else "text-red-400" end
-                -# %tr.hover:bg-slate-700/30.transition
+
                 %tr{ class: "hover:bg-slate-700/30 transition" }
                   %td.px-4.py-3.text-sm.text-slate-400.border-b.border-slate-700= index + 1
                   %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700.font-medium= s.ma_sv
@@ -69,7 +76,7 @@
                   %td.px-4.py-3.text-sm.border-b.border-slate-700{ class: status_color }= trang_thai
                   %td.px-4.py-3.text-sm.border-b.border-slate-700
                     .flex.items-center.gap-2
-                      = link_to student_path(s.ma_sv),
+                      = link_to student_path(s),
                                 class: "focus-outline p-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded transition",
                                 title: "Xem chi tiết" do
                         %svg.w-4.h-4{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
@@ -77,9 +84,18 @@
                                  d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z" }
                           %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
                                  d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" }
-                      = link_to edit_admin_hssv_path(s.ma_sv),
-                                class: "focus-outline p-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded transition",
-                                title: "Sửa (qua trang quản trị)" do
+
+                      = link_to edit_student_path(s),
+                                class: "focus-outline p-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded transition",
+                                title: "Sửa" do
                         %svg.w-4.h-4{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
                           %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
                                  d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }
+
+                      = link_to student_path(s),
+                                data: { turbo_method: :delete, turbo_confirm: "Bạn có chắc chắn muốn xoá sinh viên này?" },
+                                class: "focus-outline p-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded transition",
+                                title: "Xoá" do
+                        %svg.w-4.h-4{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+                          %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                                 d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" }

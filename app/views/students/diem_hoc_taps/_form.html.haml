@@ -1,0 +1,82 @@
+- form_title = @grade.new_record? ? "Thêm điểm học tập" : "Chỉnh sửa điểm học tập"
+
+.max-w-3xl.mx-auto
+  %div{ class: "bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl shadow-slate-900/40" }
+    %h2.text-xl.font-semibold.text-amber-300.mb-2= form_title
+    %p.text-xs.text-slate-400.mb-4
+      = "Sinh viên: #{@student.ho_ten} (#{@student.ma_sv})"
+
+    - if @grade.errors.any?
+      %div{ class: "mb-4 rounded-lg bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }
+        %p.font-semibold.mb-1
+          Có #{pluralize(@grade.errors.count, "lỗi")}:
+        %ul.list-disc.list-inside
+          - @grade.errors.full_messages.each do |msg|
+            %li= msg
+
+    = form_with model: [@student, @grade], local: true do |f|
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_hoc_ky, "Học kỳ", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_hoc_ky,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                         placeholder: "VD: 2024-2025 HK1"
+        .space-y-1
+          = f.label :ma_mon_hoc, "Môn học", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_mon_hoc,
+                     @mon_hocs.map { |m| ["#{m.ma_mon_hoc} - #{m.ten}", m.ma_mon_hoc] },
+                     { include_blank: "Chọn môn học" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :diem_gp, "Điểm GP (GK)", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :diem_gp,
+                           step: "0.1",
+                           min: 0, max: 10,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :diem_hp, "Điểm HP", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :diem_hp,
+                           step: "0.1",
+                           min: 0, max: 10,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :diem_tb, "Điểm TB (nếu có)", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :diem_tb,
+                           step: "0.1",
+                           min: 0, max: 10,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :diem_thi_lai_lan1, "Thi lại lần 1", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :diem_thi_lai_lan1,
+                           step: "0.1",
+                           min: 0, max: 10,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :diem_thi_lai_lan2, "Thi lại lần 2", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :diem_thi_lai_lan2,
+                           step: "0.1",
+                           min: 0, max: 10,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .mb-4
+        = f.label :ghi_chu, "Ghi chú", class: "block text-sm font-medium text-slate-200 mb-1"
+        = f.text_area :ghi_chu,
+                      rows: 3,
+                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition"
+
+      .flex.items-center.justify-between.gap-3.mt-6
+        = link_to "Quay lại bảng điểm",
+                  student_diem_hoc_taps_path(@student),
+                  class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition"
+        .flex.items-center.gap-3
+          - unless @grade.new_record?
+            = link_to "Xoá",
+                      student_diem_hoc_tap_path(@student, @grade),
+                      data: { turbo_method: :delete, turbo_confirm: "Xoá dòng điểm này?" },
+                      class: "focus-outline px-4 py-2 bg-red-500/80 hover:bg-red-500 text-white rounded-lg text-sm transition"
+          = f.submit (@grade.new_record? ? "Lưu điểm" : "Cập nhật"),
+                    class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"

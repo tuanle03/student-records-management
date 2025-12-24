@@ -1,80 +1,88 @@
-- content_for :title do
-  = @student.ho_ten
+#screen-student-show.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .max-w-5xl.mx-auto.flex.items-center.justify-between
+      .flex.items-center.gap-3
+        = link_to students_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-5.h-5.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300= @student.ho_ten
+          %p.text-xs.text-slate-400= "Mã SV: #{@student.ma_sv}"
+      .flex.items-center.gap-2
+        = link_to "Sửa",
+                  edit_student_path(@student),
+                  class: "focus-outline px-3 py-1.5 bg-emerald-500/80 hover:bg-emerald-500 text-slate-900 text-xs font-semibold rounded-lg transition"
+        = link_to "Xoá",
+                  student_path(@student),
+                  data: { turbo_method: :delete, turbo_confirm: "Bạn có chắc chắn muốn xoá sinh viên này?" },
+                  class: "focus-outline px-3 py-1.5 bg-red-500/80 hover:bg-red-500 text-white text-xs font-semibold rounded-lg transition"
 
-%div.mb-4
-  = link_to "← Danh sách học viên", students_path, class: "text-sm text-slate-500 hover:text-indigo-600"
+  %main.flex-1.overflow-auto.p-6
+    .max-w-5xl.mx-auto.space-y-6
+      .grid.grid-cols-1.md:grid-cols-2.gap-4
+        .bg-slate-800.border.border-slate-700.rounded-2xl.p-4
+          %h2.text-sm.font-semibold.text-slate-200.mb-3 Thông tin học tập
+          %dl.space-y-2.text-sm.text-slate-300
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Mã sinh viên
+              %dd.font-medium= @student.ma_sv
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Họ tên
+              %dd.font-medium= @student.ho_ten
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Ngày sinh
+              %dd= @student.ngay_sinh&.strftime("%d/%m/%Y")
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Giới tính
+              %dd= @student.gioi_tinh_label
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Lớp
+              %dd= @student.lop&.ten
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Ngành
+              %dd= @student.nganh&.ten_nganh
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Khóa
+              %dd= @student.khoa_hoc&.ten
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Hệ đào tạo
+              %dd= @student.he_dao_tao&.ten
 
-%div.flex.flex-col.md:flex-row.gap-4
-  -# .md:w-1/3.rounded-2xl.bg-white.shadow-sm.p-4.flex.flex-col.gap-2
-  %div{ class: "md:w-1/3 rounded-2xl bg-white shadow-sm p-4 flex flex-col gap-2" }
-    %h1.text-xl.font-semibold.mb-1= @student.ho_ten
-    %div.text-xs.text-slate-500.font-mono
-      = @student.ma_sv
+        .bg-slate-800.border.border-slate-700.rounded-2xl.p-4
+          %h2.text-sm.font-semibold.text-slate-200.mb-3 Thông tin liên hệ
+          %dl.space-y-2.text-sm.text-slate-300
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Số điện thoại
+              %dd= @student.dien_thoai
+            -# %div.flex.justify-between.gap-4
+            -#   %dt.text-slate-400 Email
+            -#   %dd= @student.email
+            %div.flex.justify-between.gap-4
+              %dt.text-slate-400 Nơi cư trú
+              %dd.text-right= @student.tru_quan.presence || "Chưa cập nhật"
+            %div
+              %dt.text-slate-400.mb-1 Ghi chú
+              %dd.text-sm.text-slate-300{ class: "bg-slate-900/60 rounded-lg p-2 min-h-[3rem]" }
+                = @student.ghi_chu.presence || "Không có"
 
-    %dl.text-sm.mt-3.space-y-1
-      %div.flex.justify-between
-        %dt.text-slate-500 Lớp
-        %dd= @student.lop&.ten
-      %div.flex.justify-between
-        %dt.text-slate-500 Ngành
-        %dd= @student.nganh&.ten_nganh
-      %div.flex.justify-between
-        %dt.text-slate-500 Khóa
-        %dd= @student.khoa_hoc&.ten
-      %div.flex.justify-between
-        %dt.text-slate-500 Hệ
-        %dd= @student.he_dao_tao&.ten
-      %div.flex.justify-between
-        %dt.text-slate-500 Điện thoại
-        %dd= @student.dien_thoai
-      %div.flex.justify-between
-        %dt.text-slate-500 Quê quán
-        %dd= @student.que_quan
+      .bg-slate-800.border.border-slate-700.rounded-2xl.p-4
+        %h2.text-sm.font-semibold.text-slate-200.mb-3 Liên kết nhanh
+        .grid.grid-cols-1.md:grid-cols-2.gap-3.text-sm
+          = link_to student_diem_hoc_taps_path(@student.ma_sv),
+                    class: "focus-outline group bg-slate-700/50 hover:bg-slate-700 border border-slate-600 hover:border-amber-500/50 rounded-xl p-3 flex items-center justify-between transition" do
+            %div
+              %p.font-semibold.text-slate-200.group-hover:text-amber-300.transition Bảng điểm
+              %p.text-xs.text-slate-400 Xem chi tiết điểm các học phần
+            %svg.w-5.h-5.text-slate-400.group-hover:text-amber-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+              %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                     d: "M9 5l7 7-7 7" }
 
-  / --- Bảng điểm & rèn luyện ---
-  .md:flex-1.space-y-4
-    .rounded-2xl.bg-white.shadow-sm.p-4
-      .flex.items-center.justify-between.mb-2
-        %h2.text-lg.font-semibold Điểm học tập
-        = link_to "Chi tiết", student_diem_hoc_taps_path(@student.ma_sv), class: "text-xs text-indigo-600 hover:underline"
-
-      - if @diem_hoc_tap.any?
-        %table.min-w-full.text-xs
-          %thead.text-left.text-slate-500
-            %tr.border-b
-              %th.py-2.px-2 Học kỳ
-              %th Môn
-              %th.text-right GP
-              %th.text-right HP
-              %th.text-right TB
-          %tbody
-            - @diem_hoc_tap.first(5).each do |d|
-              %tr.border-b.last:border-0
-                %td.py-1.px-2= d.ma_hoc_ky
-                %td= d.mon_hoc&.ten
-                %td.text-right= d.diem_gp
-                %td.text-right= d.diem_hp
-                %td.text-right.font-semibold= d.diem_tb
-      - else
-        %p.text-sm.text-slate-500 Chưa có dữ liệu điểm học tập.
-
-    .rounded-2xl.bg-white.shadow-sm.p-4
-      .flex.items-center.justify-between.mb-2
-        %h2.text-lg.font-semibold Điểm rèn luyện
-        = link_to "Chi tiết", student_diem_ren_luyens_path(@student.ma_sv), class: "text-xs text-indigo-600 hover:underline"
-
-      - if @diem_ren_luyen.any?
-        %table.min-w-full.text-xs
-          %thead.text-left.text-slate-500
-            %tr.border-b
-              %th.py-2.px-2 Năm học
-              %th Tháng
-              %th.text-right Điểm
-          %tbody
-            - @diem_ren_luyen.first(6).each do |d|
-              %tr.border-b.last:border-0
-                %td.py-1.px-2= d.ma_nam_hoc
-                %td= d.thang
-                %td.text-right.font-semibold= d.diem
-      - else
-        %p.text-sm.text-slate-500 Chưa có dữ liệu điểm rèn luyện.
+          = link_to student_diem_ren_luyens_path(@student.ma_sv),
+                    class: "focus-outline group bg-slate-700/50 hover:bg-slate-700 border border-slate-600 hover:border-amber-500/50 rounded-xl p-3 flex items-center justify-between transition" do
+            %div
+              %p.font-semibold.text-slate-200.group-hover:text-amber-300.transition Điểm rèn luyện
+              %p.text-xs.text-slate-400 Xem điểm rèn luyện theo kỳ
+            %svg.w-5.h-5.text-slate-400.group-hover:text-amber-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+              %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                     d: "M9 5l7 7-7 7" }

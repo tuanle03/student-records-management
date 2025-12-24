@@ -1,0 +1,84 @@
+- form_title = @lop.new_record? ? "Thêm lớp học" : "Chỉnh sửa lớp học"
+- form_url   = @lop.new_record? ? lops_path : lop_path(@lop)
+
+.max-w-3xl.mx-auto
+  %div{ class: "bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl shadow-slate-900/40" }
+    %h2.text-xl.font-semibold.text-amber-300.mb-4= form_title
+
+    - if @lop.errors.any?
+      %div{ class: "mb-4 rounded-lg bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }
+        %p.font-semibold.mb-1
+          Có #{pluralize(@lop.errors.count, "lỗi")}:
+        %ul.list-disc.list-inside
+          - @lop.errors.full_messages.each do |msg|
+            %li= msg
+
+    = form_with model: @lop, url: form_url do |f|
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_lop, "Mã lớp", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_lop,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                         placeholder: "VD: CTK44A",
+                         readonly: !@lop.new_record?
+
+        .space-y-1
+          = f.label :ten, "Tên lớp", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ten,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                         placeholder: "Công nghệ thông tin K44A"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_khoa, "Khóa học", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_khoa,
+                     @khoa_hocs.map { |k| ["#{k.ma_khoa} - #{k.ten}", k.ma_khoa] },
+                     { include_blank: "Chọn khóa học" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :khoa_hoc, "Niên khoá (hiển thị)", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :khoa_hoc,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500",
+                         placeholder: "2021–2025 (tuỳ chọn)"
+
+        .space-y-1
+          = f.label :ma_nganh, "Ngành", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_nganh,
+                     @nganhs.map { |n| ["#{n.ma_nganh} - #{n.ten_nganh}", n.ma_nganh] },
+                     { include_blank: "Chọn ngành" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_he_dt, "Hệ đào tạo", class: "block text-sm font-medium text-slate-200"
+          = f.select :ma_he_dt,
+                     @he_dao_taos.map { |h| ["#{h.ma_he_dt} - #{h.ten}", h.ma_he_dt] },
+                     { include_blank: "Chọn hệ đào tạo" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .space-y-1
+          = f.label :ma_cb, "Mã cán bộ phụ trách", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_cb,
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
+                         placeholder: "VD: CB001"
+
+      .mb-6
+        = f.label :ghi_chu, "Ghi chú", class: "block text-sm font-medium text-slate-200 mb-1"
+        = f.text_area :ghi_chu,
+                      rows: 3,
+                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
+                      placeholder: "Thông tin thêm về lớp (nếu có)"
+
+      .flex.items-center.justify-between.gap-3
+        = link_to "Quay lại danh sách",
+                  lops_path,
+                  class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition"
+        .flex.items-center.gap-3
+          - unless @lop.new_record?
+            = link_to "Xoá",
+                      lop_path(@lop),
+                      data: { turbo_method: :delete, turbo_confirm: "Xoá lớp này?" },
+                      class: "focus-outline px-4 py-2 bg-red-500/80 hover:bg-red-500 text-white rounded-lg text-sm transition"
+          = f.submit (@lop.new_record? ? "Tạo lớp" : "Lưu thay đổi"),
+                    class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"
