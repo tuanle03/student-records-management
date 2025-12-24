@@ -28,7 +28,7 @@
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
                          placeholder: "Công nghệ thông tin K44A"
 
-      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
         .space-y-1
           = f.label :ma_khoa, "Khóa học", class: "block text-sm font-medium text-slate-200"
           = f.select :ma_khoa,
@@ -37,19 +37,13 @@
                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
         .space-y-1
-          = f.label :khoa_hoc, "Niên khoá (hiển thị)", class: "block text-sm font-medium text-slate-200"
-          = f.text_field :khoa_hoc,
-                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500",
-                         placeholder: "2021–2025 (tuỳ chọn)"
-
-        .space-y-1
           = f.label :ma_nganh, "Ngành", class: "block text-sm font-medium text-slate-200"
           = f.select :ma_nganh,
                      @nganhs.map { |n| ["#{n.ma_nganh} - #{n.ten_nganh}", n.ma_nganh] },
                      { include_blank: "Chọn ngành" },
                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
-      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
         .space-y-1
           = f.label :ma_he_dt, "Hệ đào tạo", class: "block text-sm font-medium text-slate-200"
           = f.select :ma_he_dt,

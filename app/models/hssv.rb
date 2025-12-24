@@ -13,8 +13,28 @@ class Hssv < ApplicationRecord
   has_many :diem_hoc_taps,   foreign_key: :ma_sv, primary_key: :ma_sv, dependent: :destroy
   has_many :diem_ren_luyens, foreign_key: :ma_sv, primary_key: :ma_sv, dependent: :destroy
 
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "anh", "anh_chiem", "created_at", "dan_toc",
+      "dien_thoai", "doi_tuong", "ghi_chu", "gioi_tinh",
+      "ho_dem", "ho_khau_cha", "ho_khau_me", "ho_khau_vo",
+      "ho_ten_cha", "ho_ten_me", "ho_ten_vo", "khu_vuc", "ktk_l",
+      "ma_hdt", "ma_huyen", "ma_khoa", "ma_lop", "ma_nganh", "ma_sv",
+      "nam_sinh_cha", "nam_sinh_me", "nam_sinh_vo", "ngay_cmnd", "ngay_dang",
+      "ngay_doan", "ngay_sinh", "nghe_nghiep_cha", "nghe_nghiep_me", "nghe_nghiep_vo",
+      "noi_cmnd", "noi_lam_cha", "noi_lam_me", "noi_lam_vo", "que_quan", "so_cmnd",
+      "ten", "tom_tat_qtct", "ton_giao", "tru_quan", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [
+      "diem_hoc_taps", "diem_ren_luyens", "he_dao_tao", "khoa_hoc", "lop", "nganh"
+    ]
+  end
+
   def ho_ten
-    [ho_dem, ten].compact.join(" ")
+    [ ho_dem, ten ].compact.join(" ")
   end
 
   def gioi_tinh_label

@@ -12,7 +12,7 @@ ActiveAdmin.register Lop do
       f.input :ma_cb
       f.input :giao_vien,
               as: :select,
-              collection: User.teacher.order(:email),
+              collection: User.teachers.order(:email),
               label_method: :email,
               value_method: :id,
               include_blank: "Chọn giáo viên chủ nhiệm"

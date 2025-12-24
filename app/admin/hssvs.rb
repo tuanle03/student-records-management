@@ -33,12 +33,12 @@ ActiveAdmin.register Hssv do
       f.input :ho_dem
       f.input :ten
       f.input :ngay_sinh, as: :datepicker
-      f.input :gioi_tinh, as: :select, collection: [["Nam", true], ["Nữ", false]]
+      f.input :gioi_tinh, as: :select, collection: [ [ "Nam", true ], [ "Nữ", false ] ]
 
-      f.input :lop, as: :select, collection: Lop.all.collect { |l| [l.ten, l.ma_lop] }
-      f.input :khoa_hoc, as: :select, collection: KhoaHoc.all.collect { |k| [k.ten, k.ma_khoa] }
-      f.input :he_dao_tao, as: :select, collection: HeDaoTao.all.collect { |h| [h.ten, h.ma_he_dt] }
-      f.input :nganh, as: :select, collection: Nganh.all.collect { |n| [n.ten_nganh, n.ma_nganh] }
+      f.input :lop, as: :select, collection: Lop.all.collect { |l| [ l.ten, l.ma_lop ] }
+      f.input :khoa_hoc, as: :select, collection: KhoaHoc.all.collect { |k| [ k.ten, k.ma_khoa ] }
+      f.input :he_dao_tao, as: :select, collection: HeDaoTao.all.collect { |h| [ h.ten, h.ma_he_dt ] }
+      f.input :nganh, as: :select, collection: Nganh.all.collect { |n| [ n.ten_nganh, n.ma_nganh ] }
 
       f.input :dien_thoai
       f.input :que_quan
