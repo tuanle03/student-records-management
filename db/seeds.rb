@@ -1,7 +1,24 @@
-if !Rails.env.development?
+# db/seeds.rb
+
+# Chỉ seed dữ liệu trong môi trường development
+unless Rails.env.development?
   puts "⚠️ Bỏ qua seed vì không phải môi trường development (#{Rails.env})"
   return
 end
+
+# Làm sạch dữ liệu cũ (nếu cần)
+puts "🧹 Cleaning up old data..."
+DiemRenLuyen.delete_all
+DiemHocTap.delete_all
+Hssv.delete_all
+MonHoc.delete_all
+Lop.delete_all
+HeDaoTao.delete_all
+Nganh.delete_all
+KhoaHoc.delete_all
+User.where(role: [ User::ROLE_TEACHER, User::ROLE_STAFF ]).delete_all
+AdminUser.delete_all
+puts "✅ Old data cleaned."
 
 puts "🌱 Seeding development data..."
 
@@ -15,11 +32,23 @@ AdminUser.find_or_create_by!(email: "admin@example.com") do |u|
 end
 puts "✅ AdminUser: admin@example.com / password"
 
-User.find_or_create_by!(email: "demo@qlhv.local") do |u|
+# Tài khoản giáo viên và nhân viên
+giao_vien_1 = User.find_or_create_by!(email: "teacher1@qlhv.local") do |u|
   u.password              = "password123"
   u.password_confirmation = "password123"
+  u.role = User::ROLE_TEACHER
 end
-puts "✅ User: demo@qlhv.local / password123"
+giao_vien_2 = User.find_or_create_by!(email: "teacher2@qlhv.local") do |u|
+  u.password              = "password123"
+  u.password_confirmation = "password123"
+  u.role = User::ROLE_TEACHER
+end
+nhan_vien = User.find_or_create_by!(email: "staff@qlhv.local") do |u|
+  u.password              = "password123"
+  u.password_confirmation = "password123"
+  u.role = User::ROLE_STAFF
+end
+puts "✅ Tạo tài khoản giáo viên & nhân viên"
 
 # ---------------------------
 # 2. Bảng tham chiếu: Khóa, Ngành, Hệ đào tạo
@@ -62,15 +91,16 @@ end
 puts "✅ Đã seed KhoaHoc, Nganh, HeDaoTao"
 
 # ---------------------------
-# 3. Lớp
+# 3. Lớp - gán giáo viên chủ nhiệm
 # ---------------------------
 
 lop_ctk44a = Lop.find_or_create_by!(ma_lop: "CTK44A") do |lop|
   lop.ten       = "Công nghệ thông tin K44A"
   lop.ma_khoa   = k44.ma_khoa
-  lop.khoa_hoc  = "2021–2025"
+  lop[:khoa_hoc]  = "2021–2025"
   lop.ma_nganh  = cntt.ma_nganh
   lop.ma_he_dt  = cd_chinh_quy.ma_he_dt
+  lop.giao_vien = giao_vien_1
   lop.ma_cb     = "GV001"
   lop.ghi_chu   = "Lớp ban A"
 end
@@ -78,9 +108,10 @@ end
 lop_ctk44b = Lop.find_or_create_by!(ma_lop: "CTK44B") do |lop|
   lop.ten       = "Công nghệ thông tin K44B"
   lop.ma_khoa   = k44.ma_khoa
-  lop.khoa_hoc  = "2021–2025"
+  lop[:khoa_hoc]  = "2021–2025"
   lop.ma_nganh  = cntt.ma_nganh
   lop.ma_he_dt  = cd_chinh_quy.ma_he_dt
+  lop.giao_vien = giao_vien_2
   lop.ma_cb     = "GV002"
   lop.ghi_chu   = "Lớp ban B"
 end
@@ -88,14 +119,15 @@ end
 lop_qtk45a = Lop.find_or_create_by!(ma_lop: "QTK45A") do |lop|
   lop.ten       = "Quản trị kinh doanh K45A"
   lop.ma_khoa   = k45.ma_khoa
-  lop.khoa_hoc  = "2022–2026"
+  lop[:khoa_hoc]  = "2022–2026"
   lop.ma_nganh  = qtkd.ma_nganh
   lop.ma_he_dt  = vhlt.ma_he_dt
+  lop.giao_vien = giao_vien_1
   lop.ma_cb     = "GV010"
   lop.ghi_chu   = "Lớp QTKD hệ VHLT"
 end
 
-puts "✅ Đã seed Lops"
+puts "✅ Đã seed Lops với giáo viên chủ nhiệm"
 
 # ---------------------------
 # 4. Môn học
@@ -170,7 +202,7 @@ sv3 = Hssv.find_or_create_by!(ma_sv: "SV003") do |sv|
   sv.ghi_chu     = ""
 end
 
-Hssv.find_or_create_by!(ma_sv: "SV010") do |sv|
+sv4 = Hssv.find_or_create_by!(ma_sv: "SV010") do |sv|
   sv.ho_dem      = "Phạm Thị"
   sv.ten         = "D"
   sv.ngay_sinh   = Date.new(2003, 5, 10)

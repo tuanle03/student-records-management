@@ -11,4 +11,8 @@ class KhoaHoc < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [ "created_at", "ghi_chu", "ma_khoa", "ten", "updated_at" ]
   end
+
+  def to_s
+    ten
+  end
 end
