@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_01_045122) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_02_193118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -137,6 +137,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_01_045122) do
     t.string "ghi_chu"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "giao_vien_id"
+    t.index ["giao_vien_id"], name: "index_lops_on_giao_vien_id"
   end
 
   create_table "mon_hocs", primary_key: "ma_mon_hoc", id: :string, force: :cascade do |t|
@@ -171,6 +173,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_01_045122) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -184,4 +187,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_01_045122) do
   add_foreign_key "lops", "he_dao_taos", column: "ma_he_dt", primary_key: "ma_he_dt"
   add_foreign_key "lops", "khoa_hocs", column: "ma_khoa", primary_key: "ma_khoa"
   add_foreign_key "lops", "nganhs", column: "ma_nganh", primary_key: "ma_nganh"
+  add_foreign_key "lops", "users", column: "giao_vien_id"
 end

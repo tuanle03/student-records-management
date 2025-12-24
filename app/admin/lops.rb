@@ -1,18 +1,23 @@
 ActiveAdmin.register Lop do
+  permit_params :ma_lop, :ten, :ma_khoa, :khoa_hoc, :ma_nganh, :ma_he_dt, :ma_cb, :ghi_chu, :giao_vien_id
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  # permit_params :ma_lop, :ten, :ma_khoa, :khoa_hoc, :ma_nganh, :ma_he_dt, :ma_cb, :ghi_chu
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:ma_lop, :ten, :ma_khoa, :khoa_hoc, :ma_nganh, :ma_he_dt, :ma_cb, :ghi_chu]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-  
+  form do |f|
+    f.inputs "Thông tin lớp" do
+      f.input :ma_lop
+      f.input :ten
+      f.input :ma_khoa
+      f.input :khoa_hoc
+      f.input :ma_nganh
+      f.input :ma_he_dt
+      f.input :ma_cb
+      f.input :giao_vien,
+              as: :select,
+              collection: User.teacher.order(:email),
+              label_method: :email,
+              value_method: :id,
+              include_blank: "Chọn giáo viên chủ nhiệm"
+      f.input :ghi_chu
+    end
+    f.actions
+  end
 end

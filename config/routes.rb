@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :lops
   resources :students, param: :ma_sv do
     scope module: :students do
-      resources :diem_hoc_taps, only: :index
+      resources :diem_hoc_taps
       resources :diem_ren_luyens, only: :index
     end
   end

@@ -2,13 +2,20 @@ class StudentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_student, only: %i[show edit update destroy]
   before_action :load_collections, only: %i[new edit create update]
+  before_action :ensure_teacher_readonly!, only: %i[new create edit update destroy]
+  before_action :ensure_teacher_can_see_student!, only: %i[show]
 
   def index
     @q = params[:q]
-    @students = Hssv
-                  .includes(:lop, :nganh)
-                  .search(@q)
-                  .order(:ma_sv)
+
+    scope = Hssv.includes(:lop, :nganh)
+
+    if current_user.teacher?
+      lop_codes = current_user.homeroom_classes.select(:ma_lop)
+      scope = scope.where(ma_lop: lop_codes)
+    end
+
+    @students = scope.search(@q).order(:ma_sv)
   end
 
   def show
@@ -52,6 +59,21 @@ class StudentsController < ApplicationController
 
   def set_student
     @student = Hssv.find_by!(ma_sv: params[:ma_sv])
+  end
+
+  def ensure_teacher_readonly!
+    return unless current_user.teacher?
+
+    redirect_to students_path,
+                alert: "Bạn không có quyền chỉnh sửa hồ sơ sinh viên."
+  end
+
+  def ensure_teacher_can_see_student!
+    return unless current_user.teacher?
+
+    if @student.lop&.giao_vien_id != current_user.id
+      redirect_to students_path, alert: "Bạn không có quyền xem sinh viên này."
+    end
   end
 
   def student_params

@@ -2,22 +2,20 @@ class LopsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_lop, only: %i[show edit update destroy]
   before_action :load_collections, only: %i[new edit create update]
+  before_action :ensure_teacher_can_see_lop!, only: %i[show]
 
   def index
-    @q = params[:q]
-    @lops = Lop.includes(:khoa_hoc, :nganh, :he_dao_tao)
-               .then { |scope|
-                  if @q.present?
-                    scope.where("ma_lop ILIKE :q OR ten ILIKE :q", q: "%#{ActiveRecord::Base.sanitize_sql_like(@q)}%")
-                  else
-                    scope
-                  end
-                }
-                .order(:ma_lop)
+    scope = Lop.includes(:khoa_hoc, :nganh, :he_dao_tao)
+
+    if current_user.teacher?
+      scope = scope.where(giao_vien_id: current_user.id)
+    end
+
+    @lops = scope.order(:ma_lop)
   end
 
   def show
-    @students = @lop.hssvs.includes(:khoa_hoc, :nganh, :he_dao_tao).order(:ma_sv)
+    @students = @lop.students.includes(:nganh).order(:ma_sv)
   end
 
   def new
@@ -54,6 +52,14 @@ class LopsController < ApplicationController
 
   def set_lop
     @lop = Lop.find(params[:id])
+  end
+
+  def ensure_teacher_can_see_lop!
+    return unless current_user.teacher?
+
+    if @lop.giao_vien_id.present? && @lop.giao_vien_id != current_user.id
+      redirect_to lops_path, alert: "Bạn không có quyền xem lớp này."
+    end
   end
 
   def lop_params
