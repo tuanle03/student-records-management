@@ -1,68 +1,71 @@
-.max-w-6xl.mx-auto.py-6
-  .mb-4
-    = link_to "← Quay lại danh sách lớp",
-              lops_path,
-              class: "text-sm text-slate-300 hover:text-amber-300 transition"
+#screen-lop-show.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to lops_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-5.h-5.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300= "Lớp #{@lop.ma_lop}"
+          %p.text-xs.text-slate-400= @lop.ten
+      .flex.items-center.gap-2
+        = link_to "Sửa",
+                  edit_lop_path(@lop),
+                  class: "focus-outline px-3 py-1.5 bg-emerald-500/80 hover:bg-emerald-500 text-slate-900 text-xs font-semibold rounded-lg transition"
 
-  .bg-slate-800.border.border-slate-700.rounded-2xl.p-6.mb-6
-    %h2.text-xl.font-semibold.text-amber-300.mb-4
-      = "Lớp #{@lop.ma_lop} - #{@lop.ten}"
+  %main.flex-1.overflow-auto.p-6
+    .max-w-5xl.mx-auto.space-y-6
+      / Thông tin lớp
+      .bg-slate-800.border.border-slate-700.rounded-2xl.p-4
+        %h2.text-sm.font-semibold.text-slate-200.mb-3 Thông tin lớp
+        %dl.space-y-2.text-sm.text-slate-300
+          %div.flex.justify-between.gap-4
+            %dt.text-slate-400 Mã lớp
+            %dd.font-medium= @lop.ma_lop
+          %div.flex.justify-between.gap-4
+            %dt.text-slate-400 Tên lớp
+            %dd.font-medium= @lop.ten
+          %div.flex.justify-between.gap-4
+            %dt.text-slate-400 Khóa học
+            %dd.font-medium= (@lop.khoa_hoc&.ten || @lop.khoa_hoc).to_s
+          %div.flex.justify-between.gap-4
+            %dt.text-slate-400 Ngành
+            %dd.font-medium= @lop.nganh&.ten_nganh
+          %div.flex.justify-between.gap-4
+            %dt.text-slate-400 Hệ đào tạo
+            %dd.font-medium= @lop.he_dao_tao&.ten
+          %div.flex.justify-between.gap-4
+            %dt.text-slate-400 Mã cán bộ phụ trách
+            %dd.font-medium= @lop.ma_cb
+          %div
+            %dt.text-slate-400.mb-1 Ghi chú
+            %dd.text-sm.text-slate-300{ class: "bg-slate-900/60 rounded-lg p-2 min-h-[2rem]" }
+              = @lop.ghi_chu.presence || "Không có"
 
-    .grid.grid-cols-1.md:grid-cols-2.gap-4.text-sm.text-slate-100
-      %div
-        %p.mb-1
-          %span.font-medium Mã lớp:
-          = " #{@lop.ma_lop}"
-        %p.mb-1
-          %span.font-medium Tên lớp:
-          = " #{@lop.ten}"
-        %p.mb-1
-          %span.font-medium Khóa học:
-          = " #{@lop.khoa_hoc&.ten || @lop.khoa_hoc}"
-        %p.mb-1
-          %span.font-medium Ngành:
-          = " #{@lop.nganh&.ten_nganh}"
-      %div
-        %p.mb-1
-          %span.font-medium Hệ đào tạo:
-          = " #{@lop.he_dao_tao&.ten}"
-        %p.mb-1
-          %span.font-medium Mã cán bộ phụ trách:
-          = " #{@lop.ma_cb}"
-        %p.mb-1
-          %span.font-medium Ghi chú:
-          = " #{@lop.ghi_chu}"
-
-    .mt-4
-      = link_to "Chỉnh sửa lớp",
-                edit_lop_path(@lop.ma_lop),
-                class: "inline-flex items-center px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"
-
-  .bg-slate-800.border.border-slate-700.rounded-2xl.p-6
-    %h3.text-lg.font-semibold.text-slate-100.mb-4
-      Danh sách sinh viên trong lớp
-
-    - if @students.any?
-      .overflow-x-auto.table-scroll
-        %table.w-full
-          %thead{ class: "bg-slate-900/80" }
-            %tr
-              %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 #
-              %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Mã SV
-              %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Họ tên
-              %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Ngành
-              %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thao tác
-          %tbody
-            - @students.each_with_index do |s, index|
-              %tr{ class: "hover:bg-slate-700/30 transition" }
-                %td.px-4.py-3.text-sm.text-slate-400.border-b.border-slate-700= index + 1
-                %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700.font-medium= s.ma_sv
-                %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= "#{s.ho_dem} #{s.ten}".strip
-                %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= s.nganh&.ten_nganh
-                %td.px-4.py-3.text-sm.border-b.border-slate-700
-                  = link_to "Xem chi tiết",
-                            student_path(s.ma_sv),
-                            class: "text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-full transition"
-    - else
-      %p.text-sm.text-slate-400
-        Chưa có sinh viên nào trong lớp này.
+      / Danh sách sinh viên
+      .bg-slate-800.border.border-slate-700.rounded-2xl.p-4
+        %h2.text-sm.font-semibold.text-slate-200.mb-3 Danh sách sinh viên
+        - if @students.any?
+          .overflow-x-auto.table-scroll
+            %table.w-full
+              %thead{ class: "bg-slate-900/80" }
+                %tr
+                  %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 #
+                  %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Mã SV
+                  %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Họ tên
+                  %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Ngành
+                  %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thao tác
+              %tbody
+                - @students.each_with_index do |s, index|
+                  %tr{ class: "hover:bg-slate-700/30 transition" }
+                    %td.px-4.py-3.text-sm.text-slate-400.border-b.border-slate-700= index + 1
+                    %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700.font-medium= s.ma_sv
+                    %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= "#{s.ho_dem} #{s.ten}".strip
+                    %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= s.nganh&.ten_nganh
+                    %td.px-4.py-3.text-sm.border-b.border-slate-700
+                      = link_to "Xem chi tiết",
+                                student_path(s.ma_sv),
+                                class: "text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-full transition"
+        - else
+          %p.text-sm.text-slate-400 Chưa có sinh viên nào trong lớp này.

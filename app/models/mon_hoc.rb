@@ -10,4 +10,8 @@ class MonHoc < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     [ "diem_hoc_taps" ]
   end
+
+  def to_s
+    ten
+  end
 end

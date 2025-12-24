@@ -1,0 +1,45 @@
+#screen-grade-show.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to grades_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300= "Bảng điểm – #{@subject.ten}"
+          %p.text-xs.text-slate-400= "Mã môn: #{@subject.ma_mon_hoc}"
+      - if current_user.teacher?
+        = link_to new_grade_path(ma_mon_hoc: @subject.ma_mon_hoc),
+                  class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
+          %svg.w-5.h-5 …
+          %span Nhập điểm
+
+  %main.flex-1.overflow-auto.p-6
+    .max-w-7xl.mx-auto
+      .bg-slate-800.border.border-slate-700.rounded-xl.overflow-hidden
+        .overflow-x-auto.table-scroll
+          %table.w-full
+            %thead{ class: "bg-slate-900/80" }
+              %tr
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Mã SV
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Họ tên
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Lớp
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm GP
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm HP
+                %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Điểm TB
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Ghi chú
+            %tbody
+              - @grades.each do |grade|
+                %tr{ class: "hover:bg-slate-700/30 transition" }
+                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= grade.ma_sv
+                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= grade.hssv&.ho_dem + " " + grade.hssv&.ten
+                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= grade.hssv&.lop&.ten
+                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= grade.diem_gp
+                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= grade.diem_hp
+                  %td.px-4.py-3.text-sm.text-center.text-emerald-300.border-b.border-slate-700.font-semibold= grade.tinh_diem_tb
+                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= grade.ghi_chu
+              - if @grades.empty?
+                %tr
+                  %td.px-4.py-4.text-sm.text-slate-400.border-b.border-slate-700.text-center{ colspan: 7 }
+                    Chưa có điểm cho môn này.

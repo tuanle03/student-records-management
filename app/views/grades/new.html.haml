@@ -1,0 +1,101 @@
+#screen-new-grade.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to grades_path,
+                  class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor",
+                                       viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round",
+                   "stroke-width": 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300= @selected_subject ? "Nhập điểm môn #{@selected_subject.ten}" : "Nhập điểm"
+          %p.text-xs.text-slate-400= @selected_subject ? "Chọn sinh viên và nhập điểm" : "Chọn môn học và sinh viên"
+
+  %main.flex-1.overflow-auto.p-6
+    .max-w-3xl.mx-auto
+      - if @grade.errors.any?
+        -# .mb-4.rounded-lg.bg-rose-500/10.border.border-rose-500/40.text-rose-100.p-3.text-sm
+        .mb-d{ class: "rounded-lg bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }
+          %p.font-semibold.mb-1 Có #{pluralize(@grade.errors.count, "lỗi")}:
+          %ul.list-disc.list-inside
+            - @grade.errors.full_messages.each do |msg|
+              %li= msg
+
+      = form_with model: @grade,
+                  url: create_grade_path,
+                  local: true do |f|
+        - if @selected_subject
+          = f.hidden_field :ma_mon_hoc, value: @selected_subject.ma_mon_hoc
+          %p.mb-4.text-slate-200.font-medium= "Môn: #{@selected_subject.ma_mon_hoc} – #{@selected_subject.ten}"
+        - else
+          .mb-4
+            = f.label :ma_mon_hoc, "Môn học",
+                       class: "block text-sm font-medium text-slate-200 mb-1"
+            = f.select :ma_mon_hoc,
+                       @subjects.map { |s| ["#{s.ma_mon_hoc} - #{s.ten}", s.ma_mon_hoc] },
+                       { include_blank: "Chọn môn học" },
+                       class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .mb-4
+          = f.label :ma_sv, "Sinh viên",
+                     class: "block text-sm font-medium text-slate-200 mb-1"
+          = f.select :ma_sv,
+                     @students.map { |s| ["#{s.ma_sv} – #{s.ho_dem} #{s.ten}", s.ma_sv] },
+                     { include_blank: "Chọn sinh viên" },
+                     class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .mb-4
+          = f.label :ma_hoc_ky, "Học kỳ",
+                     class: "block text-sm font-medium text-slate-200 mb-1"
+          = f.text_field :ma_hoc_ky,
+                          placeholder: "Ví dụ: HK1_2024",
+                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500"
+
+        .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+          .space-y-1
+            = f.label :diem_gp, "Điểm GP (GK)",
+                       class: "block text-sm font-medium text-slate-200"
+            = f.number_field :diem_gp,
+                              step: "0.1", min: 0, max: 10,
+                              class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+          .space-y-1
+            = f.label :diem_hp, "Điểm HP",
+                       class: "block text-sm font-medium text-slate-200"
+            = f.number_field :diem_hp,
+                              step: "0.1", min: 0, max: 10,
+                              class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+          .space-y-1
+            = f.label :diem_tb, "Điểm TB (nếu có)",
+                       class: "block text-sm font-medium text-slate-200"
+            = f.number_field :diem_tb,
+                              step: "0.1", min: 0, max: 10,
+                              class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+          .space-y-1
+            = f.label :diem_thi_lai_lan1, "Thi lại lần 1",
+                       class: "block text-sm font-medium text-slate-200"
+            = f.number_field :diem_thi_lai_lan1,
+                              step: "0.1", min: 0, max: 10,
+                              class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+          .space-y-1
+            = f.label :diem_thi_lai_lan2, "Thi lại lần 2",
+                       class: "block text-sm font-medium text-slate-200"
+            = f.number_field :diem_thi_lai_lan2,
+                              step: "0.1", min: 0, max: 10,
+                              class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+        .mb-4
+          = f.label :ghi_chu, "Ghi chú",
+                     class: "block text-sm font-medium text-slate-200 mb-1"
+          = f.text_area :ghi_chu,
+                        rows: 3,
+                        class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500"
+
+        .flex.items-center.justify-between.gap-3.mt-6
+          = link_to "Quay lại",
+                    @selected_subject ? grade_path(@selected_subject.ma_mon_hoc) : grades_path,
+                    class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition"
+          = f.submit "Lưu điểm",
+                    class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"
