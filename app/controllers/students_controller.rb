@@ -2,8 +2,8 @@ class StudentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_student, only: %i[show edit update destroy]
   before_action :load_collections, only: %i[new edit create update]
-  before_action :ensure_teacher_readonly!, only: %i[new create edit update destroy]
-  before_action :ensure_teacher_can_see_student!, only: %i[show]
+  before_action :authorize_teacher_for_student!, only: %i[show edit update destroy]
+  before_action :authorize_teacher_for_create!, only: %i[new create]
 
   def index
     @q = params[:q]
@@ -61,19 +61,32 @@ class StudentsController < ApplicationController
     @student = Hssv.find_by!(ma_sv: params[:ma_sv])
   end
 
-  def ensure_teacher_readonly!
+  def authorize_teacher_for_student!
     return unless current_user.teacher?
-
-    redirect_to students_path,
-                alert: "Bạn không có quyền chỉnh sửa hồ sơ sinh viên."
+    if @student.lop&.giao_vien_id != current_user.id
+      redirect_to students_path, alert: "Bạn không có quyền thao tác với sinh viên này."
+    end
   end
 
-  def ensure_teacher_can_see_student!
+  def authorize_teacher_for_create!
     return unless current_user.teacher?
-
-    if @student.lop&.giao_vien_id != current_user.id
-      redirect_to students_path, alert: "Bạn không có quyền xem sinh viên này."
+    if params[:hssv] && params[:hssv][:ma_lop].present?
+      allowed = current_user.homeroom_classes.pluck(:ma_lop)
+      unless allowed.include?(params[:hssv][:ma_lop])
+        redirect_to students_path, alert: "Bạn chỉ có thể thêm sinh viên vào lớp bạn chủ nhiệm."
+      end
     end
+  end
+
+  def load_collections
+    if current_user.teacher?
+      @lops = current_user.homeroom_classes.order(:ma_lop)
+    else
+      @lops = Lop.order(:ma_lop)
+    end
+    @nganhs      = Nganh.order(:ma_nganh)
+    @khoa_hocs   = KhoaHoc.order(:ma_khoa)
+    @he_dao_taos = HeDaoTao.order(:ma_he_dt)
   end
 
   def student_params
@@ -85,12 +98,5 @@ class StudentsController < ApplicationController
       :ho_ten_vo, :nam_sinh_vo, :nghe_nghiep_vo, :noi_lam_vo, :ho_khau_vo, :anh_chiem, :ma_lop, :ma_khoa,
       :ma_hdt, :ma_nganh, :ghi_chu
     )
-  end
-
-  def load_collections
-    @lops        = Lop.order(:ma_lop)
-    @nganhs      = Nganh.order(:ma_nganh)
-    @khoa_hocs   = KhoaHoc.order(:ma_khoa)
-    @he_dao_taos = HeDaoTao.order(:ma_he_dt)
   end
 end

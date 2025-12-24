@@ -14,12 +14,21 @@ class User < ApplicationRecord
   scope :teachers, -> { where(role: ROLE_TEACHER) }
   scope :staffs,   -> { where(role: ROLE_STAFF) }
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id email role created_at updated_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[homeroom_classes]
+  end
+
   def self.roles
     {
       ROLE_TEACHER => "Giáo viên chủ nhiệm",
       ROLE_STAFF   => "Nhân viên / Phòng đào tạo"
     }
   end
+
 
   def teacher?
     role == ROLE_TEACHER
@@ -35,11 +44,7 @@ class User < ApplicationRecord
     "Không rõ"
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    %w[id email role created_at updated_at]
-  end
-
-  def self.ransackable_associations(auth_object = nil)
-    %w[homeroom_classes]
+  def to_s
+    email
   end
 end
