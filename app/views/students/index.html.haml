@@ -13,13 +13,21 @@
             Quản lý sinh viên
           %p.text-xs.text-slate-400
             Tìm kiếm, xem chi tiết, cập nhật thông tin
-      / Nút Thêm mới – dùng CRUD frontend, không trỏ sang ActiveAdmin nữa
-      = link_to new_student_path,
-                class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
-        %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
-          %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
-                 d: "M12 4v16m8-8H4" }
-        %span#btn-add-label Thêm mới
+
+      .flex.items-center.gap-2
+        = link_to import_students_path,
+                  class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition flex items-center gap-2" do
+          %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" }
+          %span#btn-import-label Nhập từ file
+
+        = link_to new_student_path,
+                  class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
+          %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M12 4v16m8-8H4" }
+          %span#btn-add-label Thêm mới
 
   / Main Content
   %main.flex-1.overflow-auto.p-6
