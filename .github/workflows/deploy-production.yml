@@ -1,0 +1,86 @@
+name: Build & Deploy SRM to EC2 (Docker Compose)
+
+on:
+  pull_request:
+    branches: ["production"]
+    types: ["closed"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-production-srm
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL || 'https://cnmeow.site/' }}
+
+    steps:
+      # Optional checkout for manual runs only.
+      - name: Checkout (optional)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v4
+
+      - name: SSH to EC2 and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          debug: true
+          script: |
+            set -euo pipefail
+
+            echo "== Disk status BEFORE"
+            df -h || true
+            docker system df || true
+
+            echo "== Pre-clean (safe)"
+            docker container prune -f --filter "until=48h" || true
+            docker image prune -af --filter "until=72h" || true
+            docker builder prune -af --filter "until=72h" || true
+            docker network prune -f || true
+
+            echo "== Rotate & vacuum system logs"
+            sudo journalctl --rotate || true
+            sudo journalctl --vacuum-time=7d || true
+
+            echo "== Clean host package caches (Amazon Linux)"
+            if command -v dnf >/dev/null 2>&1; then sudo dnf clean all -y || true; fi
+            if command -v yum >/dev/null 2>&1; then sudo yum clean all -y || true; fi
+            sudo rm -rf /var/tmp/* || true
+
+            echo "== Truncate Docker JSON logs"
+            sudo find /var/lib/docker/containers -name "*-json.log" -type f -size +50M -exec truncate -s 0 {} \; || true
+
+            echo "== Disk status AFTER pre-clean"
+            df -h || true
+            docker system df || true
+
+            echo "== Deploy SRM"
+            cd ~/student-records-management
+            if [ -d .git ]; then
+              git fetch origin production
+              git reset --hard origin/production
+            else
+              echo "The ~/student-records-management directory is not a git repository. Please clone the repository there first."
+              exit 1
+            fi
+
+            DOCKER_BUILDKIT=1 docker compose up -d --build --remove-orphans
+
+            echo "== Post-deploy cleanup"
+            docker image prune -af --filter "until=72h" || true
+            docker builder prune -af --filter "until=72h" || true
+
+            echo "== Final disk status"
+            df -h || true
+            docker system df || true
