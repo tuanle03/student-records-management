@@ -12,8 +12,6 @@
           %p.text-xs.text-slate-400
             Mã SV: #{@student.ma_sv}
       %div.text-right.text-xs.text-slate-400
-        %p= @student.lop&.ten
-        %p= @student.nganh&.ten_nganh
         - if current_user.teacher?
           = link_to "Thêm điểm môn học",
                     new_student_diem_hoc_tap_path(@student),
@@ -35,30 +33,32 @@
                 %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thi lại lần 1
                 %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thi lại lần 2
                 %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Ghi chú
+                -# %th.px-4.py-3.text-center.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Thao tác
             %tbody
-              - @diem_hoc_tap.each do |g|
-                - tb = g.diem_tb || g.tinh_diem_tb
-                %tr{ class: "hover:bg-slate-700/30 transition" }
-                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= g.ma_hoc_ky
-                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= g.ma_mon_hoc
-                  %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= g.mon_hoc&.ten
-                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_gp
-                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_hp
-                  %td.px-4.py-3.text-sm.text-center.text-emerald-300.border-b.border-slate-700.font-semibold= tb
-                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_thi_lai_lan1
-                  %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_thi_lai_lan2
-                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= g.ghi_chu
-                  %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700
-                    - if current_user.teacher?
-                      .flex.items-center.gap-2
-                        = link_to "Sửa",
-                                  edit_student_diem_hoc_tap_path(@student, g),
-                                  class: "text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-full transition"
-                        = link_to "Xoá",
-                                  student_diem_hoc_tap_path(@student, g),
-                                  data: { turbo_method: :delete, turbo_confirm: "Xoá dòng điểm này?" },
-                                  class: "text-xs px-3 py-1 bg-red-500/80 hover:bg-red-500 text-white rounded-full transition"
-            - else
-              %tr
-                %td.px-4.py-4.text-sm.text-slate-400.border-b.border-slate-700.text-center{ colspan: 10 }
-                  Chưa có điểm học tập cho sinh viên này.
+              - if @grades.any?
+                - @grades.each do |g|
+                  - tb = g.diem_tb || g.tinh_diem_tb
+                  %tr{ class: "hover:bg-slate-700/30 transition" }
+                    %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= g.ma_hoc_ky
+                    %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= g.ma_mon_hoc
+                    %td.px-4.py-3.text-sm.text-slate-200.border-b.border-slate-700= g.mon_hoc&.ten
+                    %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_gp
+                    %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_hp
+                    %td.px-4.py-3.text-sm.text-center.text-emerald-300.border-b.border-slate-700.font-semibold= tb
+                    %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_thi_lai_lan1
+                    %td.px-4.py-3.text-sm.text-center.text-slate-200.border-b.border-slate-700= g.diem_thi_lai_lan2
+                    %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700= g.ghi_chu
+                    -# %td.px-4.py-3.text-sm.text-slate-300.border-b.border-slate-700
+                    -#   - if current_user.teacher?
+                    -#     .flex.items-center.gap-2
+                    -#       = link_to "Sửa",
+                    -#                 edit_student_diem_hoc_tap_path(@student, g),
+                    -#                 class: "text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-full transition"
+                    -#       = link_to "Xoá",
+                    -#                 student_diem_hoc_tap_path(@student, g),
+                    -#                 data: { turbo_method: :delete, turbo_confirm: "Xoá dòng điểm này?" },
+                    -#                 class: "text-xs px-3 py-1 bg-red-500/80 hover:bg-red-500 text-white rounded-full transition"
+              - else
+                %tr
+                  %td.px-4.py-4.text-sm.text-slate-400.border-b.border-slate-700.text-center{ colspan: 10 }
+                    Chưa có điểm học tập cho sinh viên này.
