@@ -5,21 +5,24 @@ ActiveAdmin.register User do
     selectable_column
     id_column
     column :email
-    column :role
+    column("Role") { |user| user.role_name }
     column :created_at
     actions
   end
 
   filter :email
-  filter :role
+  filter :role, as: :select, collection: User.roles.map { |value, label| [ label, value ] }
   filter :created_at
 
   form do |f|
     f.inputs "Thông tin tài khoản giáo viên" do
       f.input :email
-      f.input :role, as: :select, collection: User.roles.keys, include_blank: false
-      f.input :password
-      f.input :password_confirmation
+      f.input :role,
+        as: :select,
+        collection: User.roles.map { |value, label| [ label, value ] },
+        include_blank: false
+      f.input :password, required: f.object.new_record?
+      f.input :password_confirmation, required: f.object.new_record?
     end
     f.actions
   end
@@ -28,7 +31,7 @@ ActiveAdmin.register User do
     attributes_table do
       row :id
       row :email
-      row :role
+      row("Role") { |user| user.role_name }
       row :created_at
       row :updated_at
     end
