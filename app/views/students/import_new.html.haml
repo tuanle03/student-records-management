@@ -1,0 +1,39 @@
+#screen-students-import.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to students_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300 Nhập hồ sơ sinh viên
+          %p.text-xs.text-slate-400 Chọn file Excel/CSV để import
+      .flex.items-center.gap-2
+        = link_to download_template_students_path, class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition flex items-center gap-2" do
+          %svg.w-5.h-5{ fill: "none", stroke: "CurrentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2, d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" }
+          %span Tải mẫu
+
+  %main.flex-1.overflow-auto.p-6
+    .max-w-3xl.mx-auto
+      - if flash[:alert]
+        %div{ class: "mb-4 rounded-lg bg-rose-50/5 border border-rose-500/40 text-rose-200 py-2 px-3 text-sm" }
+          %strong Lỗi khi import file:
+          %ul.mt-2.list-disc.list-inside
+            - flash[:alert].each do |error_message|
+              %li= error_message
+      - if flash[:notice]
+        %div{ class: "mb-4 rounded-lg bg-emerald-50/5 border border-emerald-500/40 text-emerald-200 py-2 px-3 text-sm" }
+          %strong Thông báo:
+          %ul.mt-2.list-disc.list-inside
+            - flash[:notice].each do |notice_message|
+              %li= notice_message
+
+      .bg-slate-800.border.border-slate-700.rounded-2xl.p-6.shadow-xl{ class: "shadow-slate-900/40" }
+        %h2.text-xl.font-semibold.text-amber-300.mb-4 Tải lên file hồ sơ sinh viên
+        = form_with url: import_students_path, method: :post, local: true, multipart: true do |f|
+          .mb-4
+            = f.label :file, "Chọn file (xlsx/csv)", class: "block text-sm font-medium text-slate-200 mb-1"
+            = f.file_field :file, accept: ".csv, .xlsx, .xls", required: true, class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+          .flex.items-center.justify-between.gap-3.mt-6
+            = f.submit "Import", class: "focus-outline px-4 py-2 bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold rounded-lg text-sm transition"

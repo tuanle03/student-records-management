@@ -55,6 +55,74 @@ class StudentsController < ApplicationController
     redirect_to students_path, notice: "Đã xoá sinh viên."
   end
 
+  # GET /students/import
+  # Hiển thị form upload file CSV/XLSX cho lý lịch sinh viên.
+  def import_new
+    # Chỉ staff hoặc giáo viên mới được import; nếu cần hạn chế, thêm logic ở đây.
+  end
+
+  # POST /students/import
+  # Xử lý file và import hồ sơ. Giáo viên chỉ import cho lớp mình chủ nhiệm.
+  def import_create
+    file = params[:file]
+    unless file
+      redirect_to import_students_path, alert: "Vui lòng chọn file để import."
+      return
+    end
+    allowed = current_user.teacher? ? current_user.homeroom_classes.pluck(:ma_lop) : nil
+    importer = HssvProfileImporter.new(file.path, allowed_classes: allowed)
+    count = importer.call
+    redirect_to students_path, notice: "Đã import #{count} hồ sơ sinh viên thành công."
+  rescue StandardError => e
+    redirect_to import_students_path, alert: "Import thất bại: #{e.message}"
+  end
+
+  # GET /students/export
+  # Xuất hồ sơ sinh viên ra CSV; giáo viên chỉ xuất hồ sơ lớp mình.
+  def export
+    students = if current_user.teacher?
+                 Hssv.where(ma_lop: current_user.homeroom_classes.select(:ma_lop))
+    else
+                 Hssv.all
+    end
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << %w[MaSV HoDem Ten NgaySinh GioiTinh DienThoai DanToc TonGiao NgayDoan NgayDang
+                SoCCCD QueQuan TruQuan HoTenCha NamSinhCha NgheNghiepCha NoiLamCha HoKhauCha
+                HoTenMe NamSinhMe NgheNghiepMe NoiLamMe HoKhauMe HoTenVo NamSinhVo NgheNghiepVo
+                NoiLamVo HoKhauVo AnhChiEm MaKhoa MaLop MaHDT MaNganh GhiChu]
+      students.find_each do |s|
+        csv << [
+          s.ma_sv, s.ho_dem, s.ten,
+          s.ngay_sinh&.strftime("%Y-%m-%d"),
+          s.gioi_tinh.nil? ? nil : (s.gioi_tinh ? "Nam" : "Nữ"),
+          s.dien_thoai, s.dan_toc, s.ton_giao,
+          s.ngay_doan&.strftime("%Y-%m-%d"),
+          s.ngay_dang&.strftime("%Y-%m-%d"),
+          s.so_cmnd, s.que_quan, s.tru_quan,
+          s.ho_ten_cha, s.nam_sinh_cha, s.nghe_nghiep_cha, s.noi_lam_cha, s.ho_khau_cha,
+          s.ho_ten_me, s.nam_sinh_me, s.nghe_nghiep_me, s.noi_lam_me, s.ho_khau_me,
+          s.ho_ten_vo, s.nam_sinh_vo, s.nghe_nghiep_vo, s.noi_lam_vo, s.ho_khau_vo,
+          s.anh_chiem, s.ma_khoa, s.ma_lop, s.ma_hdt, s.ma_nganh, s.ghi_chu
+        ]
+      end
+    end
+    send_data csv_data,
+              filename: "ho-so-sinh-vien-#{Time.zone.now.strftime('%Y%m%d%H%M%S')}.csv",
+              type: "text/csv"
+  end
+
+  # GET /students/download_template
+  # Trả về file CSV mẫu chứa duy nhất dòng tiêu đề để người dùng làm template.
+  def download_template
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << %w[MaSV HoDem Ten NgaySinh GioiTinh DienThoai DanToc TonGiao NgayDoan NgayDang
+                SoCCCD QueQuan TruQuan HoTenCha NamSinhCha NgheNghiepCha NoiLamCha HoKhauCha
+                HoTenMe NamSinhMe NgheNghiepMe NoiLamMe HoKhauMe HoTenVo NamSinhVo NgheNghiepVo
+                NoiLamVo HoKhauVo AnhChiEm MaKhoa MaLop MaHDT MaNganh GhiChu]
+    end
+    send_data csv_data, filename: "template-ho-so-sinh-vien.csv", type: "text/csv"
+  end
+
   private
 
   def set_student

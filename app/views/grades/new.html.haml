@@ -15,7 +15,6 @@
   %main.flex-1.overflow-auto.p-6
     .max-w-3xl.mx-auto
       - if @grade.errors.any?
-        -# .mb-4.rounded-lg.bg-rose-500/10.border.border-rose-500/40.text-rose-100.p-3.text-sm
         .mb-d{ class: "rounded-lg bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }
           %p.font-semibold.mb-1 Có #{pluralize(@grade.errors.count, "lỗi")}:
           %ul.list-disc.list-inside

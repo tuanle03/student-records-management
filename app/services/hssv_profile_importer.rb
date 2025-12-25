@@ -22,8 +22,9 @@
 class HssvProfileImporter
   require "roo"
 
-  def initialize(file_path)
+  def initialize(file_path, allowed_classes: nil)
     @file_path = file_path
+    @allowed_classes = allowed_classes
   end
 
   def call
@@ -36,17 +37,27 @@ class HssvProfileImporter
       header_map[normalized] = idx
     end
 
-    # MaSV is mandatory
     raise "Missing column MaSV" unless header_map.key?("masv")
 
     processed = 0
     sheet.each_with_index do |row, index|
-      next if index.zero?
-      next if row.compact.empty?
+      next if index.zero? || row.compact.empty?
+
       ma_sv = cell_value(row, header_map, "masv").to_s.strip
       next if ma_sv.blank?
-      hssv = Hssv.find_or_initialize_by(ma_sv: ma_sv)
 
+      malop = cell_value(row, header_map, "malop").to_s.strip if header_map.key?("malop")
+      if @allowed_classes.present?
+        if malop.present?
+          unless @allowed_classes.include?(malop)
+            raise "Dòng #{index + 1}: Mã lớp #{malop} không thuộc lớp bạn chủ nhiệm."
+          end
+        else
+          malop = @allowed_classes.first
+        end
+      end
+
+      hssv = Hssv.find_or_initialize_by(ma_sv: ma_sv)
       hssv.ho_dem      = cell_value(row, header_map, "hodem").to_s.strip if header_map.key?("hodem")
       hssv.ten         = cell_value(row, header_map, "ten").to_s.strip if header_map.key?("ten")
       hssv.ngay_sinh   = parse_date(cell_value(row, header_map, "ngaysinh")) if header_map.key?("ngaysinh")
@@ -64,19 +75,19 @@ class HssvProfileImporter
       hssv.nghe_nghiep_cha = cell_value(row, header_map, "nghenghiepcha").to_s.strip if header_map.key?("nghenghiepcha")
       hssv.noi_lam_cha = cell_value(row, header_map, "noilamcha").to_s.strip if header_map.key?("noilamcha")
       hssv.ho_khau_cha = cell_value(row, header_map, "hokhaucha").to_s.strip if header_map.key?("hokhaucha")
-      hssv.ho_ten_me  = cell_value(row, header_map, "hotenme").to_s.strip if header_map.key?("hotenme")
+      hssv.ho_ten_me   = cell_value(row, header_map, "hotenme").to_s.strip if header_map.key?("hotenme")
       hssv.nam_sinh_me = parse_year(cell_value(row, header_map, "namsinhme")) if header_map.key?("namsinhme")
       hssv.nghe_nghiep_me = cell_value(row, header_map, "nghenghiepme").to_s.strip if header_map.key?("nghenghiepme")
       hssv.noi_lam_me  = cell_value(row, header_map, "noilamme").to_s.strip if header_map.key?("noilamme")
       hssv.ho_khau_me  = cell_value(row, header_map, "hokhaume").to_s.strip if header_map.key?("hokhaume")
-      hssv.ho_ten_vo  = cell_value(row, header_map, "hotenvo").to_s.strip if header_map.key?("hotenvo")
+      hssv.ho_ten_vo   = cell_value(row, header_map, "hotenvo").to_s.strip if header_map.key?("hotenvo")
       hssv.nam_sinh_vo = parse_year(cell_value(row, header_map, "namsinhvo")) if header_map.key?("namsinhvo")
       hssv.nghe_nghiep_vo = cell_value(row, header_map, "nghenghiepvo").to_s.strip if header_map.key?("nghenghiepvo")
       hssv.noi_lam_vo  = cell_value(row, header_map, "noilamvo").to_s.strip if header_map.key?("noilamvo")
       hssv.ho_khau_vo  = cell_value(row, header_map, "hokhauvo").to_s.strip if header_map.key?("hokhauvo")
-      hssv.anh_chiem    = cell_value(row, header_map, "anhchiem").to_s.strip if header_map.key?("anhchiem")
+      hssv.anh_chiem   = cell_value(row, header_map, "anhchiem").to_s.strip if header_map.key?("anhchiem")
       hssv.ma_khoa     = cell_value(row, header_map, "makhoa").to_s.strip if header_map.key?("makhoa")
-      hssv.ma_lop      = cell_value(row, header_map, "malop").to_s.strip if header_map.key?("malop")
+      hssv.ma_lop      = malop if malop.present?
       hssv.ma_hdt      = cell_value(row, header_map, "mahdt").to_s.strip if header_map.key?("mahdt")
       hssv.ma_nganh    = cell_value(row, header_map, "manganh").to_s.strip if header_map.key?("manganh")
       hssv.ghi_chu     = cell_value(row, header_map, "ghichu").to_s.strip if header_map.key?("ghichu")
