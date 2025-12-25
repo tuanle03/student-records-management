@@ -9,7 +9,14 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resources :lops
-  resources :grades, only: [ :index, :show ]
+  resources :grades, only: [ :index, :show ] do
+    collection do
+      get :import, action: :import_new
+      post :import, action: :import_create
+      get :export
+      get :download_template
+    end
+  end
   resources :students, param: :ma_sv do
     scope module: :students do
       resources :diem_hoc_taps
