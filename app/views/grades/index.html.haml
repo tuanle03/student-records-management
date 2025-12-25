@@ -3,31 +3,52 @@
     .flex.items-center.justify-between
       .flex.items-center.gap-4
         = link_to root_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
-          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentcolor", viewbox: "0 0 24 24" }
             %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
-                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+                   d: "m10 19l-7-7m0 0l7-7m-7 7h18" }
         %div
-          %h1.text-lg.font-bold.text-amber-300 Bảng điểm theo môn
-          %p.text-xs.text-slate-400 Danh sách các môn học
+          %h1.text-lg.font-bold.text-amber-300 Bảng Điểm Theo Môn
+          %p.text-xs.text-slate-400 Danh Sách Các Môn Học Và Điểm
+      .flex.items-center.gap-2
+        - if current_user.teacher? || current_user.staff?
+          = link_to download_template_grades_path,
+                    class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition flex items-center gap-2" do
+            %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+              %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                     d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" }
+            %span Tải mẫu
 
-      - if current_user.teacher?
-        = link_to new_grade_path,
-                  class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
-          %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
-            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
-                   d: "M12 4v16m8-8H4" }
-          %span Nhập điểm
+          = link_to import_grades_path(ma_mon_hoc: @subject&.ma_mon_hoc),
+                    class: "focus-outline px-4 py-2 bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
+            %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+              %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                     d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 8l-4-4m4 4l4-4" }
+            %span Nhập điểm
+
+          = link_to export_grades_path,
+                    class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg transition flex items-center gap-2" do
+            %svg.w-5.h-5{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+              %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                     d: "M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l4-4m-4 4l-4-4" }
+            %span Xuất điểm
 
   %main.flex-1.overflow-auto.p-6
     .max-w-7xl.mx-auto
+      - if flash[:notice]
+        %div{ class: "mb-4 rounded-lg bg-emerald-50/5 border border-emerald-500/40 text-emerald-200 py-2 px-3 text-sm" }
+          = flash[:notice]
+      - if flash[:alert]
+        %div{ class: "mb-4 rounded-lg bg-rose-50/5 border border-rose-500/40 text-rose-200 py-2 px-3 text-sm" }
+          = flash[:alert]
+
       .grid.grid-cols-1.md:grid-cols-3.gap-6
         - @subjects.each do |subject|
           = link_to grade_path(subject.ma_mon_hoc),
                     class: "focus-outline group bg-slate-800 border border-slate-700 hover:border-amber-500/50 rounded-xl p-4 transition block" do
             .flex.items-center.gap-3.mb-2
-              %div{ class: "w-10 h-10 bg-amber-500/20 group-hover:bg-amber-500/30 rounded-lg flex items-center justify-center transition" }
-                %svg.w-6.h-6.text-amber-400{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+              %div{ class: "w-10 h-10 bg-gradient-to-tr from-amber-500/20 via-amber-500/10 to-amber-500/20 group-hover:from-amber-500/30 group-hover:via-amber-500/20 group-hover:to-amber-500/30 rounded-lg flex items-center justify-center transition" }
+                %svg.w-6.h-6.text-amber-400{ fill: "none", stroke: "currentcolor", viewbox: "0 0 24 24" }
                   %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
-                         d: "M9 12h6m-6 4h6" }
+                         d: "m9 12h6m-6 4h6" }
               %h4.font-semibold.text-slate-200.group-hover:text-amber-300.transition= "#{subject.ma_mon_hoc} – #{subject.ten}"
             %p.text-xs.text-slate-400 Xem bảng điểm cho môn này

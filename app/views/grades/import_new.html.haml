@@ -1,0 +1,47 @@
+#screen-import-grades.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to grades_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300 Nhập điểm học tập
+          %p.text-xs.text-slate-400 Tải file điểm học tập và nhập vào hệ thống
+      .flex.items-center.gap-2
+        = link_to download_template_grades_path,
+                  class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition flex items-center gap-2" do
+          %svg.w-4.h-4{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M7 7h10M7 11h10M7 15h5" }
+          %span Tải mẫu
+
+  %main.flex-1.overflow-auto.p-6
+    .max-w-xl.mx-auto
+      - if flash[:notice]
+        %div{ class: "mb-4 rounded-lg bg-emerald-50/5 border border-emerald-500/40 text-emerald-200 py-2 px-3 text-sm" }
+          = flash[:notice]
+      - if flash[:alert]
+        %div{ class: "mb-4 rounded-lg bg-rose-50/5 border border-rose-500/40 text-rose-200 py-2 px-3 text-sm" }
+          = flash[:alert]
+
+      = form_with url: import_grades_path, multipart: true, local: true, method: :post do |f|
+        .space-y-4
+          .space-y-1
+            = f.label :file, "Chọn file điểm (CSV/XLSX)", class: "block text-sm font-medium text-slate-200"
+            = f.file_field :file,
+                          accept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+          .space-y-1
+            = f.label :default_hoc_ky, "Học kỳ mặc định (tuỳ chọn)", class: "block text-sm font-medium text-slate-200"
+            = f.text_field :default_hoc_ky,
+                           value: params[:default_hoc_ky],
+                           placeholder: "Ví dụ: HK1_2025",
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500"
+
+        .mt-6.flex.items-center.justify-between
+          = link_to "Hủy", grades_path,
+                    class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition"
+          = f.submit "Import", class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"
