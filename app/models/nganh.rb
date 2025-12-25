@@ -11,4 +11,8 @@ class Nganh < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     [ "hssvs", "lops" ]
   end
+
+  def to_s
+    ten_nganh
+  end
 end

@@ -45,6 +45,10 @@ class Hssv < ApplicationRecord
     end
   end
 
+  def to_s
+    ma_sv
+  end
+
   scope :search, ->(q) {
     if q.present?
       where("ma_sv ILIKE :q OR ho_dem ILIKE :q OR ten ILIKE :q", q: "%#{ActiveRecord::Base.sanitize_sql_like(q)}%")

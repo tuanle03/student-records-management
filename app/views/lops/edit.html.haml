@@ -1,6 +1,14 @@
-.container
-  .page-header
-    = link_to "← Quay lại", lops_path, class: "back-button"
-    %h1 Chỉnh sửa lớp học
+#screen-edit-lop.screen.w-full.h-full.bg-slate-900.flex.flex-col
+  %header.bg-slate-800.border-b.border-slate-700.px-6.py-4
+    .flex.items-center.justify-between
+      .flex.items-center.gap-4
+        = link_to lops_path, class: "focus-outline p-2 hover:bg-slate-700 rounded-lg transition" do
+          %svg.w-6.h-6.text-slate-300{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+            %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                   d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
+        %div
+          %h1.text-lg.font-bold.text-amber-300 Chỉnh sửa lớp học
+          %p.text-xs.text-slate-400= "Mã lớp: #{@lop.ma_lop}"
 
-  = render "lops/form"
+  %main.flex-1.overflow-auto.p-6
+    = render "lops/form"

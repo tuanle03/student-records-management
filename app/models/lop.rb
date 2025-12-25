@@ -19,4 +19,8 @@ class Lop < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     [ "giao_vien", "he_dao_tao", "khoa_hoc", "nganh", "phan_loai_tap_thes", "students" ]
   end
+
+  def to_s
+    ma_lop
+  end
 end

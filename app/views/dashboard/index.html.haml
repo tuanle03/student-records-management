@@ -98,28 +98,14 @@
             %p.text-xs.text-slate-400
               Quản lý thông tin lớp học
 
-          / Bạn có thể trỏ sang controller quản lý điểm sau
-          - if Hssv.exists?
-            - first_student_id = Hssv.order(:ma_sv).limit(1).pluck(:ma_sv).first
-            = link_to student_diem_hoc_taps_path(first_student_id),
-                      class: "focus-outline group bg-slate-700/50 hover:bg-slate-700 border border-slate-600 hover:border-amber-500/50 rounded-xl p-4 text-left transition block" do
-              .flex.items-center.gap-3.mb-2
-                %div{ class: "w-10 h-10 bg-amber-500/20 group-hover:bg-amber-500/30 rounded-lg flex items-center justify-center transition" }
-                  %svg.w-6.h-6.text-amber-400{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
-                    %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
-                           d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" }
-                %h4.font-semibold.text-slate-200.group-hover:text-amber-300.transition
-                  Quản lý điểm
-              %p.text-xs.text-slate-400
-                Xem và cập nhật bảng điểm sinh viên
-          - else
-            %div{ class: "group bg-slate-700/30 border border-slate-600/70 rounded-xl p-4 text-left opacity-60 cursor-not-allowed" }
-              .flex.items-center.gap-3.mb-2
-                %div{ class: "w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center" }
-                  %svg.w-6.h-6.text-amber-400{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
-                    %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
-                           d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" }
-              %h4.font-semibold.text-slate-200
-                Quản lý điểm
-              %p.text-xs.text-slate-500
-                Chưa có sinh viên trong hệ thống để xem điểm
+          = link_to grades_path,
+                    class: "focus-outline group bg-slate-700/50 hover:bg-slate-700 border border-slate-600 hover:border-amber-500/50 rounded-xl p-4 text-left transition block" do
+            .flex.items-center.gap-3.mb-2
+              %div{ class: "w-10 h-10 bg-amber-500/20 group-hover:bg-amber-500/30 rounded-lg flex items-center justify-center transition" }
+                %svg.w-6.h-6.text-amber-400{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+                  %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2,
+                         d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" }
+              %h4.font-semibold.text-slate-200.group-hover:text-amber-300.transition
+                Bảng điểm theo môn
+            %p.text-xs.text-slate-400
+              Xem bảng điểm của sinh viên theo từng môn
