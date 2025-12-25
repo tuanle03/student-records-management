@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
     scope module: :students do
       resources :diem_hoc_taps
-      resources :diem_ren_luyens, only: :index
+      resources :diem_ren_luyens
     end
   end
 end

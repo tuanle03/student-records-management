@@ -1,0 +1,49 @@
+- form_title = @diem_ren_luyen.new_record? ? "Nhập điểm rèn luyện" : "Chỉnh sửa điểm rèn luyện"
+- form_url = @diem_ren_luyen.persisted? ? student_diem_ren_luyen_path(@student, @diem_ren_luyen) : student_diem_ren_luyens_path(@student)
+
+.max-w-3xl.mx-auto
+  .bg-slate-800.border.border-slate-700.rounded-2xl.p-6
+    %h2.text-xl.font-semibold.text-amber-300.mb-2= form_title
+    %p.text-xs.text-slate-400.mb-4= "Sinh viên: #{@student.ho_ten} (#{@student.ma_sv})"
+
+    - if @diem_ren_luyen.errors.any?
+      .mb-4.rounded-lg{ class: "bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }
+        %p.font-semibold.mb-1= "Có #{pluralize(@diem_ren_luyen.errors.count, 'lỗi')}:"
+        %ul.list-disc.list-inside
+          - @diem_ren_luyen.errors.full_messages.each do |msg|
+            %li= msg
+
+    = form_with model: @diem_ren_luyen, url: form_url, local: true do |f|
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :ma_nam_hoc, "Năm học", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_nam_hoc,
+                         placeholder: "VD: 2024-2025",
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :ma_hoc_ky, "Học kỳ", class: "block text-sm font-medium text-slate-200"
+          = f.text_field :ma_hoc_ky,
+                         placeholder: "VD: HK1",
+                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+      .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
+        .space-y-1
+          = f.label :thang, "Tháng", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :thang, min: 1, max: 12, step: 1,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+        .space-y-1
+          = f.label :diem, "Điểm (0–100)", class: "block text-sm font-medium text-slate-200"
+          = f.number_field :diem, min: 0, max: 100, step: 1,
+                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+      .mb-4
+        = f.label :ghi_chu, "Ghi chú", class: "block text-sm font-medium text-slate-200 mb-1"
+        = f.text_area :ghi_chu, rows: 3,
+                       class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
+
+      .flex.items-center.justify-end.gap-3.mt-6
+        - unless @diem_ren_luyen.new_record?
+          = link_to "Xoá",
+                    student_diem_ren_luyen_path(@student, @diem_ren_luyen),
+                    data: { turbo_method: :delete, turbo_confirm: "Xoá điểm rèn luyện này?" },
+                    class: "focus-outline px-4 py-2 bg-red-500/80 hover:bg-red-500 text-white rounded-lg text-sm transition"
+        = f.submit (@diem_ren_luyen.new_record? ? "Lưu" : "Cập nhật"),
+                  class: "focus-outline px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold rounded-lg text-sm transition"
