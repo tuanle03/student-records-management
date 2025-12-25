@@ -1,0 +1,72 @@
+version: "3.8"
+
+# This docker‑compose file defines a minimal two‑service stack for the
+# Student Records Management Rails application. The web service builds
+# from the provided Dockerfile and connects to a PostgreSQL database
+# service. Adjust the environment variables (notably the master key
+# and database credentials) to match your deployment.
+
+services:
+  # PostgreSQL database container.  The Rails app expects a
+  # PostgreSQL backend, as configured in `config/database.yml`.
+  db:
+    image: postgres:15
+    container_name: student_records_db
+    restart: always
+    environment:
+      POSTGRES_DB: student_records_management_production
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: meowmeow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - student_net
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U student -d student_records_management_production",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Rails application container.  Uses the Dockerfile in this
+  # repository to build a production image.  Override `RAILS_MASTER_KEY`
+  # with the contents of `config/master.key` (in an environment
+  # variable or Docker secret) when running in production.
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: student_records_web
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: production
+      DB_PORT: 5432
+      DB_NAME: student_records_management_production
+      DB_USER: student
+      DB_PASSWORD: meowmeow
+      STUDENT_RECORDS_MANAGEMENT_DATABASE_PASSWORD: "meowmeow"
+      RAILS_MASTER_KEY: "458d84bfeda19992b01e638802d1fa23"
+      # Log to STDOUT so that container logs appear in `docker logs`.
+      RAILS_LOG_TO_STDOUT: "true"
+    ports:
+      - "8000:80"
+    networks:
+      - student_net
+    # Persist installed gems between rebuilds to speed up bundle install
+    volumes:
+      - bundle_data:/usr/local/bundle
+
+volumes:
+  postgres_data:
+  bundle_data:
+
+networks:
+  student_net:

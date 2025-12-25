@@ -19,7 +19,6 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-
 development:
   <<: *default
   database: student_records_management_development
@@ -81,9 +80,11 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: student_records_management_production
-    username: student_records_management
-    password: <%= ENV["STUDENT_RECORDS_MANAGEMENT_DATABASE_PASSWORD"] %>
+    host: <%= ENV.fetch("DB_HOST", "db") %>
+    port: <%= ENV.fetch("DB_PORT", 5432) %>
+    database: <%= ENV.fetch("DB_NAME", "student_records_management_production") %>
+    username: <%= ENV.fetch("DB_USER", "student") %>
+    password: <%= ENV.fetch("DB_PASSWORD", "meowmeow") %>
   cache:
     <<: *primary_production
     database: student_records_management_production_cache
