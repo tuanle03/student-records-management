@@ -1,4 +1,4 @@
-# Student Records Management
+# Student Records Management (https://cnmeow.site/)
 
 A Ruby on Rails web application for managing student information and academic records (students, classes/courses, enrollments, grades, and reporting).
 Built with Rails (Ruby) and server-rendered views (Haml), with Docker support for easy local development and deployment.
@@ -53,23 +53,29 @@ Built with Rails (Ruby) and server-rendered views (Haml), with Docker support fo
 ---
 
 ## Screenshots
-
-Add your screenshots here (keep images inside a `docs/screenshots/` folder for a clean repo).
+<img width="1866" height="923" alt="image" src="https://github.com/user-attachments/assets/3139a8f0-a4d6-4519-9f05-54dde7059a5c" />
 
 ### Dashboard
 
-<!-- TODO: Add dashboard screenshot -->
-<!-- Example:
-![Dashboard](docs/screenshots/dashboard.png)
--->
+<img width="1911" height="879" alt="image" src="https://github.com/user-attachments/assets/614a8a1e-806b-4baf-add0-b2f405d86bb8" />
+
+<img width="1912" height="761" alt="image" src="https://github.com/user-attachments/assets/bdcea5bf-8cf3-40c5-8e11-521722eb0771" />
+
+<img width="1900" height="886" alt="image" src="https://github.com/user-attachments/assets/5aa067dc-4d38-47fc-8910-f33af75fae91" />
 
 ### Student List
 
-<!-- TODO: Add student list screenshot -->
+<img width="1903" height="933" alt="image" src="https://github.com/user-attachments/assets/976ade1a-1986-41c2-82b5-261b015362f5" />
 
 ### Student Detail / Transcript
 
-<!-- TODO: Add student detail screenshot -->
+<img width="1906" height="913" alt="image" src="https://github.com/user-attachments/assets/e8b43329-eee8-49a2-9141-356b0b433b71" />
+
+<img width="1903" height="834" alt="image" src="https://github.com/user-attachments/assets/712d58c6-7dbd-474d-b167-ff37f7002230" />
+
+<img width="1902" height="827" alt="image" src="https://github.com/user-attachments/assets/b84d1f45-5a59-496d-9931-02e21f95de68" />
+
+
 
 ---
 
