@@ -62,7 +62,7 @@ services:
       - student_net
     # Persist installed gems between rebuilds to speed up bundle install
     volumes:
-      - bundle_data:/usr/local/bundle
+      - bundle_data:
 
 volumes:
   postgres_data:
