@@ -34,7 +34,6 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script_stop: true
           debug: true
           script: |
             set -euo pipefail
