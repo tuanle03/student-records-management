@@ -1,5 +1,6 @@
 class Hssv < ApplicationRecord
   self.primary_key = "ma_sv"
+  alias_attribute :id, :ma_sv
 
   # Validations
   validates :ma_sv, presence: true, uniqueness: true

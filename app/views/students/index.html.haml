@@ -63,6 +63,7 @@
           %table.w-full#data-table
             %thead{ class: "bg-slate-900/80" }
               %tr#table-header
+                %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700
                 %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 #
                 %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Mã SV
                 %th.px-4.py-3.text-left.text-xs.font-semibold.text-slate-300.border-b.border-slate-700 Họ tên
@@ -77,8 +78,8 @@
 
                 %tr{ class: "hover:bg-slate-700/30 transition" }
                   %td.px-4.py-3.text-sm.text-slate-400.border-b.border-slate-700
-                    - if student.avatar.attached?
-                      = image_tag student.avatar.variant(:thumb), class: "w-12 h-12 rounded object-cover"
+                    - if s.avatar.attached?
+                      = image_tag s.avatar.variant(:thumb), class: "w-12 h-12 rounded object-cover"
                     - else
                       .w-12.h-12.bg-slate-700.rounded.flex.items-center.justify-center
                         %svg.w-6.h-6.text-slate-500{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
