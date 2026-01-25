@@ -154,7 +154,7 @@ end
 puts "✅ Đã seed MonHocs"
 
 # ---------------------------
-# 5. Học sinh / sinh viên (Hssv)
+# 5. Học sinh / học viên (Hssv)
 # ---------------------------
 
 sv1 = Hssv.find_or_create_by!(ma_sv: "SV001") do |sv|
@@ -214,10 +214,10 @@ sv4 = Hssv.find_or_create_by!(ma_sv: "SV010") do |sv|
   sv.ma_khoa     = k45.ma_khoa
   sv.ma_hdt      = vhlt.ma_he_dt
   sv.ma_nganh    = qtkd.ma_nganh
-  sv.ghi_chu     = "Sinh viên hệ VHLT"
+  sv.ghi_chu     = "Học viên hệ VHLT"
 end
 
-puts "✅ Đã seed Hssvs (sinh viên)"
+puts "✅ Đã seed Hssvs (học viên)"
 
 # ---------------------------
 # 6. Điểm học tập (DiemHocTap)

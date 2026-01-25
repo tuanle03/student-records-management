@@ -8,7 +8,7 @@
                    d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
         %div
           %h1.text-lg.font-bold.text-amber-300= @grade.new_record? ? "Nhập điểm học tập" : "Chỉnh sửa điểm học tập"
-          %p.text-xs.text-slate-400= "Sinh viên: #{@student.ho_ten} (#{@student.ma_sv})"
+          %p.text-xs.text-slate-400= "Học viên: #{@student.ho_ten} (#{@student.ma_sv})"
       = link_to student_diem_hoc_taps_path(@student),
                 class: "focus-outline px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition flex items-center gap-2" do
         %svg.w-4.h-4{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }

@@ -115,6 +115,6 @@ class GradesController < ApplicationController
     preview = importer.warnings.first(10).join(" | ")
     more = importer.warnings.size > 10 ? " | ... (#{importer.warnings.size - 10} dòng khác)" : ""
 
-    "Có #{importer.skipped_count} dòng bị bỏ qua do sinh viên không thuộc lớp chủ nhiệm. Chi tiết: #{preview}#{more}"
+    "Có #{importer.skipped_count} dòng bị bỏ qua do học viên không thuộc lớp chủ nhiệm. Chi tiết: #{preview}#{more}"
   end
 end

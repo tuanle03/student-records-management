@@ -61,7 +61,7 @@ module Students
 
       if @student.lop&.giao_vien_id != current_user.id
         redirect_to students_path,
-                    alert: "Bạn không có quyền thao tác điểm của sinh viên này."
+                    alert: "Bạn không có quyền thao tác điểm của học viên này."
       end
     end
 

@@ -10,7 +10,7 @@
                    "stroke-width": 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
         %div
           %h1.text-lg.font-bold.text-amber-300= @selected_subject ? "Nhập điểm môn #{@selected_subject.ten}" : "Nhập điểm"
-          %p.text-xs.text-slate-400= @selected_subject ? "Chọn sinh viên và nhập điểm" : "Chọn môn học và sinh viên"
+          %p.text-xs.text-slate-400= @selected_subject ? "Chọn học viên và nhập điểm" : "Chọn môn học và học viên"
 
   %main.flex-1.overflow-auto.p-6
     .max-w-3xl.mx-auto
@@ -37,11 +37,11 @@
                        class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
         .mb-4
-          = f.label :ma_sv, "Sinh viên",
+          = f.label :ma_sv, "Học viên",
                      class: "block text-sm font-medium text-slate-200 mb-1"
           = f.select :ma_sv,
                      @students.map { |s| ["#{s.ma_sv} – #{s.ho_dem} #{s.ten}", s.ma_sv] },
-                     { include_blank: "Chọn sinh viên" },
+                     { include_blank: "Chọn học viên" },
                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
         .mb-4
