@@ -164,7 +164,8 @@ class StudentsController < ApplicationController
       :que_quan, :tru_quan, :ktk_l, :tom_tat_qtct, :ho_ten_cha, :nam_sinh_cha, :nghe_nghiep_cha,
       :noi_lam_cha, :ho_khau_cha, :ho_ten_me, :nam_sinh_me, :nghe_nghiep_me, :noi_lam_me, :ho_khau_me,
       :ho_ten_vo, :nam_sinh_vo, :nghe_nghiep_vo, :noi_lam_vo, :ho_khau_vo, :anh_chiem, :ma_lop, :ma_khoa,
-      :ma_hdt, :ma_nganh, :ghi_chu
+      :ma_hdt, :ma_nganh, :ghi_chu,
+      :avatar
     )
   end
 end
