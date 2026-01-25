@@ -30,7 +30,7 @@ ActiveAdmin.register DiemHocTap do
               as: :select,
               collection: Hssv.order(:ma_sv).pluck(:ma_sv),
               include_blank: false,
-              label: "Mã sinh viên"
+              label: "Mã học viên"
       f.input :ma_mon_hoc,
               as: :select,
               collection: MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc),

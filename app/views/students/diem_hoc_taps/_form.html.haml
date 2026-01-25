@@ -4,7 +4,7 @@
   %div{ class: "bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl shadow-slate-900/40" }
     %h2.text-xl.font-semibold.text-amber-300.mb-2= form_title
     %p.text-xs.text-slate-400.mb-4
-      = "Sinh viên: #{@student.ho_ten} (#{@student.ma_sv})"
+      = "Học viên: #{@student.ho_ten} (#{@student.ma_sv})"
 
     - if @grade.errors.any?
       %div{ class: "mb-4 rounded-lg bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }

@@ -15,7 +15,7 @@
                   class: "focus-outline px-3 py-1.5 bg-emerald-500/80 hover:bg-emerald-500 text-slate-900 text-xs font-semibold rounded-lg transition"
         = link_to "Xoá",
                   student_path(@student),
-                  data: { turbo_method: :delete, turbo_confirm: "Bạn có chắc chắn muốn xoá sinh viên này?" },
+                  data: { turbo_method: :delete, turbo_confirm: "Bạn có chắc chắn muốn xoá học viên này?" },
                   class: "focus-outline px-3 py-1.5 bg-red-500/80 hover:bg-red-500 text-white text-xs font-semibold rounded-lg transition"
 
   %main.flex-1.overflow-auto.p-6
@@ -25,7 +25,7 @@
           %h2.text-sm.font-semibold.text-slate-200.mb-3 Thông tin học tập
           %dl.space-y-2.text-sm.text-slate-300
             %div.flex.justify-between.gap-4
-              %dt.text-slate-400 Mã sinh viên
+              %dt.text-slate-400 Mã học viên
               %dd.font-medium= @student.ma_sv
             %div.flex.justify-between.gap-4
               %dt.text-slate-400 Họ tên

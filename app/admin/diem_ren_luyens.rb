@@ -27,7 +27,7 @@ ActiveAdmin.register DiemRenLuyen do
               as: :select,
               collection: Hssv.order(:ma_sv).pluck(:ma_sv),
               include_blank: false,
-              label: "Mã sinh viên"
+              label: "Mã học viên"
       f.input :ma_hoc_ky
       f.input :ma_nam_hoc
       f.input :thang

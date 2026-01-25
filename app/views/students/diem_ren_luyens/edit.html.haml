@@ -8,7 +8,7 @@
                    d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
         %div
           %h1.text-lg.font-bold.text-amber-300= @diem_ren_luyen.new_record? ? "Nhập điểm rèn luyện" : "Chỉnh sửa điểm rèn luyện"
-          %p.text-xs.text-slate-400= "Sinh viên: #{@student.ho_ten} (#{@student.ma_sv})"
+          %p.text-xs.text-slate-400= "Học viên: #{@student.ho_ten} (#{@student.ma_sv})"
 
   %main.flex-1.overflow-auto.p-6
     = render "form"

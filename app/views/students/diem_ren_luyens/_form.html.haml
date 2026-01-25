@@ -4,7 +4,7 @@
 .max-w-3xl.mx-auto
   .bg-slate-800.border.border-slate-700.rounded-2xl.p-6
     %h2.text-xl.font-semibold.text-amber-300.mb-2= form_title
-    %p.text-xs.text-slate-400.mb-4= "Sinh viên: #{@student.ho_ten} (#{@student.ma_sv})"
+    %p.text-xs.text-slate-400.mb-4= "Học viên: #{@student.ho_ten} (#{@student.ma_sv})"
 
     - if @diem_ren_luyen.errors.any?
       .mb-4.rounded-lg{ class: "bg-rose-500/10 border border-rose-500/40 text-rose-100 p-3 text-sm" }

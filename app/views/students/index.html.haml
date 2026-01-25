@@ -10,7 +10,7 @@
                    d: "M10 19l-7-7m0 0l7-7m-7 7h18" }
         %div
           %h1#management-title.text-lg.font-bold.text-amber-300
-            Quản lý sinh viên
+            Quản lý học viên
           %p.text-xs.text-slate-400
             Tìm kiếm, xem chi tiết, cập nhật thông tin
 
@@ -101,7 +101,7 @@
                                  d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }
 
                       = link_to student_path(s),
-                                data: { turbo_method: :delete, turbo_confirm: "Bạn có chắc chắn muốn xoá sinh viên này?" },
+                                data: { turbo_method: :delete, turbo_confirm: "Bạn có chắc chắn muốn xoá học viên này?" },
                                 class: "focus-outline p-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded transition",
                                 title: "Xoá" do
                         %svg.w-4.h-4{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
