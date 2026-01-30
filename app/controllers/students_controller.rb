@@ -41,9 +41,12 @@ class StudentsController < ApplicationController
   end
 
   def update
+    @student = Hssv.find_by!(ma_sv: params[:ma_sv])
     if @student.update(student_params)
-      redirect_to student_path(@student),
-                  notice: "Cập nhật học viên thành công."
+      if student_params[:avatar].present?
+        @student.avatar.attach(student_params[:avatar])
+      end
+      redirect_to student_path(@student), notice: "Cập nhật học viên thành công."
     else
       flash.now[:alert] = "Không thể cập nhật học viên. Vui lòng kiểm tra lại."
       render :edit, status: :unprocessable_entity

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_25_084320) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_30_184320) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -102,7 +102,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_084320) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "hssvs", primary_key: "ma_sv", id: :string, force: :cascade do |t|
+  create_table "hssvs", id: :serial, force: :cascade do |t|
+    t.string "ma_sv", null: false
     t.string "ho_dem"
     t.string "ten"
     t.datetime "ngay_sinh"
@@ -146,6 +147,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_25_084320) do
     t.string "ghi_chu"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ma_sv"], name: "index_hssvs_on_ma_sv", unique: true
   end
 
   create_table "khoa_hocs", primary_key: "ma_khoa", id: :string, force: :cascade do |t|
