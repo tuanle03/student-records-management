@@ -8,7 +8,7 @@ class StudentsController < ApplicationController
   def index
     @q = params[:q]
 
-    scope = Hssv.includes(:lop, :nganh)
+    scope = Hssv.includes(:lop, :nganh).with_attached_avatar
 
     if current_user.teacher?
       lop_codes = current_user.homeroom_classes.select(:ma_lop)
@@ -30,25 +30,23 @@ class StudentsController < ApplicationController
 
   def create
     @student = Hssv.new(student_params)
-
     if @student.save
-      redirect_to student_path(@student),
-                  notice: "Tạo học viên thành công."
+      respond_to do |format|
+        format.html { redirect_to students_path, notice: "Học viên đã được tạo thành công." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("avatar-preview", partial: "students/avatar", locals: { student: @student }) }
+      end
     else
-      flash.now[:alert] = "Không thể tạo học viên. Vui lòng kiểm tra lại."
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    @student = Hssv.find_by!(ma_sv: params[:ma_sv])
     if @student.update(student_params)
-      if student_params[:avatar].present?
-        @student.avatar.attach(student_params[:avatar])
+      respond_to do |format|
+        format.html { redirect_to students_path, notice: "Học viên đã được cập nhật." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("avatar-preview", partial: "students/avatar", locals: { student: @student }) }
       end
-      redirect_to student_path(@student), notice: "Cập nhật học viên thành công."
     else
-      flash.now[:alert] = "Không thể cập nhật học viên. Vui lòng kiểm tra lại."
       render :edit, status: :unprocessable_entity
     end
   end
