@@ -1,24 +1,24 @@
 ActiveAdmin.register DiemRenLuyen do
   permit_params :ma_sv, :ma_hoc_ky, :ma_nam_hoc, :thang, :diem, :ghi_chu
 
-  index do
+  index title: "Điểm rèn luyện" do
     selectable_column
     id_column
-    column :hssv do |record|
+    column "Mã học viên" do |record|
       record.hssv&.ma_sv
     end
-    column :ma_hoc_ky
-    column :ma_nam_hoc
-    column :thang
-    column :diem
-    column :ghi_chu
+    column "Mã học kỳ", :ma_hoc_ky
+    column "Mã năm học", :ma_nam_hoc
+    column "Tháng", :thang
+    column "Điểm", :diem
+    column "Ghi chú", :ghi_chu
     actions
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_sv
-  filter :ma_hoc_ky
-  filter :ma_nam_hoc
+  filter :ma_sv, as: :select, collection: Hssv.order(:ma_sv).pluck(:ma_sv), label: "Mã học viên"
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: DiemRenLuyen.pluck(:ma_hoc_ky)
+  filter :ma_nam_hoc, label: "Mã năm học", as: :select, collection: DiemRenLuyen.pluck(:ma_nam_hoc)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|
@@ -28,29 +28,27 @@ ActiveAdmin.register DiemRenLuyen do
               collection: Hssv.order(:ma_sv).pluck(:ma_sv),
               include_blank: false,
               label: "Mã học viên"
-      f.input :ma_hoc_ky
-      f.input :ma_nam_hoc
-      f.input :thang
-      f.input :diem
-      f.input :ghi_chu
+      f.input :ma_hoc_ky, label: "Mã học kỳ"
+      f.input :ma_nam_hoc, label: "Mã năm học"
+      f.input :thang, label: "Tháng"
+      f.input :diem, label: "Điểm"
+      f.input :ghi_chu, label: "Ghi chú"
     end
     f.actions
   end
 
   # Trang chi tiết
-  show do
+  show title: "Chi tiết điểm rèn luyện" do
     attributes_table do
-      row :id
-      row :hssv do |record|
-        record.hssv&.ma_sv
-      end
-      row :ma_hoc_ky
-      row :ma_nam_hoc
-      row :thang
-      row :diem
-      row :ghi_chu
-      row :created_at
-      row :updated_at
+      row("ID") { |record| record.id }
+      row("Mã học viên") { |record| record.hssv&.ma_sv }
+      row("Mã học kỳ") { |record| record.ma_hoc_ky }
+      row("Mã năm học") { |record| record.ma_nam_hoc }
+      row("Tháng") { |record| record.thang }
+      row("Điểm") { |record| record.diem }
+      row("Ghi chú") { |record| record.ghi_chu }
+      row("Ngày tạo") { |record| record.created_at }
+      row("Cập nhật lần cuối") { |record| record.updated_at }
     end
   end
 end

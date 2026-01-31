@@ -14,7 +14,7 @@
           - @grade.errors.full_messages.each do |msg|
             %li= msg
 
-    = form_with model: [@student, @grade], local: true do |f|
+    = form_with model: @grade, url: (@grade.new_record? ? student_diem_hoc_taps_path(@student) : student_diem_hoc_tap_path(@student, @grade)), local: true do |f|
       .grid.grid-cols-1.md:grid-cols-2.gap-4.mb-4
         .space-y-1
           = f.label :ma_hoc_ky, "Học kỳ", class: "block text-sm font-medium text-slate-200"
@@ -30,19 +30,19 @@
 
       .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
         .space-y-1
-          = f.label :diem_gp, "Điểm GP (GK)", class: "block text-sm font-medium text-slate-200"
+          = f.label :diem_gp, "Điểm BP", class: "block text-sm font-medium text-slate-200"
           = f.number_field :diem_gp,
                            step: "0.1",
                            min: 0, max: 10,
                            class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
         .space-y-1
-          = f.label :diem_hp, "Điểm HP", class: "block text-sm font-medium text-slate-200"
+          = f.label :diem_hp, "Điểm KTHP", class: "block text-sm font-medium text-slate-200"
           = f.number_field :diem_hp,
                            step: "0.1",
                            min: 0, max: 10,
                            class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
         .space-y-1
-          = f.label :diem_tb, "Điểm TB (nếu có)", class: "block text-sm font-medium text-slate-200"
+          = f.label :diem_tb, "Điểm ĐGHP", class: "block text-sm font-medium text-slate-200"
           = f.number_field :diem_tb,
                            step: "0.1",
                            min: 0, max: 10,

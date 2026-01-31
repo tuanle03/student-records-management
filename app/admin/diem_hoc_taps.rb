@@ -1,28 +1,28 @@
 ActiveAdmin.register DiemHocTap do
   permit_params :ma_sv, :ma_mon_hoc, :ma_hoc_ky, :ghi_chu, :diem_gp, :diem_hp, :diem_tb, :diem_thi_lai_lan1, :diem_thi_lai_lan2
 
-  index do
+  index title: "Điểm học tập" do
     selectable_column
     id_column
-    column :hssv do |record|
+    column "Mã học viên" do |record|
       record.hssv&.ma_sv
     end
-    column :mon_hoc do |record|
+    column "Môn học" do |record|
       record.mon_hoc&.ten
     end
-    column :ma_hoc_ky
-    column :diem_gp
-    column :diem_hp
-    column :diem_tb
-    column :diem_thi_lai_lan1
-    column :diem_thi_lai_lan2
-    column :ghi_chu
+    column "Mã học kỳ", :ma_hoc_ky
+    column "Điểm BP", :diem_gp
+    column "Điểm KTHP", :diem_hp
+    column "Điểm ĐGHP", :diem_tb
+    column "Điểm thi lại lần 1", :diem_thi_lai_lan1
+    column "Điểm thi lại lần 2", :diem_thi_lai_lan2
+    column "Ghi chú", :ghi_chu
     actions
   end
 
-  filter :ma_sv
-  filter :ma_mon_hoc
-  filter :ma_hoc_ky
+  filter :ma_sv, as: :select, collection: Hssv.order(:ma_sv).pluck(:ma_sv), label: "Mã học viên"
+  filter :ma_mon_hoc, as: :select, collection: MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc), label: "Môn học"
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: DiemHocTap.pluck(:ma_hoc_ky)
 
   form do |f|
     f.inputs "Điểm học tập" do
@@ -36,36 +36,32 @@ ActiveAdmin.register DiemHocTap do
               collection: MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc),
               include_blank: false,
               label: "Môn học"
-      f.input :ma_hoc_ky
-      f.input :diem_gp
-      f.input :diem_hp
-      f.input :diem_tb
-      f.input :diem_thi_lai_lan1
-      f.input :diem_thi_lai_lan2
-      f.input :ghi_chu
+      f.input :ma_hoc_ky, label: "Mã học kỳ"
+      f.input :diem_gp, label: "Điểm BP"
+      f.input :diem_hp, label: "Điểm KTHP"
+      f.input :diem_tb, label: "Điểm ĐGHP"
+      f.input :diem_thi_lai_lan1, label: "Điểm thi lại lần 1"
+      f.input :diem_thi_lai_lan2, label: "Điểm thi lại lần 2"
+      f.input :ghi_chu, label: "Ghi chú"
     end
     f.actions
   end
 
   # Trang chi tiết
-  show do
+  show title: "Chi tiết điểm học tập" do
     attributes_table do
-      row :id
-      row :hssv do |record|
-        record.hssv&.ma_sv
-      end
-      row :mon_hoc do |record|
-        record.mon_hoc&.ten
-      end
-      row :ma_hoc_ky
-      row :diem_gp
-      row :diem_hp
-      row :diem_tb
-      row :diem_thi_lai_lan1
-      row :diem_thi_lai_lan2
-      row :ghi_chu
-      row :created_at
-      row :updated_at
+      row("ID") { |record| record.id }
+      row("Mã học viên") { |record| record.hssv&.ma_sv }
+      row("Môn học") { |record| record.mon_hoc&.ten }
+      row("Mã học kỳ") { |record| record.ma_hoc_ky }
+      row("Điểm BP") { |record| record.diem_gp }
+      row("Điểm KTHP") { |record| record.diem_hp }
+      row("Điểm ĐGHP") { |record| record.diem_tb }
+      row("Điểm thi lại lần 1") { |record| record.diem_thi_lai_lan1 }
+      row("Điểm thi lại lần 2") { |record| record.diem_thi_lai_lan2 }
+      row("Ghi chú") { |record| record.ghi_chu }
+      row("Ngày tạo") { |record| record.created_at }
+      row("Cập nhật lần cuối") { |record| record.updated_at }
     end
   end
 end
