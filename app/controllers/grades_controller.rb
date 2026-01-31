@@ -73,7 +73,7 @@ class GradesController < ApplicationController
     end
 
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "DiemGP", "DiemHP", "DiemTB", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
+      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "Diem BP", "Diem KTHP", "Diem ĐGHP", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
       grades.find_each do |grade|
         student = grade.hssv
         csv << [
@@ -98,7 +98,7 @@ class GradesController < ApplicationController
   # contains the required headers with no data rows.
   def download_template
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "DiemGP", "DiemHP", "DiemTB", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
+      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "Diem BP", "Diem KTHP", "Diem ĐGHP", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
     end
     send_data csv_data, filename: "template-diem-hoc-tap.csv", type: "text/csv"
   end
