@@ -44,6 +44,12 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
+    active_storage_validations (3.0.3)
+      activejob (>= 6.1.4)
+      activemodel (>= 6.1.4)
+      activestorage (>= 6.1.4)
+      activesupport (>= 6.1.4)
+      marcel (>= 1.0.3)
     activeadmin (3.4.0)
       arbre (~> 1.2, >= 1.2.1)
       csv
@@ -96,7 +102,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.20.1)
       msgpack (~> 1.2)
-    brakeman (7.1.2)
+    brakeman (8.0.1)
       racc
     builder (3.3.0)
     byebug (12.0.0)
@@ -168,6 +174,9 @@ GEM
     htmlentities (4.4.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    image_processing (1.14.0)
+      mini_magick (>= 4.9.5, < 6)
+      ruby-vips (>= 2.0.17, < 3)
     importmap-rails (2.2.2)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -227,6 +236,8 @@ GEM
       net-smtp
     marcel (1.1.0)
     matrix (0.4.3)
+    mini_magick (5.3.1)
+      logger
     mini_mime (1.1.5)
     minitest (5.26.2)
     msgpack (1.8.0)
@@ -265,12 +276,12 @@ GEM
     parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
-    pg (1.6.2)
-    pg (1.6.2-aarch64-linux)
-    pg (1.6.2-aarch64-linux-musl)
-    pg (1.6.2-x86_64-darwin)
-    pg (1.6.2-x86_64-linux)
-    pg (1.6.2-x86_64-linux-musl)
+    pg (1.6.3)
+    pg (1.6.3-aarch64-linux)
+    pg (1.6.3-aarch64-linux-musl)
+    pg (1.6.3-x86_64-darwin)
+    pg (1.6.3-x86_64-linux)
+    pg (1.6.3-x86_64-linux-musl)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -375,6 +386,9 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
+    ruby-vips (2.3.0)
+      ffi (~> 1.12)
+      logger
     ruby2_keywords (0.0.5)
     rubyzip (3.2.2)
     sassc (2.4.0)
@@ -482,6 +496,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  active_storage_validations (~> 3.0.3)
   activeadmin
   bootsnap
   brakeman
@@ -491,10 +506,12 @@ DEPENDENCIES
   debug
   devise
   haml-rails
+  i18n
+  image_processing (~> 1.2)
   importmap-rails
   jbuilder
   kamal
-  pg (~> 1.1)
+  pg (~> 1.6)
   puma (>= 5.0)
   pundit
   rails (~> 8.0.3)

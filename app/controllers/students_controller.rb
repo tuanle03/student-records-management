@@ -8,7 +8,7 @@ class StudentsController < ApplicationController
   def index
     @q = params[:q]
 
-    scope = Hssv.includes(:lop, :nganh)
+    scope = Hssv.includes(:lop, :nganh).with_attached_avatar
 
     if current_user.teacher?
       lop_codes = current_user.homeroom_classes.select(:ma_lop)
@@ -30,33 +30,34 @@ class StudentsController < ApplicationController
 
   def create
     @student = Hssv.new(student_params)
-
     if @student.save
-      redirect_to student_path(@student),
-                  notice: "Tạo sinh viên thành công."
+      respond_to do |format|
+        format.html { redirect_to students_path, notice: "Học viên đã được tạo thành công." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("avatar-preview", partial: "students/avatar", locals: { student: @student }) }
+      end
     else
-      flash.now[:alert] = "Không thể tạo sinh viên. Vui lòng kiểm tra lại."
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
     if @student.update(student_params)
-      redirect_to student_path(@student),
-                  notice: "Cập nhật sinh viên thành công."
+      respond_to do |format|
+        format.html { redirect_to students_path, notice: "Học viên đã được cập nhật." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("avatar-preview", partial: "students/avatar", locals: { student: @student }) }
+      end
     else
-      flash.now[:alert] = "Không thể cập nhật sinh viên. Vui lòng kiểm tra lại."
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @student.destroy
-    redirect_to students_path, notice: "Đã xoá sinh viên."
+    redirect_to students_path, notice: "Đã xoá học viên."
   end
 
   # GET /students/import
-  # Hiển thị form upload file CSV/XLSX cho lý lịch sinh viên.
+  # Hiển thị form upload file CSV/XLSX cho lý lịch học viên.
   def import_new
     # Chỉ staff hoặc giáo viên mới được import; nếu cần hạn chế, thêm logic ở đây.
   end
@@ -72,13 +73,13 @@ class StudentsController < ApplicationController
     allowed = current_user.teacher? ? current_user.homeroom_classes.pluck(:ma_lop) : nil
     importer = HssvProfileImporter.new(file.path, allowed_classes: allowed)
     count = importer.call
-    redirect_to students_path, notice: "Đã import #{count} hồ sơ sinh viên thành công."
+    redirect_to students_path, notice: "Đã import #{count} hồ sơ học viên thành công."
   rescue StandardError => e
     redirect_to import_students_path, alert: "Import thất bại: #{e.message}"
   end
 
   # GET /students/export
-  # Xuất hồ sơ sinh viên ra CSV; giáo viên chỉ xuất hồ sơ lớp mình.
+  # Xuất hồ sơ học viên ra CSV; giáo viên chỉ xuất hồ sơ lớp mình.
   def export
     students = if current_user.teacher?
                  Hssv.where(ma_lop: current_user.homeroom_classes.select(:ma_lop))
@@ -132,7 +133,7 @@ class StudentsController < ApplicationController
   def authorize_teacher_for_student!
     return unless current_user.teacher?
     if @student.lop&.giao_vien_id != current_user.id
-      redirect_to students_path, alert: "Bạn không có quyền thao tác với sinh viên này."
+      redirect_to students_path, alert: "Bạn không có quyền thao tác với học viên này."
     end
   end
 
@@ -141,7 +142,7 @@ class StudentsController < ApplicationController
     if params[:hssv] && params[:hssv][:ma_lop].present?
       allowed = current_user.homeroom_classes.pluck(:ma_lop)
       unless allowed.include?(params[:hssv][:ma_lop])
-        redirect_to students_path, alert: "Bạn chỉ có thể thêm sinh viên vào lớp bạn chủ nhiệm."
+        redirect_to students_path, alert: "Bạn chỉ có thể thêm học viên vào lớp bạn chủ nhiệm."
       end
     end
   end
@@ -164,7 +165,8 @@ class StudentsController < ApplicationController
       :que_quan, :tru_quan, :ktk_l, :tom_tat_qtct, :ho_ten_cha, :nam_sinh_cha, :nghe_nghiep_cha,
       :noi_lam_cha, :ho_khau_cha, :ho_ten_me, :nam_sinh_me, :nghe_nghiep_me, :noi_lam_me, :ho_khau_me,
       :ho_ten_vo, :nam_sinh_vo, :nghe_nghiep_vo, :noi_lam_vo, :ho_khau_vo, :anh_chiem, :ma_lop, :ma_khoa,
-      :ma_hdt, :ma_nganh, :ghi_chu
+      :ma_hdt, :ma_nganh, :ghi_chu,
+      :avatar
     )
   end
 end

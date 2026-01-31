@@ -36,16 +36,16 @@
             %dt.text-slate-400 Hệ đào tạo
             %dd.font-medium= @lop.he_dao_tao&.ten
           %div.flex.justify-between.gap-4
-            %dt.text-slate-400 Mã cán bộ phụ trách
+            %dt.text-slate-400 Chủ nhiệm Trung đội
             %dd.font-medium= @lop.ma_cb
           %div
             %dt.text-slate-400.mb-1 Ghi chú
             %dd.text-sm.text-slate-300{ class: "bg-slate-900/60 rounded-lg p-2 min-h-[2rem]" }
               = @lop.ghi_chu.presence || "Không có"
 
-      / Danh sách sinh viên
+      / Danh sách học viên
       .bg-slate-800.border.border-slate-700.rounded-2xl.p-4
-        %h2.text-sm.font-semibold.text-slate-200.mb-3 Danh sách sinh viên
+        %h2.text-sm.font-semibold.text-slate-200.mb-3 Danh sách học viên
         - if @students.any?
           .overflow-x-auto.table-scroll
             %table.w-full
@@ -68,4 +68,4 @@
                                 student_path(s.ma_sv),
                                 class: "text-xs px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-full transition"
         - else
-          %p.text-sm.text-slate-400 Chưa có sinh viên nào trong lớp này.
+          %p.text-sm.text-slate-400 Chưa có học viên nào trong lớp này.

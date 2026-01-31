@@ -1,6 +1,4 @@
 class Hssv < ApplicationRecord
-  self.primary_key = "ma_sv"
-
   # Validations
   validates :ma_sv, presence: true, uniqueness: true
 
@@ -12,6 +10,14 @@ class Hssv < ApplicationRecord
 
   has_many :diem_hoc_taps,   foreign_key: :ma_sv, primary_key: :ma_sv, dependent: :destroy
   has_many :diem_ren_luyens, foreign_key: :ma_sv, primary_key: :ma_sv, dependent: :destroy
+
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [ 150, 150 ]
+    attachable.variant :medium, resize_to_limit: [ 400, 400 ]
+  end
+
+  validates :avatar, content_type: { in: %w[image/jpeg image/gif image/png], message: "phải là hình ảnh JPEG, GIF hoặc PNG" },
+                     size: { less_than: 5.megabytes, message: "không được vượt quá 5MB" }
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -46,6 +52,10 @@ class Hssv < ApplicationRecord
   end
 
   def to_s
+    ma_sv
+  end
+
+  def to_param
     ma_sv
   end
 

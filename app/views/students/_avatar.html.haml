@@ -1,0 +1,8 @@
+#avatar-preview.flex-shrink-0
+  - if student.avatar.attached?
+    -# = image_tag student.avatar_thumbnail, class: "w-48 h-48 rounded-xl object-cover border-4 border-amber-400 shadow-2xl", alt: "Avatar của #{student.ten}"
+    = image_tag student.avatar.variant(resize_to_fill: [192, 192]), class: "w-48 h-48 rounded-xl object-cover border-4 border-amber-400 shadow-2xl", alt: "Avatar của #{student.ten}"
+  - else
+    .w-48.h-48.rounded-xl.bg-slate-700.flex.items-center.justify-center.border-4.border-slate-600.shadow-2xl
+      %svg.w-16.h-16.text-slate-400{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+        %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2, d: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" }

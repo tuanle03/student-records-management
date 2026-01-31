@@ -1,0 +1,18 @@
+!!! 5
+%html{ lang: "vi" }
+  %head
+    %meta{ charset: "utf-8" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %title= [title, "Quản lý Hồ sơ Học viên - Đại học An ninh Nhân dân"].compact.join(" | ")
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    # Thêm favicon cho tab browser trong admin
+    %link{ rel: "icon", href: "/logo.png", type: "image/png" }
+
+    = stylesheet_link_tag "active_admin"
+    = javascript_include_tag "active_admin"
+  %body{ class: "active_admin #{active_admin_namespace ? " #{active_admin_namespace}" : ''} #{controller.action_name}" }
+    = render "layouts/active_admin/header"
+    = render "layouts/active_admin/main"
+    = render "layouts/active_admin/footer"

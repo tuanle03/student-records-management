@@ -73,7 +73,7 @@ class GradesController < ApplicationController
     end
 
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "DiemGP", "DiemHP", "DiemTB", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
+      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "Diem BP", "Diem KTHP", "Diem ĐGHP", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
       grades.find_each do |grade|
         student = grade.hssv
         csv << [
@@ -98,7 +98,7 @@ class GradesController < ApplicationController
   # contains the required headers with no data rows.
   def download_template
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "DiemGP", "DiemHP", "DiemTB", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
+      csv << [ "MaSV", "HoDem", "Ten", "MaMonHoc", "MaHocKy", "Diem BP", "Diem KTHP", "Diem ĐGHP", "DiemThiLaiLan1", "DiemThiLaiLan2" ]
     end
     send_data csv_data, filename: "template-diem-hoc-tap.csv", type: "text/csv"
   end
@@ -115,6 +115,6 @@ class GradesController < ApplicationController
     preview = importer.warnings.first(10).join(" | ")
     more = importer.warnings.size > 10 ? " | ... (#{importer.warnings.size - 10} dòng khác)" : ""
 
-    "Có #{importer.skipped_count} dòng bị bỏ qua do sinh viên không thuộc lớp chủ nhiệm. Chi tiết: #{preview}#{more}"
+    "Có #{importer.skipped_count} dòng bị bỏ qua do học viên không thuộc lớp chủ nhiệm. Chi tiết: #{preview}#{more}"
   end
 end
