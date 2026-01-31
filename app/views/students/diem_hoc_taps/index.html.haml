@@ -10,7 +10,7 @@
           %h1.text-lg.font-bold.text-amber-300
             Bảng điểm – #{@student.ho_ten}
           %p.text-xs.text-slate-400
-            Mã SV: #{@student.ma_sv}
+            Mã học viên: #{@student.ma_sv}
       %div.text-right.text-xs.text-slate-400
         - if current_user.teacher?
           = link_to "Thêm điểm môn học",

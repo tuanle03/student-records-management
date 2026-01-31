@@ -8,7 +8,7 @@ class StudentsController < ApplicationController
   def index
     @q = params[:q]
 
-    scope = Hssv.includes(:lop, :nganh)
+    scope = Hssv.includes(:lop, :nganh).with_attached_avatar
 
     if current_user.teacher?
       lop_codes = current_user.homeroom_classes.select(:ma_lop)
@@ -30,22 +30,23 @@ class StudentsController < ApplicationController
 
   def create
     @student = Hssv.new(student_params)
-
     if @student.save
-      redirect_to student_path(@student),
-                  notice: "Tạo học viên thành công."
+      respond_to do |format|
+        format.html { redirect_to students_path, notice: "Học viên đã được tạo thành công." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("avatar-preview", partial: "students/avatar", locals: { student: @student }) }
+      end
     else
-      flash.now[:alert] = "Không thể tạo học viên. Vui lòng kiểm tra lại."
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
     if @student.update(student_params)
-      redirect_to student_path(@student),
-                  notice: "Cập nhật học viên thành công."
+      respond_to do |format|
+        format.html { redirect_to students_path, notice: "Học viên đã được cập nhật." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("avatar-preview", partial: "students/avatar", locals: { student: @student }) }
+      end
     else
-      flash.now[:alert] = "Không thể cập nhật học viên. Vui lòng kiểm tra lại."
       render :edit, status: :unprocessable_entity
     end
   end
@@ -164,7 +165,8 @@ class StudentsController < ApplicationController
       :que_quan, :tru_quan, :ktk_l, :tom_tat_qtct, :ho_ten_cha, :nam_sinh_cha, :nghe_nghiep_cha,
       :noi_lam_cha, :ho_khau_cha, :ho_ten_me, :nam_sinh_me, :nghe_nghiep_me, :noi_lam_me, :ho_khau_me,
       :ho_ten_vo, :nam_sinh_vo, :nghe_nghiep_vo, :noi_lam_vo, :ho_khau_vo, :anh_chiem, :ma_lop, :ma_khoa,
-      :ma_hdt, :ma_nganh, :ghi_chu
+      :ma_hdt, :ma_nganh, :ghi_chu,
+      :avatar
     )
   end
 end

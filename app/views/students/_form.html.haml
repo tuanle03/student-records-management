@@ -1,7 +1,7 @@
 - form_title = @student.new_record? ? "Thêm học viên" : "Chỉnh sửa học viên"
 - form_url   = @student.new_record? ? students_path : student_path(@student)
 
-.max-w-5xl.mx-auto
+.max-w-6xl.mx-auto
   %div{ class: "bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl shadow-slate-900/40" }
     %h2.text-xl.font-semibold.text-amber-300.mb-4= form_title
 
@@ -13,10 +13,40 @@
           - @student.errors.full_messages.each do |msg|
             %li= msg
 
-    = form_with model: @student, url: form_url do |f|
+    = form_with model: @student, url: form_url, data: { controller: "file-upload" } do |f|
+      / ================== LAYOUT CHÍNH: PREVIEW TRÁI + UPLOAD/PHÂN TIN PHẢI ==================
+      .grid.grid-cols-1.lg:grid-cols-2.gap-6.mb-6
+        / Bên trái: Avatar preview (render từ partial)
+        .flex.flex-col.items-center
+          %h3.text-sm.font-semibold.text-slate-200.mb-4 Ảnh đại diện
+          = render "avatar", student: @student
+
+        / Bên phải: Upload area + Thông tin cơ bản
+        .space-y-4
+          / ================== UPLOAD HÌNH ẢNH ==================
+          %h3.text-sm.font-semibold.text-slate-200.mb-2 Upload ảnh đại diện (tuỳ chọn)
+          .relative
+            / Drag-and-drop area (nhỏ gọn hơn)
+            .border-2.border-dashed.border-slate-600.rounded-lg.p-4.text-center.hover:border-amber-400.transition.cursor-pointer{
+              data: {
+                controller: "avatar-upload",
+                action: "dragover->avatar-upload#dragOver dragleave->avatar-upload#dragLeave drop->avatar-upload#drop change->avatar-upload#preview click->avatar-upload#clickInput"
+              }
+            }
+              .flex.flex-col.items-center.gap-2
+                .text-slate-400
+                  %svg.w-6.h-6.mx-auto.mb-1{ fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" }
+                    %path{ "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": 2, d: "M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" }
+                  %p.text-xs Kéo thả hoặc nhấn chọn ảnh
+                  %p.text-xs.text-slate-500 (JPEG, PNG, GIF, WebP, max 5MB)
+                = f.file_field :avatar,
+                               accept: "image/*",
+                               class: "hidden",
+                               data: { avatar_upload_target: "input", action: "change->avatar-upload#preview change->avatar-upload#autoSubmit" }
+
       / ================== THÔNG TIN CƠ BẢN ==================
       %h3.text-sm.font-semibold.text-slate-200.mb-2 Thông tin cơ bản
-      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
+      .grid.grid-cols-1.md:grid-cols-5.gap-4.mb-4
         .space-y-1
           = f.label :ma_sv, "Mã học viên", class: "block text-sm font-medium text-slate-200"
           = f.text_field :ma_sv,
@@ -36,7 +66,6 @@
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 transition",
                          placeholder: "A"
 
-      .grid.grid-cols-1.md:grid-cols-3.gap-4.mb-4
         .space-y-1
           = f.label :ngay_sinh, "Ngày sinh", class: "block text-sm font-medium text-slate-200"
           = f.date_field :ngay_sinh,
@@ -49,12 +78,7 @@
                      { include_blank: "Chọn giới tính" },
                      class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
-        .space-y-1
-          = f.label :anh, "Link ảnh (tuỳ chọn)", class: "block text-sm font-medium text-slate-200"
-          = f.text_field :anh,
-                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500",
-                         placeholder: "URL hoặc tên file ảnh"
-
+      / ================== CÁC SECTION CÒN LẠI (GIỮ NGUYÊN) ==================
       / ================== THÔNG TIN HỌC VỤ ==================
       %h3.text-sm.font-semibold.text-slate-200.mb-2 Thông tin học vụ
       .grid.grid-cols-1.md:grid-cols-4.gap-4.mb-4
@@ -110,7 +134,7 @@
           = f.label :khu_vuc, "Khu vực", class: "block text-sm font-medium text-slate-200"
           = f.text_field :khu_vuc,
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
-                         placeholder: "KV1/KV2/…"
+                         placeholder: "KV1/KV2/.."
 
         .space-y-1
           = f.label :doi_tuong, "Đối tượng", class: "block text-sm font-medium text-slate-200"
@@ -129,7 +153,7 @@
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
         .space-y-1
-          = f.label :tru_quan, "Trú quán", class: "block text-sm font-medium text-slate-200"
+          = f.label :tru_quan, "Hộ khẩu thường trú", class: "block text-sm font-medium text-slate-200"
           = f.text_field :tru_quan,
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
@@ -147,7 +171,7 @@
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
         .space-y-1
-          = f.label :ktk_l, "KTKL", class: "block text-sm font-medium text-slate-200"
+          = f.label :ktk_l, "Khen thưởng / Kỷ luật", class: "block text-sm font-medium text-slate-200"
           = f.text_field :ktk_l,
                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
                          placeholder: "Khen thưởng / Kỷ luật"
