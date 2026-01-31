@@ -1,4 +1,6 @@
 ActiveAdmin.register DiemHocTap do
+  menu label: "Điểm học tập", priority: 6
+
   permit_params :ma_sv, :ma_mon_hoc, :ma_hoc_ky, :ghi_chu, :diem_gp, :diem_hp, :diem_tb, :diem_thi_lai_lan1, :diem_thi_lai_lan2
 
   index title: "Điểm học tập" do

@@ -7,6 +7,9 @@
 // For example, to change the sidebar width:
 // $sidebar-width: 242px;
 
+// Import theme tùy chỉnh trước
+@import "active_admin/custom_theme";
+
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
@@ -15,3 +18,18 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+// Thêm overrides nếu cần cho theme nghiêm túc
+// Ví dụ: Điều chỉnh sidebar width nếu cần
+$sidebar-width: 260px;
+
+// Cải thiện responsive
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: relative;
+  }
+  .main-content {
+    padding: 16px;
+  }
+}

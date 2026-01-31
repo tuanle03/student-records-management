@@ -1,4 +1,6 @@
 ActiveAdmin.register Hssv do
+  menu label: "Học viên", priority: 1
+
   controller do
     def find_resource
       scoped_collection.find_by!(ma_sv: params[:id])

@@ -1,8 +1,8 @@
 ActiveAdmin.register PhanLoaiTapThe do
-  # Cho phép cập nhật đầy đủ các thuộc tính của model PhanLoaiTapThe
+  menu label: "Phân loại tập thể", priority: 9
+
   permit_params :ma_lop, :danh_hieu_de_nghi, :phan_loai_tap_the, :ma_nam_hoc
 
-  # Hiển thị các cột quan trọng trong trang danh sách
   index title: "Phân loại tập thể" do
     selectable_column
     id_column
@@ -15,11 +15,9 @@ ActiveAdmin.register PhanLoaiTapThe do
     actions
   end
 
-  # Bộ lọc tìm kiếm
   filter :ma_lop, as: :select, collection: Lop.all.collect { |l| [ l.ten, l.ma_lop ] }, label: "Lớp"
   filter :ma_nam_hoc, label: "Năm học", as: :select, collection: PhanLoaiTapThe.pluck(:ma_nam_hoc).uniq
 
-  # Form tạo mới/ chỉnh sửa
   form do |f|
     f.inputs "Phân loại tập thể" do
       f.input :ma_lop,
@@ -34,7 +32,6 @@ ActiveAdmin.register PhanLoaiTapThe do
     f.actions
   end
 
-  # Trang chi tiết
   show title: "Chi tiết phân loại tập thể" do
     attributes_table do
       row("ID") { |record| record.id }

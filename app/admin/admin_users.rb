@@ -1,4 +1,6 @@
 ActiveAdmin.register AdminUser do
+  menu label: "Quản trị viên", parent: "Quản lý người dùng", priority: 1
+
   permit_params :email, :password, :password_confirmation
 
   index title: "Danh sách quản trị viên" do

@@ -1,4 +1,6 @@
 ActiveAdmin.register Lop do
+  menu label: "Lớp", priority: 2
+
   permit_params :ma_lop, :ten, :ma_khoa, :khoa_hoc, :ma_nganh, :ma_he_dt,
                 :ma_cb, :ghi_chu, :giao_vien_id
 

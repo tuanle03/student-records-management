@@ -1,8 +1,8 @@
 ActiveAdmin.register KhoaHoc do
-  # Cho phép cập nhật đầy đủ các thuộc tính của model KhoaHoc
+  menu label: "Khoá học", priority: 3
+
   permit_params :ma_khoa, :ten, :ghi_chu
 
-  # Hiển thị các cột quan trọng trong trang danh sách
   index title: "Danh sách khoá học" do
     selectable_column
     column "Mã khoá", :ma_khoa
@@ -11,11 +11,9 @@ ActiveAdmin.register KhoaHoc do
     actions
   end
 
-  # Bộ lọc tìm kiếm
   filter :ma_khoa, label: "Mã khoá", as: :select, collection: KhoaHoc.pluck(:ma_khoa)
   filter :ten, label: "Tên khoá", as: :select, collection: KhoaHoc.pluck(:ten)
 
-  # Form tạo mới/ chỉnh sửa
   form do |f|
     f.inputs "Khoá học" do
       f.input :ma_khoa, label: "Mã khoá"
@@ -25,7 +23,6 @@ ActiveAdmin.register KhoaHoc do
     f.actions
   end
 
-  # Trang chi tiết
   show title: "Chi tiết khoá học" do
     attributes_table do
       row("Mã khoá") { |kh| kh.ma_khoa }

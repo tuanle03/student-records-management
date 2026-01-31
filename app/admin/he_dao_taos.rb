@@ -1,8 +1,8 @@
 ActiveAdmin.register HeDaoTao do
-  # Cho phép cập nhật đầy đủ các thuộc tính của model HeDaoTao
+  menu label: "Hệ đào tạo", priority: 8
+
   permit_params :ma_he_dt, :ten, :thoi_gian_hoc, :don_vi_tg, :ghi_chu
 
-  # Hiển thị các cột quan trọng trong trang danh sách
   index title: "Danh sách hệ đào tạo" do
     selectable_column
     column "Mã hệ đào tạo", :ma_he_dt
@@ -13,11 +13,9 @@ ActiveAdmin.register HeDaoTao do
     actions
   end
 
-  # Bộ lọc tìm kiếm
   filter :ma_he_dt, label: "Mã hệ đào tạo", as: :select, collection: HeDaoTao.pluck(:ma_he_dt)
   filter :ten, label: "Tên hệ đào tạo", as: :select, collection: HeDaoTao.pluck(:ten)
 
-  # Form tạo mới/ chỉnh sửa
   form do |f|
     f.inputs "Thông tin hệ đào tạo" do
       f.input :ma_he_dt, label: "Mã hệ đào tạo"
@@ -29,7 +27,6 @@ ActiveAdmin.register HeDaoTao do
     f.actions
   end
 
-  # Trang chi tiết
   show title: "Chi tiết hệ đào tạo" do
     attributes_table do
       row("Mã hệ đào tạo") { |hdt| hdt.ma_he_dt }

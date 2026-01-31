@@ -76,6 +76,10 @@ vi:
         created_at: "Ngày tạo"
         updated_at: "Ngày cập nhật"
     pagination:
+      previous: "Trước"
+      next: "Tiếp theo"
+      first: "Đầu"
+      last: "Cuối"
       empty: "Không tìm thấy %{model}"
       one: "Hiển thị <b>1</b> %{model}"
       one_page: "Hiển thị <b>tất cả %{n}</b> %{model}" # Thay %{count} bằng %{n}
@@ -92,6 +96,10 @@ vi:
       predicates:
         from: "Từ"
         to: "Đến"
+    table_headers:
+      id: "ID"
+      created_at: "Ngày tạo"
+      updated_at: "Cập nhật lần cuối"
 
   ransack:
     predicates:
