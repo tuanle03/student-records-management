@@ -17,8 +17,8 @@ ActiveAdmin.register DiemRenLuyen do
 
   # Bộ lọc tìm kiếm
   filter :ma_sv, as: :select, collection: Hssv.order(:ma_sv).pluck(:ma_sv), label: "Mã học viên"
-  filter :ma_hoc_ky, label: "Mã học kỳ"
-  filter :ma_nam_hoc, label: "Mã năm học"
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: DiemRenLuyen.pluck(:ma_hoc_ky)
+  filter :ma_nam_hoc, label: "Mã năm học", as: :select, collection: DiemRenLuyen.pluck(:ma_nam_hoc)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|

@@ -12,8 +12,8 @@ ActiveAdmin.register KhoaHoc do
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_khoa, label: "Mã khoá"
-  filter :ten, label: "Tên khoá"
+  filter :ma_khoa, label: "Mã khoá", as: :select, collection: KhoaHoc.pluck(:ma_khoa)
+  filter :ten, label: "Tên khoá", as: :select, collection: KhoaHoc.pluck(:ten)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|

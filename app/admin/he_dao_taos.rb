@@ -14,8 +14,8 @@ ActiveAdmin.register HeDaoTao do
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_he_dt, label: "Mã hệ đào tạo"
-  filter :ten, label: "Tên hệ đào tạo"
+  filter :ma_he_dt, label: "Mã hệ đào tạo", as: :select, collection: HeDaoTao.pluck(:ma_he_dt)
+  filter :ten, label: "Tên hệ đào tạo", as: :select, collection: HeDaoTao.pluck(:ten)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|

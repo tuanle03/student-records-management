@@ -22,10 +22,7 @@ ActiveAdmin.register AdminUser do
     end
   end
 
-  filter :email, label: "Email"
-  filter :current_sign_in_at, label: "Lần đăng nhập gần nhất"
-  filter :sign_in_count, label: "Số lần đăng nhập"
-  filter :created_at, label: "Ngày tạo"
+  filter :email, label: "Email", as: :select, collection: AdminUser.pluck(:email)
 
   form do |f|
     f.inputs "Thông tin quản trị viên" do

@@ -12,9 +12,8 @@ ActiveAdmin.register User do
     actions
   end
 
-  filter :email, label: "Email"
+  filter :email, label: "Email", as: :select, collection: User.pluck(:email)
   filter :role, as: :select, collection: User.roles.map { |value, label| [ label, value ] }, label: "Vai trò"
-  filter :created_at, label: "Ngày tạo"
 
   form do |f|
     f.inputs "Thông tin tài khoản giáo viên" do

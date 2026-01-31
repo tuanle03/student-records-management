@@ -20,9 +20,9 @@ ActiveAdmin.register DiemHocTap do
     actions
   end
 
-  filter :ma_sv
-  filter :ma_mon_hoc
-  filter :ma_hoc_ky
+  filter :ma_sv, as: :select, collection: Hssv.order(:ma_sv).pluck(:ma_sv), label: "Mã học viên"
+  filter :ma_mon_hoc, as: :select, collection: MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc), label: "Môn học"
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: DiemHocTap.pluck(:ma_hoc_ky)
 
   form do |f|
     f.inputs "Điểm học tập" do

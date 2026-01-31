@@ -13,8 +13,8 @@ ActiveAdmin.register MonHoc do
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_mon_hoc, label: "Mã môn học"
-  filter :ten, label: "Tên môn học"
+  filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: MonHoc.pluck(:ma_mon_hoc)
+  filter :ten, label: "Tên môn học", as: :select, collection: MonHoc.pluck(:ten)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|

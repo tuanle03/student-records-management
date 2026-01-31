@@ -30,9 +30,11 @@ ActiveAdmin.register Hssv do
     actions
   end
 
-  filter :ma_sv, label: "Mã học viên"
-  filter :ten, label: "Tên"
   filter :lop, as: :select, collection: Lop.all.collect { |l| [ l.ten, l.ma_lop ] }, label: "Lớp"
+  filter :khoa_hoc, as: :select, collection: KhoaHoc.all.collect { |k| [ k.ten, k.ma_khoa ] }, label: "Khoá học"
+  filter :he_dao_tao, as: :select, collection: HeDaoTao.all.collect { |h| [ h.ten, h.ma_he_dt ] }, label: "Hệ đào tạo"
+  filter :nganh, as: :select, collection: Nganh.all.collect { |n| [ n.ten_nganh, n.ma_nganh ] }, label: "Ngành"
+  filter :ma_sv, label: "Mã học viên", as: :select, collection: Hssv.pluck(:ma_sv)
 
   show title: proc { |s| "Chi tiết học viên: #{s.ho_dem} #{s.ten}" } do
     attributes_table do

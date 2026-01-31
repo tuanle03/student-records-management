@@ -4,8 +4,8 @@ ActiveAdmin.register Lop do
 
   remove_filter :students
 
-  filter :ma_lop, label: "Mã lớp"
-  filter :ten, label: "Tên lớp"
+  filter :ma_lop, label: "Mã lớp", as: :select, collection: Lop.pluck(:ma_lop)
+  filter :ten, label: "Tên lớp", as: :select, collection: Lop.pluck(:ten)
   filter :khoa_hoc,
           as: :select,
           collection: KhoaHoc.order(:ma_khoa).map { |kh| [ kh.ten, kh.ma_khoa ] },
@@ -18,7 +18,7 @@ ActiveAdmin.register Lop do
           as: :select,
           collection: HeDaoTao.order(:ma_he_dt).pluck(:ten, :ma_he_dt),
           label: "Hệ đào tạo"
-  filter :ma_cb, label: "Chủ nhiệm Trung đội"
+  filter :ma_cb, label: "Chủ nhiệm Trung đội", as: :select, collection: Lop.pluck(:ma_cb)
   filter :giao_vien,
           as: :select,
           collection: User.teachers.order(:email).map { |u| [ u.email, u.id ] },

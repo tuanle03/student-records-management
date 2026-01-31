@@ -12,8 +12,8 @@ ActiveAdmin.register Nganh do
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_nganh, label: "Mã ngành"
-  filter :ten_nganh, label: "Tên ngành"
+  filter :ma_nganh, label: "Mã ngành", as: :select, collection: Nganh.pluck(:ma_nganh)
+  filter :ten_nganh, label: "Tên ngành", as: :select, collection: Nganh.pluck(:ten_nganh)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|

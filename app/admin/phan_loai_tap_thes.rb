@@ -17,7 +17,7 @@ ActiveAdmin.register PhanLoaiTapThe do
 
   # Bộ lọc tìm kiếm
   filter :ma_lop, as: :select, collection: Lop.all.collect { |l| [ l.ten, l.ma_lop ] }, label: "Lớp"
-  filter :ma_nam_hoc, label: "Năm học"
+  filter :ma_nam_hoc, label: "Năm học", as: :select, collection: PhanLoaiTapThe.pluck(:ma_nam_hoc).uniq
 
   # Form tạo mới/ chỉnh sửa
   form do |f|
