@@ -1,8 +1,8 @@
 ActiveAdmin.register Nganh do
-  # Cho phép cập nhật đầy đủ các thuộc tính của model Nganh
+  menu label: "Ngành học", priority: 4
+
   permit_params :ma_nganh, :ten_nganh, :ghi_chu
 
-  # Hiển thị các cột quan trọng trong trang danh sách
   index title: "Danh sách ngành học" do
     selectable_column
     column "Mã ngành", :ma_nganh
@@ -11,11 +11,9 @@ ActiveAdmin.register Nganh do
     actions
   end
 
-  # Bộ lọc tìm kiếm
   filter :ma_nganh, label: "Mã ngành", as: :select, collection: Nganh.pluck(:ma_nganh)
   filter :ten_nganh, label: "Tên ngành", as: :select, collection: Nganh.pluck(:ten_nganh)
 
-  # Form tạo mới/ chỉnh sửa
   form do |f|
     f.inputs "Thông tin ngành" do
       f.input :ma_nganh, label: "Mã ngành"
@@ -25,7 +23,6 @@ ActiveAdmin.register Nganh do
     f.actions
   end
 
-  # Trang chi tiết
   show do
     attributes_table do
       row("Mã ngành") { |n| n.ma_nganh }

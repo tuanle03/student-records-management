@@ -1,0 +1,261 @@
+/* Import font (best: load from layout or asset pipeline) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
+
+/* CSS variables for easy theming */
+:root {
+  --primary-500: #9333ea;
+  --primary-600: #7c3aed;
+  --primary-700: #581c87;
+  --accent: #c084fc;
+  --text-on-dark: #e6eefc;
+  --muted: #94a3b8;
+  --panel-bg: rgba(17, 24, 39, 0.7); /* dark translucent */
+  --glass-border: rgba(124, 58, 237, 0.16);
+  --glass-shadow: 0 10px 30px rgba(23, 15, 54, 0.6);
+}
+
+/* Base */
+body,
+html {
+  height: 100%;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
+  color: var(--text-on-dark);
+  background: linear-gradient(135deg, #0f172a 0%, #0b1020 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+}
+
+/* Header / Titlebar */
+#header {
+  background: linear-gradient(
+    135deg,
+    var(--primary-700) 0%,
+    var(--primary-600) 100%
+  );
+  box-shadow: 0 6px 30px rgba(12, 8, 30, 0.6);
+  border-radius: 0 0 18px 18px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#title_bar h1 {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+/* Sidebar styling */
+#sidebar {
+  background: linear-gradient(
+    180deg,
+    rgba(88, 28, 135, 0.95),
+    rgba(124, 58, 237, 0.9)
+  );
+  border-right: 1px solid rgba(124, 58, 237, 0.18);
+  padding-top: 18px;
+  min-width: 220px;
+}
+
+#sidebar .menu_item a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-on-dark);
+  padding: 10px 14px;
+  margin: 6px 10px;
+  border-radius: 12px;
+  transition: all 0.18s ease;
+}
+
+#sidebar .menu_item a:hover {
+  background: rgba(147, 51, 234, 0.12);
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+/* Panels / Cards (glass) */
+.panel,
+.dashboard_panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--glass-shadow);
+  color: var(--text-on-dark);
+}
+
+/* Status tag */
+.status_tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 12px;
+  box-shadow: 0 6px 14px rgba(124, 58, 237, 0.18);
+}
+
+/* Buttons / action items */
+.table_tools .dropdown_menu_button,
+.action_item a,
+input[type="submit"],
+.button,
+.batch_actions_selector {
+  background: linear-gradient(
+    135deg,
+    var(--primary-500) 0%,
+    var(--primary-600) 100%
+  );
+  color: white;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.18);
+  border: none;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.table_tools .dropdown_menu_button:hover,
+.action_item a:hover,
+input[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.26);
+}
+
+/* Index table improvements */
+.index_table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.index_table th {
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-on-dark);
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.index_table td {
+  background: rgba(7, 10, 20, 0.45);
+  padding: 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  vertical-align: middle;
+  color: var(--text-on-dark);
+}
+
+/* Row hover */
+.index_table tbody tr:hover td {
+  background: linear-gradient(
+    90deg,
+    rgba(147, 51, 234, 0.06),
+    rgba(124, 58, 237, 0.04)
+  );
+}
+
+/* Actions column: small icon buttons */
+.index_table .action_links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-on-dark);
+  background: transparent;
+  transition: background 0.12s;
+}
+
+.index_table .action_links a:hover {
+  background: rgba(147, 51, 234, 0.08);
+  color: var(--accent);
+}
+
+/* Form elements */
+.formtastic .inputs {
+  margin: 0;
+}
+
+.formtastic .input {
+  margin-bottom: 18px;
+}
+
+.formtastic input[type="text"],
+.formtastic input[type="email"],
+.formtastic input[type="password"],
+.formtastic textarea,
+.formtastic select {
+  background: rgba(17, 24, 39, 0.55);
+  border: 1px solid rgba(100, 116, 139, 0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text-on-dark);
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.formtastic input:focus,
+.formtastic textarea:focus,
+.formtastic select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 6px 22px rgba(147, 51, 234, 0.12);
+}
+
+/* Blank slate / empty states */
+.blank_slate {
+  color: var(--muted);
+  text-align: center;
+  padding: 28px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  #sidebar {
+    display: none;
+  } /* or collapse into a toggle */
+  .index_table td {
+    padding: 10px;
+  }
+}
+
+/* Utility small pills for metrics */
+.metric-pill {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-pill .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+}
+
+.metric-pill .label {
+  font-size: 12px;
+  color: var(--muted);
+}

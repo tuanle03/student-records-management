@@ -7,11 +7,170 @@
 // For example, to change the sidebar width:
 // $sidebar-width: 242px;
 
-// Active Admin's got SASS!
+// Override primary color to purple for a modern, creative theme
+$primary-color: #9333ea; // Purple-500 (accent color)
+$secondary-color: #7c3aed; // Purple-600 (darker for gradients)
+$link-color: #9333ea; // Purple for links
+$header-bg: linear-gradient(
+  135deg,
+  #581c87 0%,
+  #7c3aed 100%
+); // Purple gradient for header
+$sidebar-bg: #581c87; // Dark purple for sidebar
+$body-bg: linear-gradient(
+  135deg,
+  #0f172a 0%,
+  #1e293b 100%
+); // Dark gradient (unchanged for contrast)
+$text-color: #e2e8f0; // Light white for text on dark bg
+$accent-text: #c084fc; // Light purple for highlights
+
 @import "active_admin/mixins";
 @import "active_admin/base";
+@import "active_admin/custom_theme";
 
-// Overriding any non-variable Sass must be done after the fact.
-// For example, to change the default status-tag color:
-//
-//   .status_tag { background: #6090DB; }
+// Custom overrides for modern UI with purple theme
+body {
+  background: $body-bg;
+  color: $text-color;
+  font-family: "Inter", sans-serif;
+}
+
+// Status tags: Purple background with white text for high contrast
+.status_tag {
+  background: $primary-color;
+  color: white;
+  border-radius: 12px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 4px rgba(147, 51, 234, 0.3); // Purple shadow
+}
+
+// Panels: Semi-transparent with purple border, white text
+.panel {
+  background: rgba(30, 41, 59, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid #7c3aed; // Purple border
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(147, 51, 234, 0.2); // Subtle purple shadow
+  padding: 24px;
+  color: $text-color;
+}
+
+// Buttons: Purple gradient with white text
+.table_tools .dropdown_menu_button,
+.action_item a,
+input[type="submit"],
+.button {
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 4px 8px rgba(147, 51, 234, 0.3);
+  transition: all 0.2s;
+}
+
+.table_tools .dropdown_menu_button:hover,
+.action_item a:hover,
+input[type="submit"]:hover,
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(147, 51, 234, 0.4);
+  color: white; // Ensure text stays white
+}
+
+// Tables: Dark headers with purple accents, white text
+.index_table th {
+  background: #374151; // Dark gray (not purple to avoid clash)
+  color: $text-color;
+  border-radius: 8px 8px 0 0;
+  padding: 12px;
+}
+
+.index_table td {
+  border-bottom: 1px solid #64748b;
+  padding: 12px;
+  color: $text-color;
+}
+
+.index_table tbody tr:hover {
+  background: rgba(147, 51, 234, 0.1); // Light purple hover
+}
+
+// Forms: Dark inputs with purple focus, white text
+.formtastic .input {
+  margin-bottom: 24px;
+}
+
+.formtastic input[type="text"],
+.formtastic input[type="email"],
+.formtastic input[type="password"],
+.formtastic textarea,
+.formtastic select {
+  background: rgba(51, 65, 85, 0.7); // Dark bg
+  border: 1px solid #64748b;
+  border-radius: 12px;
+  padding: 12px;
+  color: $text-color; // White text
+  transition: all 0.2s;
+}
+
+.formtastic input[type="text"]:focus,
+.formtastic input[type="email"]:focus,
+.formtastic input[type="password"]:focus,
+.formtastic textarea:focus,
+.formtastic select:focus {
+  border-color: $primary-color;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2); // Purple glow
+  outline: none;
+}
+
+// Header: Purple gradient with light text
+#header {
+  background: $header-bg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 24px 24px;
+  color: $text-color;
+}
+
+#title_bar h1 {
+  color: $accent-text; // Light purple for title
+  font-weight: 700;
+}
+
+// Sidebar: Dark purple with light purple hover
+#sidebar {
+  background: $sidebar-bg;
+  border-right: 1px solid #7c3aed;
+  box-shadow: inset -4px 0 8px rgba(0, 0, 0, 0.2);
+}
+
+#sidebar .menu_item a {
+  color: $text-color;
+  border-radius: 12px;
+  margin: 4px 8px;
+  padding: 12px 16px;
+  transition: all 0.2s;
+}
+
+#sidebar .menu_item a:hover {
+  background: rgba(147, 51, 234, 0.2);
+  color: $accent-text; // Light purple on hover
+}
+
+// Links: Purple
+a {
+  color: $link-color;
+}
+
+a:hover {
+  color: $accent-text;
+}
+
+// Additional: Ensure high contrast for readability
+.blank_slate {
+  color: $text-color;
+}
+
+.dashboard_welcome {
+  color: $accent-text;
+}

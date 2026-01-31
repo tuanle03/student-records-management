@@ -1,8 +1,8 @@
 ActiveAdmin.register MonHoc do
-  # Cho phép cập nhật đầy đủ các thuộc tính của model MonHoc
+  menu label: "Môn học", priority: 5
+
   permit_params :ma_mon_hoc, :ten, :so_tin_chi, :ghi_chu
 
-  # Hiển thị các cột quan trọng trong trang danh sách
   index title: "Danh sách môn học" do
     selectable_column
     column "Mã môn học", :ma_mon_hoc
@@ -12,11 +12,9 @@ ActiveAdmin.register MonHoc do
     actions
   end
 
-  # Bộ lọc tìm kiếm
   filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: MonHoc.pluck(:ma_mon_hoc)
   filter :ten, label: "Tên môn học", as: :select, collection: MonHoc.pluck(:ten)
 
-  # Form tạo mới/ chỉnh sửa
   form do |f|
     f.inputs "Môn học" do
       f.input :ma_mon_hoc, label: "Mã môn học"
@@ -27,7 +25,6 @@ ActiveAdmin.register MonHoc do
     f.actions
   end
 
-  # Trang chi tiết
   show do
     attributes_table do
       row("Mã môn học") { |mh| mh.ma_mon_hoc }

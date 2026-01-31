@@ -1,4 +1,6 @@
 ActiveAdmin.register User do
+  menu label: "Tài khoản giáo viên", parent: "Quản lý người dùng", priority: 2
+
   permit_params :email, :password, :password_confirmation, :role
 
   index title: "Danh sách tài khoản giáo viên" do

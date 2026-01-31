@@ -1,4 +1,6 @@
 ActiveAdmin.register DiemRenLuyen do
+  menu label: "Điểm rèn luyện", priority: 7
+
   permit_params :ma_sv, :ma_hoc_ky, :ma_nam_hoc, :thang, :diem, :ghi_chu
 
   index title: "Điểm rèn luyện" do
