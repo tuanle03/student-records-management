@@ -1,7 +1,7 @@
 ActiveAdmin.register Hssv do
   controller do
     def find_resource
-      scoped_collection.find_by(ma_sv: params[:id])
+      scoped_collection.find_by!(ma_sv: params[:id])
     end
   end
 
@@ -40,7 +40,7 @@ ActiveAdmin.register Hssv do
       row("Họ & tên đệm") { |s| s.ho_dem }
       row("Tên") { |s| s.ten }
       row("Ngày sinh") { |s| s.ngay_sinh }
-      row("Giới tính") { |s| s.gioi_tinh ? "Nam" : "Nữ" }
+      row("Giới tính") { |s| s.gioi_tinh_label }
       row("Lớp") { |s| s.lop&.ten }
       row("Khoá học") { |s| s.khoa_hoc&.ten }
       row("Hệ đào tạo") { |s| s.he_dao_tao&.ten }
