@@ -1,0 +1,99 @@
+vi:
+  active_admin:
+    dashboard: "Bảng điều khiển"
+    dashboard_welcome:
+      welcome: "Chào mừng đến với Active Admin. Đây là trang quản trị mặc định."
+      call_to_action: "Để thêm các section, hãy chỉnh sửa file 'app/admin/dashboard.rb'."
+    view: "Xem"
+    edit: "Chỉnh sửa"
+    delete: "Xóa"
+    delete_confirmation: "Bạn có chắc chắn muốn xóa mục này?"
+    new_model: "Tạo mới %{model}"
+    edit_model: "Chỉnh sửa %{model}"
+    delete_model: "Xóa %{model}"
+    details: "Chi tiết %{model}"
+    cancel: "Hủy"
+    reset: "Đặt lại"
+    create: "Tạo"
+    update: "Cập nhật"
+    search: "Tìm kiếm"
+    filters: "Bộ lọc"
+    status: "Trạng thái"
+    toggle_filters: "Chuyển đổi bộ lọc"
+    previous: "Trước"
+    next: "Tiếp"
+    first: "Đầu tiên"
+    last: "Cuối cùng"
+    blank_slate:
+      content: "Chưa có %{resource_name} nào."
+      link: "Tạo mới"
+    batch_actions:
+      button_label: "Thao tác hàng loạt"
+      default_confirmation: "Bạn có chắc chắn muốn thực hiện thao tác này?"
+      delete_confirmation: "Bạn có chắc chắn muốn xóa %{plural_model} này?"
+      succesfully_destroyed:
+        one: "Đã xóa thành công 1 %{model}"
+        other: "Đã xóa thành công %{count} %{plural_model}"
+    comments:
+      body: "Nội dung"
+      author: "Tác giả"
+      add: "Thêm bình luận"
+      resource: "Tài nguyên"
+      no_comments_yet: "Chưa có bình luận nào."
+      author_missing: "Ẩn danh"
+      title: "Bình luận"
+      add_comment: "Thêm bình luận"
+      resource_type: "Loại tài nguyên"
+      author_type: "Loại tác giả"
+    devise:
+      login:
+        title: "Đăng nhập"
+        remember_me: "Ghi nhớ đăng nhập"
+        submit: "Đăng nhập"
+      reset_password:
+        title: "Đặt lại mật khẩu"
+        submit: "Đặt lại mật khẩu"
+      change_password:
+        title: "Thay đổi mật khẩu"
+        submit: "Thay đổi mật khẩu"
+      unlock:
+        title: "Gửi hướng dẫn mở khóa"
+        submit: "Gửi hướng dẫn mở khóa"
+    access_denied:
+      message: "Bạn không có quyền truy cập vào tài nguyên này."
+    any: "Bất kỳ"
+    all: "Tất cả"
+    none: "Không có"
+    blank: "Trống"
+    required: "Bắt buộc"
+    optional: "Tùy chọn"
+    date_range: "Khoảng thời gian"
+    has_many_new: "Thêm %{model}"
+    has_many_delete: "Xóa %{model}"
+    has_many_remove: "Gỡ bỏ"
+    formtastic:
+      labels:
+        created_at: "Ngày tạo"
+        updated_at: "Ngày cập nhật"
+    pagination:
+      empty: "Không tìm thấy %{model}"
+      one: "Hiển thị <b>1</b> %{model}"
+      one_page: "Hiển thị <b>tất cả %{n}</b> %{model}" # Thay %{count} bằng %{n}
+      multiple: "Hiển thị %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> của <b>%{total}</b> tổng cộng"
+      multiple_without_total: "Hiển thị %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b>"
+      per_page: "Mỗi trang: "
+      entry:
+        one: "mục"
+        other: "mục"
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      long: "%d %B, %Y %H:%M"
+      short: "%d/%m %H:%M"
+
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B, %Y"
+      short: "%d/%m"

@@ -3,21 +3,21 @@ ActiveAdmin.register PhanLoaiTapThe do
   permit_params :ma_lop, :danh_hieu_de_nghi, :phan_loai_tap_the, :ma_nam_hoc
 
   # Hiển thị các cột quan trọng trong trang danh sách
-  index do
+  index title: "Phân loại tập thể" do
     selectable_column
     id_column
-    column :lop do |record|
+    column "Lớp" do |record|
       record.lop&.ten
     end
-    column :danh_hieu_de_nghi
-    column :phan_loai_tap_the
-    column :ma_nam_hoc
+    column "Danh hiệu đề nghị", :danh_hieu_de_nghi
+    column "Phân loại tập thể", :phan_loai_tap_the
+    column "Năm học", :ma_nam_hoc
     actions
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_lop
-  filter :ma_nam_hoc
+  filter :ma_lop, as: :select, collection: Lop.all.collect { |l| [ l.ten, l.ma_lop ] }, label: "Lớp"
+  filter :ma_nam_hoc, label: "Năm học"
 
   # Form tạo mới/ chỉnh sửa
   form do |f|
@@ -27,25 +27,23 @@ ActiveAdmin.register PhanLoaiTapThe do
               collection: Lop.order(:ma_lop).pluck(:ten, :ma_lop),
               include_blank: false,
               label: "Lớp"
-      f.input :danh_hieu_de_nghi
-      f.input :phan_loai_tap_the
-      f.input :ma_nam_hoc
+      f.input :danh_hieu_de_nghi, label: "Danh hiệu đề nghị"
+      f.input :phan_loai_tap_the, label: "Phân loại tập thể"
+      f.input :ma_nam_hoc, label: "Năm học"
     end
     f.actions
   end
 
   # Trang chi tiết
-  show do
+  show title: "Chi tiết phân loại tập thể" do
     attributes_table do
-      row :id
-      row :lop do |record|
-        record.lop&.ten
-      end
-      row :danh_hieu_de_nghi
-      row :phan_loai_tap_the
-      row :ma_nam_hoc
-      row :created_at
-      row :updated_at
+      row("ID") { |record| record.id }
+      row("Lớp") { |record| record.lop&.ten }
+      row("Danh hiệu đề nghị") { |record| record.danh_hieu_de_nghi }
+      row("Phân loại tập thể") { |record| record.phan_loai_tap_the }
+      row("Năm học") { |record| record.ma_nam_hoc }
+      row("Ngày tạo") { |record| record.created_at }
+      row("Cập nhật lần cuối") { |record| record.updated_at }
     end
   end
 end

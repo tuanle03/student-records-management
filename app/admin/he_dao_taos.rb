@@ -3,42 +3,42 @@ ActiveAdmin.register HeDaoTao do
   permit_params :ma_he_dt, :ten, :thoi_gian_hoc, :don_vi_tg, :ghi_chu
 
   # Hiển thị các cột quan trọng trong trang danh sách
-  index do
+  index title: "Danh sách hệ đào tạo" do
     selectable_column
-    id_column :ma_he_dt
-    column :ten
-    column :thoi_gian_hoc
-    column :don_vi_tg
-    column :ghi_chu
+    column "Mã hệ đào tạo", :ma_he_dt
+    column "Tên hệ đào tạo", :ten
+    column "Thời gian học", :thoi_gian_hoc
+    column "Đơn vị thời gian", :don_vi_tg
+    column "Ghi chú", :ghi_chu
     actions
   end
 
   # Bộ lọc tìm kiếm
-  filter :ma_he_dt
-  filter :ten
+  filter :ma_he_dt, label: "Mã hệ đào tạo"
+  filter :ten, label: "Tên hệ đào tạo"
 
   # Form tạo mới/ chỉnh sửa
   form do |f|
     f.inputs "Thông tin hệ đào tạo" do
-      f.input :ma_he_dt
-      f.input :ten
-      f.input :thoi_gian_hoc
-      f.input :don_vi_tg
-      f.input :ghi_chu
+      f.input :ma_he_dt, label: "Mã hệ đào tạo"
+      f.input :ten, label: "Tên hệ đào tạo"
+      f.input :thoi_gian_hoc, label: "Thời gian học"
+      f.input :don_vi_tg, label: "Đơn vị thời gian"
+      f.input :ghi_chu, label: "Ghi chú"
     end
     f.actions
   end
 
   # Trang chi tiết
-  show do
+  show title: "Chi tiết hệ đào tạo" do
     attributes_table do
-      row :ma_he_dt
-      row :ten
-      row :thoi_gian_hoc
-      row :don_vi_tg
-      row :ghi_chu
-      row :created_at
-      row :updated_at
+      row("Mã hệ đào tạo") { |hdt| hdt.ma_he_dt }
+      row("Tên hệ đào tạo") { |hdt| hdt.ten }
+      row("Thời gian học") { |hdt| hdt.thoi_gian_hoc }
+      row("Đơn vị thời gian") { |hdt| hdt.don_vi_tg }
+      row("Ghi chú") { |hdt| hdt.ghi_chu }
+      row("Ngày tạo") { |hdt| hdt.created_at }
+      row("Cập nhật lần cuối") { |hdt| hdt.updated_at }
     end
   end
 end
