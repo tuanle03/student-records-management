@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resources :lops
-  get "grades", to: "grades#index"
-  get "grades/:id", to: "grades#show", format: false
+  get "grades", to: "grades#index", as: :grades
+  get "grades/:id", to: "grades#show", as: :grade, format: false
   resources :grades, only: [] do
     collection do
       get :import, action: :import_new
