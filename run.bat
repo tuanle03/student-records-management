@@ -6,7 +6,8 @@ set "DOCKER_IMAGE=tuanle03/student-records-management:latest"
 set "CONTAINER_NAME=srm_app"
 set "DB_CONTAINER=srm_postgres"
 set "NETWORK_NAME=srm_network"
-set "ENV_FILE=srm.env"
+set "ENV_FILE=.env"
+set "FALLBACK_ENV_FILE=srm.env"
 
 echo.
 echo ==========================================
@@ -23,33 +24,61 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM Generate credentials if not exists
-if not exist "%ENV_FILE%" (
-    echo [INFO] Tao credentials lan dau...
+REM Load environment variables
+set "LOADED_ENV_FILE="
 
-    for /f "delims=" %%i in ('powershell -Command "[guid]::NewGuid().ToString() + [guid]::NewGuid().ToString() -replace '-',''"') do set "SECRET_KEY=%%i"
-    for /f "delims=" %%i in ('powershell -Command "$bytes = New-Object byte[] 32; [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes); [Convert]::ToBase64String($bytes) -replace '[^a-zA-Z0-9]',''"') do set "DB_PASS=%%i"
-
-    (
-        echo # Student Records Management - Environment Config
-        echo # Generated: %date% %time%
-        echo.
-        echo DB_PASSWORD=!DB_PASS!
-        echo SECRET_KEY_BASE=!SECRET_KEY!
-    ) > "%ENV_FILE%"
-
-    echo [SUCCESS] Da tao file %ENV_FILE%
-    echo [WARNING] Luu y: Khong chia se file nay!
+if exist "%ENV_FILE%" (
+    echo [INFO] Dang load cau hinh tu %ENV_FILE%...
+    set "LOADED_ENV_FILE=%ENV_FILE%"
+    goto :load_env
+) else if exist "%FALLBACK_ENV_FILE%" (
+    echo [INFO] Dang load cau hinh tu %FALLBACK_ENV_FILE%...
+    set "LOADED_ENV_FILE=%FALLBACK_ENV_FILE%"
+    goto :load_env
+) else (
+    echo [INFO] Khong tim thay file .env, tao %FALLBACK_ENV_FILE% lan dau...
+    goto :generate_env
 )
 
-REM Load environment variables
-echo [INFO] Dang load cau hinh...
-for /f "usebackq tokens=1,* delims==" %%a in ("%ENV_FILE%") do (
+:generate_env
+for /f "delims=" %%i in ('powershell -Command "[guid]::NewGuid().ToString() + [guid]::NewGuid().ToString() -replace '-',''"') do set "SECRET_KEY=%%i"
+for /f "delims=" %%i in ('powershell -Command "$bytes = New-Object byte[] 32; [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes); [Convert]::ToBase64String($bytes) -replace '[^a-zA-Z0-9]',''"') do set "DB_PASS=%%i"
+
+(
+    echo # Student Records Management - Environment Config
+    echo # Generated: %date% %time%
+    echo.
+    echo DB_PASSWORD=!DB_PASS!
+    echo SECRET_KEY_BASE=!SECRET_KEY!
+) > "%FALLBACK_ENV_FILE%"
+
+echo [SUCCESS] Da tao file %FALLBACK_ENV_FILE%
+echo [WARNING] Luu y: Khong chia se file nay!
+echo [TIP] Ban co the tao file .env de su dung mat khau tuy chinh
+set "LOADED_ENV_FILE=%FALLBACK_ENV_FILE%"
+goto :load_env
+
+:load_env
+for /f "usebackq tokens=1,* delims==" %%a in ("!LOADED_ENV_FILE!") do (
     set "line=%%a"
     if not "!line:~0,1!"=="#" (
         if not "%%a"=="" set "%%a=%%b"
     )
 )
+
+REM Verify required variables
+if "!DB_PASSWORD!"=="" (
+    echo [ERROR] Thieu DB_PASSWORD trong file env
+    pause
+    exit /b 1
+)
+if "!SECRET_KEY_BASE!"=="" (
+    echo [ERROR] Thieu SECRET_KEY_BASE trong file env
+    pause
+    exit /b 1
+)
+
+echo [SUCCESS] Da load thanh cong: DB_PASSWORD va SECRET_KEY_BASE
 
 REM Create network
 docker network inspect %NETWORK_NAME% >nul 2>&1
@@ -67,7 +96,7 @@ if errorlevel 1 (
         --network %NETWORK_NAME% ^
         -e POSTGRES_DB=student_records_management_production ^
         -e POSTGRES_USER=student ^
-        -e POSTGRES_PASSWORD=%DB_PASSWORD% ^
+        -e POSTGRES_PASSWORD=!DB_PASSWORD! ^
         -v srm_postgres_data:/var/lib/postgresql/data ^
         --restart unless-stopped ^
         postgres:15
@@ -97,8 +126,8 @@ docker run -d ^
     -e DB_PORT=5432 ^
     -e DB_NAME=student_records_management_production ^
     -e DB_USER=student ^
-    -e DB_PASSWORD=%DB_PASSWORD% ^
-    -e SECRET_KEY_BASE=%SECRET_KEY_BASE% ^
+    -e DB_PASSWORD=!DB_PASSWORD! ^
+    -e SECRET_KEY_BASE=!SECRET_KEY_BASE! ^
     -e RAILS_LOG_TO_STDOUT=true ^
     -p 0.0.0.0:8000:80 ^
     --restart unless-stopped ^
@@ -133,7 +162,7 @@ echo ==========================================
 echo.
 echo Truy cap tai:
 echo   - Local:  http://localhost:8000
-echo   - LAN:    http://%LOCAL_IP%:8000
+echo   - LAN:    http://!LOCAL_IP!:8000
 echo.
 echo Lenh quan ly:
 echo   - Xem logs:     docker logs -f %CONTAINER_NAME%

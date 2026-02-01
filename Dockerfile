@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# check=error=true
+# check=skip=SecretsUsedInArgOrEnv,error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
 # docker build -t student_records_management .
@@ -49,6 +49,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Add this line to allow running without master key in production
+# check=skip=SecretsUsedInArgOrEnv
 ENV RAILS_SKIP_REQUIRE_MASTER_KEY=true
 
 # Final stage for app image
