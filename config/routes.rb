@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resources :lops
-  resources :grades, only: [ :index, :show ] do
+  get "grades", to: "grades#index"
+  get "grades/:id", to: "grades#show", format: false
+  resources :grades, only: [] do
     collection do
       get :import, action: :import_new
       post :import, action: :import_create
