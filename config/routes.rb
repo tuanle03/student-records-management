@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
+
+  namespace :admin do
+    get "mon_hocs/:id", to: "mon_hocs#show", constraints: { id: /[^\/]+/ }
+    get "mon_hocs/:id/edit", to: "mon_hocs#edit", constraints: { id: /[^\/]+/ }
+    patch "mon_hocs/:id", to: "mon_hocs#update", constraints: { id: /[^\/]+/ }
+    put "mon_hocs/:id", to: "mon_hocs#update", constraints: { id: /[^\/]+/ }
+    delete "mon_hocs/:id", to: "mon_hocs#destroy", constraints: { id: /[^\/]+/ }
+  end
   ActiveAdmin.routes(self)
 
   devise_for :users
@@ -9,7 +17,7 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   resources :lops
-  resources :grades, only: [ :index, :show ] do
+  resources :grades, only: [ :index, :show ], constraints: { id: /[^\/]+/ } do
     collection do
       get :import, action: :import_new
       post :import, action: :import_create

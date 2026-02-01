@@ -1,7 +1,16 @@
 ActiveAdmin.register MonHoc do
   menu label: "Môn học", priority: 5
 
+  controller do
+    def find_resource
+      scoped_collection.find_by!(ma_mon_hoc: params[:id])
+    end
+  end
+
   permit_params :ma_mon_hoc, :ten, :so_tin_chi, :ghi_chu
+
+  filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: proc { MonHoc.pluck(:ma_mon_hoc) }
+  filter :ten, label: "Tên môn học", as: :select, collection: proc { MonHoc.pluck(:ten) }
 
   index title: "Danh sách môn học" do
     selectable_column
@@ -11,9 +20,6 @@ ActiveAdmin.register MonHoc do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: MonHoc.pluck(:ma_mon_hoc)
-  filter :ten, label: "Tên môn học", as: :select, collection: MonHoc.pluck(:ten)
 
   form do |f|
     f.inputs "Môn học" do

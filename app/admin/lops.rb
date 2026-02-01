@@ -6,25 +6,13 @@ ActiveAdmin.register Lop do
 
   remove_filter :students
 
-  filter :ma_lop, label: "Mã lớp", as: :select, collection: Lop.pluck(:ma_lop)
-  filter :ten, label: "Tên lớp", as: :select, collection: Lop.pluck(:ten)
-  filter :khoa_hoc,
-          as: :select,
-          collection: KhoaHoc.order(:ma_khoa).map { |kh| [ kh.ten, kh.ma_khoa ] },
-          label: "Khoá học"
-  filter :nganh,
-          as: :select,
-          collection: Nganh.order(:ma_nganh).pluck(:ten_nganh, :ma_nganh),
-          label: "Ngành"
-  filter :he_dao_tao,
-          as: :select,
-          collection: HeDaoTao.order(:ma_he_dt).pluck(:ten, :ma_he_dt),
-          label: "Hệ đào tạo"
-  filter :ma_cb, label: "Chủ nhiệm Trung đội", as: :select, collection: Lop.pluck(:ma_cb)
-  filter :giao_vien,
-          as: :select,
-          collection: User.teachers.order(:email).map { |u| [ u.email, u.id ] },
-          label: "Giáo viên chủ nhiệm"
+  filter :ma_lop, label: "Mã lớp", as: :select, collection: proc { Lop.pluck(:ma_lop) }
+  filter :ten, label: "Tên lớp", as: :select, collection: proc { Lop.pluck(:ten) }
+  filter :khoa_hoc, as: :select, collection: proc { KhoaHoc.order(:ma_khoa).map { |kh| [ kh.ten, kh.ma_khoa ] } }, label: "Khoá học"
+  filter :nganh, as: :select, collection: proc { Nganh.order(:ma_nganh).pluck(:ten_nganh, :ma_nganh) }, label: "Ngành"
+  filter :he_dao_tao, as: :select, collection: proc { HeDaoTao.order(:ma_he_dt).pluck(:ten, :ma_he_dt) }, label: "Hệ đào tạo"
+  filter :ma_cb, label: "Chủ nhiệm Trung đội", as: :select, collection: proc { Lop.pluck(:ma_cb) }
+  filter :giao_vien, as: :select, collection: proc { User.teachers.order(:email).map { |u| [ u.email, u.id ] } }, label: "Giáo viên chủ nhiệm"
 
   index title: "Thông tin lớp" do
     selectable_column

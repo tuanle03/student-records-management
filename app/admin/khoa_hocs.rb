@@ -3,6 +3,9 @@ ActiveAdmin.register KhoaHoc do
 
   permit_params :ma_khoa, :ten, :ghi_chu
 
+  filter :ma_khoa, label: "Mã khoá", as: :select, collection: proc { KhoaHoc.pluck(:ma_khoa) }
+  filter :ten, label: "Tên khoá", as: :select, collection: proc { KhoaHoc.pluck(:ten) }
+
   index title: "Danh sách khoá học" do
     selectable_column
     column "Mã khoá", :ma_khoa
@@ -10,9 +13,6 @@ ActiveAdmin.register KhoaHoc do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  filter :ma_khoa, label: "Mã khoá", as: :select, collection: KhoaHoc.pluck(:ma_khoa)
-  filter :ten, label: "Tên khoá", as: :select, collection: KhoaHoc.pluck(:ten)
 
   form do |f|
     f.inputs "Khoá học" do

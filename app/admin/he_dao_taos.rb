@@ -3,6 +3,9 @@ ActiveAdmin.register HeDaoTao do
 
   permit_params :ma_he_dt, :ten, :thoi_gian_hoc, :don_vi_tg, :ghi_chu
 
+  filter :ma_he_dt, label: "Mã hệ đào tạo", as: :select, collection: proc { HeDaoTao.pluck(:ma_he_dt) }
+  filter :ten, label: "Tên hệ đào tạo", as: :select, collection: proc { HeDaoTao.pluck(:ten) }
+
   index title: "Danh sách hệ đào tạo" do
     selectable_column
     column "Mã hệ đào tạo", :ma_he_dt
@@ -12,9 +15,6 @@ ActiveAdmin.register HeDaoTao do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  filter :ma_he_dt, label: "Mã hệ đào tạo", as: :select, collection: HeDaoTao.pluck(:ma_he_dt)
-  filter :ten, label: "Tên hệ đào tạo", as: :select, collection: HeDaoTao.pluck(:ten)
 
   form do |f|
     f.inputs "Thông tin hệ đào tạo" do
