@@ -20,13 +20,13 @@
         %div{ class: "mb-4 rounded-lg bg-rose-50/5 border border-rose-500/40 text-rose-200 py-2 px-3 text-sm" }
           %strong Lỗi khi import file:
           %ul.mt-2.list-disc.list-inside
-            - flash[:alert].each do |error_message|
+            - Array.wrap(flash[:alert]).each do |error_message|
               %li= error_message
       - if flash[:notice]
         %div{ class: "mb-4 rounded-lg bg-emerald-50/5 border border-emerald-500/40 text-emerald-200 py-2 px-3 text-sm" }
           %strong Thông báo:
           %ul.mt-2.list-disc.list-inside
-            - flash[:notice].each do |notice_message|
+            - Array.wrap(flash[:notice]).each do |notice_message|
               %li= notice_message
 
       .bg-slate-800.border.border-slate-700.rounded-2xl.p-6.shadow-xl{ class: "shadow-slate-900/40" }

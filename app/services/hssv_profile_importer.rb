@@ -37,7 +37,7 @@ class HssvProfileImporter
       header_map[normalized] = idx
     end
 
-    raise "Missing column MaSV" unless header_map.key?("masv")
+    raise "Thiếu cột MaSV" unless header_map.key?("masv")
 
     processed = 0
     sheet.each_with_index do |row, index|

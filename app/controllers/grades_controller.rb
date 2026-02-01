@@ -40,7 +40,7 @@ class GradesController < ApplicationController
   def import_create
     file = params[:file]
     unless file
-      redirect_to import_new_grades_path, alert: "Vui lòng chọn file để import."
+      redirect_to import_grades_path, alert: "Vui lòng chọn file để import."
       return
     end
 
