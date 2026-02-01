@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_30_184320) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_01_180649) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -179,11 +179,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_30_184320) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "nganhs", primary_key: "ma_nganh", id: :string, force: :cascade do |t|
+  create_table "nganhs", id: :serial, force: :cascade do |t|
+    t.string "ma_nganh", null: false
     t.string "ten_nganh"
     t.string "ghi_chu"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ma_nganh"], name: "index_nganhs_on_ma_nganh", unique: true
   end
 
   create_table "phan_loai_tap_thes", force: :cascade do |t|
@@ -215,9 +217,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_30_184320) do
   add_foreign_key "hssvs", "he_dao_taos", column: "ma_hdt", primary_key: "ma_he_dt"
   add_foreign_key "hssvs", "khoa_hocs", column: "ma_khoa", primary_key: "ma_khoa"
   add_foreign_key "hssvs", "lops", column: "ma_lop", primary_key: "ma_lop"
-  add_foreign_key "hssvs", "nganhs", column: "ma_nganh", primary_key: "ma_nganh"
   add_foreign_key "lops", "he_dao_taos", column: "ma_he_dt", primary_key: "ma_he_dt"
   add_foreign_key "lops", "khoa_hocs", column: "ma_khoa", primary_key: "ma_khoa"
-  add_foreign_key "lops", "nganhs", column: "ma_nganh", primary_key: "ma_nganh"
   add_foreign_key "lops", "users", column: "giao_vien_id"
 end
