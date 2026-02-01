@@ -75,7 +75,37 @@ class StudentsController < ApplicationController
     count = importer.call
     redirect_to students_path, notice: "Đã import #{count} hồ sơ học viên thành công."
   rescue StandardError => e
-    redirect_to import_students_path, alert: "Import thất bại: #{e.message}"
+    error_message = case e
+    when PG::InvalidDatetimeFormat
+                      # Lỗi định dạng ngày tháng: trích xuất giá trị không hợp lệ
+                      if e.message =~ /invalid input syntax for type timestamp: "([^"]+)"/
+                        invalid_value = $1
+                        "Lỗi định dạng ngày tháng: Giá trị '#{invalid_value}' không phải là ngày hợp lệ. Vui lòng kiểm tra cột ngày sinh, ngày đoàn, ngày đảng, hoặc năm sinh trong file CSV. Định dạng đúng: 'YYYY-MM-DD' (ví dụ: '1990-01-01') hoặc 'DD/MM/YYYY'."
+                      else
+                        "Lỗi định dạng ngày tháng: #{e.message}. Vui lòng kiểm tra các cột ngày trong file CSV."
+                      end
+    when PG::ForeignKeyViolation
+                      # Lỗi khóa ngoại: trích xuất tên bảng và giá trị không tồn tại
+                      if e.message =~ /Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"/
+                        column = $1
+                        value = $2
+                        table = $3
+                        table_name_vn = case table
+                        when "nganhs" then "ngành"
+                        when "lops" then "lớp"
+                        when "khoa_hocs" then "khoa"
+                        when "he_dao_taos" then "hệ đào tạo"
+                        else table
+                        end
+                        "Lỗi dữ liệu tham chiếu: Mã '#{value}' trong cột '#{column}' không tồn tại trong bảng #{table_name_vn}. Vui lòng thêm mã này vào hệ thống trước khi import, hoặc kiểm tra lại file CSV."
+                      else
+                        "Lỗi dữ liệu tham chiếu: #{e.message}. Vui lòng đảm bảo các mã lớp, ngành, khoa, hệ đào tạo trong file CSV đã tồn tại trong hệ thống."
+                      end
+    else
+                      # Lỗi khác: hiển thị chung
+                      "Lỗi không xác định trong quá trình import: #{e.message}. Vui lòng kiểm tra file CSV và thử lại."
+    end
+    redirect_to import_students_path, alert: error_message
   end
 
   # GET /students/export
