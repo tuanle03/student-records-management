@@ -35,6 +35,7 @@
 # Environment files
 .env
 .env.*
+*.env
 *.local
 
 # ---- Node / JS ----
