@@ -3,6 +3,9 @@ ActiveAdmin.register MonHoc do
 
   permit_params :ma_mon_hoc, :ten, :so_tin_chi, :ghi_chu
 
+  filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: proc { MonHoc.pluck(:ma_mon_hoc) }
+  filter :ten, label: "Tên môn học", as: :select, collection: proc { MonHoc.pluck(:ten) }
+
   index title: "Danh sách môn học" do
     selectable_column
     column "Mã môn học", :ma_mon_hoc
@@ -11,9 +14,6 @@ ActiveAdmin.register MonHoc do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: MonHoc.pluck(:ma_mon_hoc)
-  filter :ten, label: "Tên môn học", as: :select, collection: MonHoc.pluck(:ten)
 
   form do |f|
     f.inputs "Môn học" do

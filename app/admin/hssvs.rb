@@ -11,6 +11,12 @@ ActiveAdmin.register Hssv do
                 :ma_lop, :ma_khoa, :ma_hdt, :ma_nganh,
                 :dien_thoai, :que_quan, :tru_quan, :ghi_chu
 
+  filter :lop, as: :select, collection: proc { Lop.order(:ten).map { |l| [ l.ten, l.ma_lop ] } }, label: "Lớp"
+  filter :khoa_hoc, as: :select, collection: proc { KhoaHoc.order(:ten).map { |k| [ k.ten, k.ma_khoa ] } }, label: "Khoá học"
+  filter :he_dao_tao, as: :select, collection: proc { HeDaoTao.order(:ten).map { |h| [ h.ten, h.ma_he_dt ] } }, label: "Hệ đào tạo"
+  filter :nganh, as: :select, collection: proc { Nganh.order(:ten_nganh).pluck(:ten_nganh, :ma_nganh) }, label: "Ngành"
+  filter :ma_sv, label: "Mã học viên", as: :select, collection: proc { Hssv.order(:ma_sv).pluck(:ma_sv) }
+
   index title: "Danh sách học viên" do
     selectable_column
     column "Mã học viên", :ma_sv
@@ -31,12 +37,6 @@ ActiveAdmin.register Hssv do
     column "Điện thoại", :dien_thoai
     actions
   end
-
-  filter :lop, as: :select, collection: Lop.all.collect { |l| [ l.ten, l.ma_lop ] }, label: "Lớp"
-  filter :khoa_hoc, as: :select, collection: KhoaHoc.all.collect { |k| [ k.ten, k.ma_khoa ] }, label: "Khoá học"
-  filter :he_dao_tao, as: :select, collection: HeDaoTao.all.collect { |h| [ h.ten, h.ma_he_dt ] }, label: "Hệ đào tạo"
-  filter :nganh, as: :select, collection: Nganh.all.collect { |n| [ n.ten_nganh, n.ma_nganh ] }, label: "Ngành"
-  filter :ma_sv, label: "Mã học viên", as: :select, collection: Hssv.pluck(:ma_sv)
 
   show title: proc { |s| "Chi tiết học viên: #{s.ho_dem} #{s.ten}" } do
     attributes_table do

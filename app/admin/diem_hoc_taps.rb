@@ -3,6 +3,10 @@ ActiveAdmin.register DiemHocTap do
 
   permit_params :ma_sv, :ma_mon_hoc, :ma_hoc_ky, :ghi_chu, :diem_gp, :diem_hp, :diem_tb, :diem_thi_lai_lan1, :diem_thi_lai_lan2
 
+  filter :ma_sv, as: :select, collection: proc { Hssv.order(:ma_sv).pluck(:ma_sv) }, label: "Mã học viên"
+  filter :ma_mon_hoc, as: :select, collection: proc { MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc) }, label: "Môn học"
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: proc { DiemHocTap.pluck(:ma_hoc_ky) }
+
   index title: "Điểm học tập" do
     selectable_column
     id_column
@@ -21,10 +25,6 @@ ActiveAdmin.register DiemHocTap do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  filter :ma_sv, as: :select, collection: Hssv.order(:ma_sv).pluck(:ma_sv), label: "Mã học viên"
-  filter :ma_mon_hoc, as: :select, collection: MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc), label: "Môn học"
-  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: DiemHocTap.pluck(:ma_hoc_ky)
 
   form do |f|
     f.inputs "Điểm học tập" do

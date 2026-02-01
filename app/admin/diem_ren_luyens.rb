@@ -3,6 +3,10 @@ ActiveAdmin.register DiemRenLuyen do
 
   permit_params :ma_sv, :ma_hoc_ky, :ma_nam_hoc, :thang, :diem, :ghi_chu
 
+  filter :ma_sv, as: :select, collection: proc { Hssv.order(:ma_sv).pluck(:ma_sv) }, label: "Mã học viên"
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: proc { DiemRenLuyen.pluck(:ma_hoc_ky) }
+  filter :ma_nam_hoc, label: "Mã năm học", as: :select, collection: proc { DiemRenLuyen.pluck(:ma_nam_hoc) }
+
   index title: "Điểm rèn luyện" do
     selectable_column
     id_column
@@ -16,11 +20,6 @@ ActiveAdmin.register DiemRenLuyen do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  # Bộ lọc tìm kiếm
-  filter :ma_sv, as: :select, collection: Hssv.order(:ma_sv).pluck(:ma_sv), label: "Mã học viên"
-  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: DiemRenLuyen.pluck(:ma_hoc_ky)
-  filter :ma_nam_hoc, label: "Mã năm học", as: :select, collection: DiemRenLuyen.pluck(:ma_nam_hoc)
 
   # Form tạo mới/ chỉnh sửa
   form do |f|
