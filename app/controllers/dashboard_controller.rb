@@ -13,6 +13,7 @@ class DashboardController < ApplicationController
 
   def index
     @current_user_name = current_user.email
+    @current_user_role = current_user.role_name
 
     if current_user.teacher?
       classes_scope = current_user.homeroom_classes

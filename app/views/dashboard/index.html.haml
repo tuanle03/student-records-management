@@ -19,7 +19,7 @@
       .flex.items-center.gap-3
         .text-right.mr-3
           %p#user-name.text-sm.font-medium.text-slate-200= @current_user_name || "Admin User"
-          %p.text-xs.text-slate-400 Quản trị viên
+          %p.text-xs.text-slate-400= @current_user_role
         = button_to "Đăng xuất",
                     destroy_user_session_path,
                     method: :delete,

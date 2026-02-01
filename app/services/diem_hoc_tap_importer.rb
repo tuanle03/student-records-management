@@ -54,7 +54,7 @@ class DiemHocTapImporter
 
     required_cols = %w[masv mamonhoc]
     missing = required_cols - header_map.keys
-    raise "Missing required columns: #{missing.join(', ')}" if missing.any?
+    raise "Thiếu cột bắt buộc: #{missing.join(', ')}" if missing.any?
 
     if !header_map.key?("mahocky") && @default_hoc_ky.blank?
       raise "Thiếu cột MaHocKy trong file và bạn chưa nhập Học kỳ mặc định (default_hoc_ky)."
