@@ -123,11 +123,12 @@ class HssvProfileImporter
     Date.parse(value.to_s) rescue nil
   end
 
-  # Parse year strings into integers. Returns nil for blanks or non-numeric values.
+  # Parse year strings into Date objects. Returns nil for blanks or non-numeric values.
   def parse_year(value)
     return nil if value.blank?
     val_str = value.to_s.strip
     return nil unless val_str =~ /\A\d{4}\z/
-    val_str.to_i
+    year = val_str.to_i
+    Date.new(year, 1, 1) rescue nil
   end
 end
