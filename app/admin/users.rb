@@ -3,6 +3,9 @@ ActiveAdmin.register User do
 
   permit_params :email, :password, :password_confirmation, :role
 
+  filter :email, label: "Email", as: :select, collection: proc { User.pluck(:email) }
+  filter :role, as: :select, collection: proc { User.roles.map { |value, label| [ label, value ] } }, label: "Vai trò"
+
   index title: "Danh sách tài khoản giáo viên" do
     selectable_column
     id_column
@@ -13,9 +16,6 @@ ActiveAdmin.register User do
     column "Ngày tạo", :created_at
     actions
   end
-
-  filter :email, label: "Email", as: :select, collection: User.pluck(:email)
-  filter :role, as: :select, collection: User.roles.map { |value, label| [ label, value ] }, label: "Vai trò"
 
   form do |f|
     f.inputs "Thông tin tài khoản giáo viên" do

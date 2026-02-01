@@ -3,6 +3,8 @@ ActiveAdmin.register AdminUser do
 
   permit_params :email, :password, :password_confirmation
 
+  filter :email, label: "Email", as: :select, collection: proc { AdminUser.pluck(:email) }
+
   index title: "Danh sách quản trị viên" do
     selectable_column
     id_column
@@ -23,8 +25,6 @@ ActiveAdmin.register AdminUser do
       row("Cập nhật lần cuối") { |admin_user| admin_user.updated_at }
     end
   end
-
-  filter :email, label: "Email", as: :select, collection: AdminUser.pluck(:email)
 
   form do |f|
     f.inputs "Thông tin quản trị viên" do

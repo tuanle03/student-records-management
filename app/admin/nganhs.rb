@@ -3,6 +3,9 @@ ActiveAdmin.register Nganh do
 
   permit_params :ma_nganh, :ten_nganh, :ghi_chu
 
+  filter :ma_nganh, label: "Mã ngành", as: :select, collection: proc { Nganh.pluck(:ma_nganh) }
+  filter :ten_nganh, label: "Tên ngành", as: :select, collection: proc { Nganh.pluck(:ten_nganh) }
+
   index title: "Danh sách ngành học" do
     selectable_column
     column "Mã ngành", :ma_nganh
@@ -10,9 +13,6 @@ ActiveAdmin.register Nganh do
     column "Ghi chú", :ghi_chu
     actions
   end
-
-  filter :ma_nganh, label: "Mã ngành", as: :select, collection: Nganh.pluck(:ma_nganh)
-  filter :ten_nganh, label: "Tên ngành", as: :select, collection: Nganh.pluck(:ten_nganh)
 
   form do |f|
     f.inputs "Thông tin ngành" do
