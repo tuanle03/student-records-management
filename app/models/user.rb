@@ -24,9 +24,13 @@ class User < ApplicationRecord
 
   def self.roles
     {
-      ROLE_TEACHER => "Giáo viên chủ nhiệm",
+      ROLE_TEACHER => "Chủ nhiệm trung đội",
       ROLE_STAFF   => "Nhân viên / Phòng đào tạo"
     }
+  end
+
+  def role_name
+    self.class.roles[role] || "Không rõ"
   end
 
 
@@ -36,12 +40,6 @@ class User < ApplicationRecord
 
   def staff?
     role == ROLE_STAFF
-  end
-
-  def role_name
-    return "Giáo viên chủ nhiệm" if teacher?
-    return "Nhân viên / Phòng đào tạo" if staff?
-    "Không rõ"
   end
 
   def to_s

@@ -12,7 +12,7 @@ ActiveAdmin.register Lop do
   filter :nganh, as: :select, collection: proc { Nganh.order(:ma_nganh).pluck(:ten_nganh, :ma_nganh) }, label: "Ngành"
   filter :he_dao_tao, as: :select, collection: proc { HeDaoTao.order(:ma_he_dt).pluck(:ten, :ma_he_dt) }, label: "Hệ đào tạo"
   filter :ma_cb, label: "Chủ nhiệm Trung đội", as: :select, collection: proc { Lop.pluck(:ma_cb) }
-  filter :giao_vien, as: :select, collection: proc { User.teachers.order(:email).map { |u| [ u.email, u.id ] } }, label: "Giáo viên chủ nhiệm"
+  filter :giao_vien, as: :select, collection: proc { User.teachers.order(:email).map { |u| [ u.email, u.id ] } }, label: "Chủ nhiệm"
 
   index title: "Thông tin lớp" do
     selectable_column
@@ -29,7 +29,7 @@ ActiveAdmin.register Lop do
       lop.he_dao_tao.ten if lop.he_dao_tao
     end
     column "Chủ nhiệm Trung đội", :ma_cb
-    column "Giáo viên chủ nhiệm" do |lop|
+    column "Chủ nhiệm" do |lop|
       lop.giao_vien.email if lop.giao_vien
     end
     column "Ghi chú", :ghi_chu
@@ -44,7 +44,7 @@ ActiveAdmin.register Lop do
       row("Ngành") { |lop| lop.nganh.ten_nganh if lop.nganh }
       row("Hệ đào tạo") { |lop| lop.he_dao_tao.ten if lop.he_dao_tao }
       row("Chủ nhiệm Trung đội") { |lop| lop.ma_cb }
-      row("Giáo viên chủ nhiệm") { |lop| lop.giao_vien.email if lop.giao_vien }
+      row("Chủ nhiệm") { |lop| lop.giao_vien.email if lop.giao_vien }
       row("Ghi chú") { |lop| lop.ghi_chu }
     end
   end
@@ -76,8 +76,8 @@ ActiveAdmin.register Lop do
       f.input :giao_vien,
               as: :select,
               collection: User.teachers.order(:email).map { |u| [ u.email, u.id ] },
-              include_blank: "Chọn giáo viên chủ nhiệm",
-              label: "Giáo viên chủ nhiệm"
+              include_blank: "Chọn chủ nhiệm",
+              label: "Chủ nhiệm"
 
       f.input :ghi_chu, label: "Ghi chú"
     end
