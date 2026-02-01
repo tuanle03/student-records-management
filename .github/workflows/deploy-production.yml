@@ -1,9 +1,13 @@
 name: Build & Deploy SRM to EC2 (Docker Compose)
 
 on:
+  push:
+    branches:
+      - production
   pull_request:
-    branches: ["production"]
-    types: ["closed"]
+    types: [closed]
+    branches:
+      - production
   workflow_dispatch:
 
 permissions:
