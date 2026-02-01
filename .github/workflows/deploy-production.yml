@@ -74,7 +74,9 @@ jobs:
               exit 1
             fi
 
-            DOCKER_BUILDKIT=1 docker compose up -d --build --remove-orphans
+            docker compose down
+            docker compose build
+            docker compose up -d
 
             echo "== Post-deploy cleanup"
             docker image prune -af --filter "until=72h" || true
