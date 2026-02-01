@@ -1,6 +1,12 @@
 ActiveAdmin.register MonHoc do
   menu label: "Môn học", priority: 5
 
+  controller do
+    def find_resource
+      scoped_collection.find_by!(ma_mon_hoc: params[:id])
+    end
+  end
+
   permit_params :ma_mon_hoc, :ten, :so_tin_chi, :ghi_chu
 
   filter :ma_mon_hoc, label: "Mã môn học", as: :select, collection: proc { MonHoc.pluck(:ma_mon_hoc) }
