@@ -5,7 +5,7 @@ ActiveAdmin.register DiemHocTap do
 
   filter :ma_sv, as: :select, collection: proc { Hssv.order(:ma_sv).pluck(:ma_sv) }, label: "Mã học viên"
   filter :ma_mon_hoc, as: :select, collection: proc { MonHoc.order(:ma_mon_hoc).pluck(:ten, :ma_mon_hoc) }, label: "Môn học"
-  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: proc { DiemHocTap.pluck(:ma_hoc_ky) }
+  filter :ma_hoc_ky, label: "Mã học kỳ", as: :select, collection: proc { DiemHocTap.pluck(:ma_hoc_ky).uniq }
 
   index title: "Điểm học tập" do
     selectable_column
