@@ -7,7 +7,8 @@ DOCKER_IMAGE="tuanle03/student-records-management:latest"
 CONTAINER_NAME="srm_app"
 DB_CONTAINER="srm_postgres"
 NETWORK_NAME="srm_network"
-ENV_FILE="srm.env"
+ENV_FILE=".env"
+FALLBACK_ENV_FILE="srm.env"
 
 # Colors
 RED='\033[0;31m'
@@ -27,14 +28,20 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-# Generate credentials if not exists
-if [ ! -f "$ENV_FILE" ]; then
-    echo -e "${YELLOW}🔐 Tạo credentials lần đầu...${NC}"
+# Load environment variables
+if [ -f "$ENV_FILE" ]; then
+    echo -e "${GREEN}🔐 Đang load cấu hình từ $ENV_FILE...${NC}"
+    export $(grep -v '^#' "$ENV_FILE" | xargs)
+elif [ -f "$FALLBACK_ENV_FILE" ]; then
+    echo -e "${GREEN}🔐 Đang load cấu hình từ $FALLBACK_ENV_FILE...${NC}"
+    export $(grep -v '^#' "$FALLBACK_ENV_FILE" | xargs)
+else
+    echo -e "${YELLOW}🔐 Không tìm thấy file .env, tạo $FALLBACK_ENV_FILE lần đầu...${NC}"
 
     SECRET_KEY=$(openssl rand -hex 64)
     DB_PASS=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
 
-    cat > "$ENV_FILE" << EOF
+    cat > "$FALLBACK_ENV_FILE" << EOF
 # Student Records Management - Environment Config
 # Generated: $(date)
 
@@ -42,14 +49,19 @@ DB_PASSWORD=${DB_PASS}
 SECRET_KEY_BASE=${SECRET_KEY}
 EOF
 
-    chmod 600 "$ENV_FILE"
-    echo -e "${GREEN}✅ Đã tạo file $ENV_FILE${NC}"
+    chmod 600 "$FALLBACK_ENV_FILE"
+    echo -e "${GREEN}✅ Đã tạo file $FALLBACK_ENV_FILE${NC}"
     echo -e "${YELLOW}⚠️  Lưu ý: Không chia sẻ file này!${NC}"
+    echo -e "${BLUE}💡 Tip: Bạn có thể tạo file .env để sử dụng mật khẩu tùy chỉnh${NC}"
+
+    export $(grep -v '^#' "$FALLBACK_ENV_FILE" | xargs)
 fi
 
-# Load environment variables
-echo "🔐 Đang load cấu hình..."
-export $(grep -v '^#' "$ENV_FILE" | xargs)
+# Verify required variables
+if [ -z "$DB_PASSWORD" ] || [ -z "$SECRET_KEY_BASE" ]; then
+    echo -e "${RED}❌ Lỗi: Thiếu DB_PASSWORD hoặc SECRET_KEY_BASE trong file env${NC}"
+    exit 1
+fi
 
 # Create network
 if ! docker network inspect "$NETWORK_NAME" > /dev/null 2>&1; then
