@@ -3,7 +3,7 @@ ActiveAdmin.register PhanLoaiTapThe do
 
   permit_params :ma_lop, :danh_hieu_de_nghi, :phan_loai_tap_the, :ma_nam_hoc
 
-  filter :ma_lop, as: :select, collection: proc { Lop.all.collect { |l| [ l.ten, l.ma_lop ] } }, label: "Lớp"
+  filter :ma_lop, as: :select, collection: proc { Lop.order(:ten).map { |l| [ l.ten, l.ma_lop ] } }, label: "Lớp"
   filter :ma_nam_hoc, label: "Năm học", as: :select, collection: proc { PhanLoaiTapThe.pluck(:ma_nam_hoc).uniq }
 
   index title: "Phân loại tập thể" do
