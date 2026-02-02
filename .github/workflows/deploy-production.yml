@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: SSH to EC2 and deploy
-        uses: appleboy/ssh-action@v1.2.4
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
