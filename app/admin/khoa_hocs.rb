@@ -11,6 +11,8 @@ ActiveAdmin.register KhoaHoc do
     column "Mã khoá", :ma_khoa
     column "Tên khoá", :ten
     column "Ghi chú", :ghi_chu
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 

@@ -5,6 +5,8 @@ class User < ApplicationRecord
   ROLE_TEACHER = 0
   ROLE_STAFF   = 1
 
+  validates :fullname, presence: true, on: :create
+
   has_many :homeroom_classes,
            class_name: "Lop",
            foreign_key: :giao_vien_id,
@@ -15,7 +17,7 @@ class User < ApplicationRecord
   scope :staffs,   -> { where(role: ROLE_STAFF) }
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[id email role created_at updated_at]
+    %w[id email role created_at updated_at fullname military_rank]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -43,6 +45,10 @@ class User < ApplicationRecord
   end
 
   def to_s
-    email
+    fullname.presence || email
+  end
+
+  def display_name
+    "#{military_rank} #{fullname}".strip
   end
 end

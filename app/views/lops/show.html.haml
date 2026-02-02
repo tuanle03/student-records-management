@@ -37,7 +37,7 @@
             %dd.font-medium= @lop.he_dao_tao&.ten
           %div.flex.justify-between.gap-4
             %dt.text-slate-400 Chủ nhiệm Trung đội
-            %dd.font-medium= @lop.ma_cb
+            %dd.font-medium= current_user.display_name || "Cán bộ chưa được thiết lập tên"
           %div
             %dt.text-slate-400.mb-1 Ghi chú
             %dd.text-sm.text-slate-300{ class: "bg-slate-900/60 rounded-lg p-2 min-h-[2rem]" }

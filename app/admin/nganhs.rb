@@ -11,6 +11,8 @@ ActiveAdmin.register Nganh do
     column "Mã ngành", :ma_nganh
     column "Tên ngành", :ten_nganh
     column "Ghi chú", :ghi_chu
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 
@@ -28,6 +30,8 @@ ActiveAdmin.register Nganh do
       row("Mã ngành") { |n| n.ma_nganh }
       row("Tên ngành") { |n| n.ten_nganh }
       row("Ghi chú") { |n| n.ghi_chu }
+      row("Ngày tạo") { |n| n.created_at }
+      row("Cập nhật lần cuối") { |n| n.updated_at }
     end
   end
 end

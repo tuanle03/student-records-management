@@ -54,8 +54,9 @@
         .space-y-1
           = f.label :ma_cb, "Chủ nhiệm Trung đội", class: "block text-sm font-medium text-slate-200"
           = f.text_field :ma_cb,
-                         class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100",
-                         placeholder: "VD: CB001"
+                          value: current_user.display_name || "Cán bộ chưa được thiết lập tên",
+                          readonly: true,
+                          class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
       .mb-6
         = f.label :ghi_chu, "Ghi chú", class: "block text-sm font-medium text-slate-200 mb-1"

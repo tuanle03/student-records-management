@@ -37,16 +37,24 @@ giao_vien_1 = User.find_or_create_by!(email: "teacher1@qlhv.local") do |u|
   u.password              = "password123"
   u.password_confirmation = "password123"
   u.role = User::ROLE_TEACHER
+  u.staff_code = "CB001"
+  u.fullname = "Nguyễn Văn A"
+  u.military_rank = "Thiếu úy"
 end
 giao_vien_2 = User.find_or_create_by!(email: "teacher2@qlhv.local") do |u|
   u.password              = "password123"
   u.password_confirmation = "password123"
   u.role = User::ROLE_TEACHER
+  u.staff_code = "CB002"
+  u.fullname = "Trần Thị B"
+  u.military_rank = "Trung úy"
 end
 nhan_vien = User.find_or_create_by!(email: "staff@qlhv.local") do |u|
   u.password              = "password123"
   u.password_confirmation = "password123"
   u.role = User::ROLE_STAFF
+  u.staff_code = "NV001"
+  u.fullname = "Lê Văn C"
 end
 puts "✅ Tạo tài khoản giáo viên & nhân viên"
 
