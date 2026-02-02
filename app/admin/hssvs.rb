@@ -35,6 +35,8 @@ ActiveAdmin.register Hssv do
       s.nganh&.ten_nganh
     end
     column "Điện thoại", :dien_thoai
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 
@@ -79,6 +81,8 @@ ActiveAdmin.register Hssv do
       row("Nơi làm việc vợ/chồng") { |s| s.noi_lam_vo }
       row("Hộ khẩu vợ/chồng") { |s| s.ho_khau_vo }
       row("Ghi chú") { |s| s.ghi_chu }
+      row("Ngày tạo") { |s| s.created_at }
+      row("Cập nhật lần cuối") { |s| s.updated_at }
     end
   end
 
