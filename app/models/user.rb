@@ -49,6 +49,6 @@ class User < ApplicationRecord
   end
 
   def display_name
-    "#{military_rank} #{fullname}".strip
+    [ military_rank, fullname ].compact.join(" ").presence || email
   end
 end

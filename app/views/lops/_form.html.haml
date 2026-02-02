@@ -54,7 +54,7 @@
         .space-y-1
           = f.label :ma_cb, "Chủ nhiệm Trung đội", class: "block text-sm font-medium text-slate-200"
           = f.text_field :ma_cb,
-                          value: current_user.display_name || "Cán bộ chưa được thiết lập tên",
+                          value: @lop.giao_vien&.display_name || "Chưa có cán bộ được chỉ định",
                           readonly: true,
                           class: "focus-outline w-full px-3 py-2 bg-slate-900/70 border border-slate-700 rounded-lg text-sm text-slate-100"
 
