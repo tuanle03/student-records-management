@@ -168,8 +168,12 @@ timeout /t 15 /nobreak >nul
 
 :: Buoc 12: Chay migration database
 echo [THONG BAO] Dang chay migration database...
-docker exec %TEN_CONTAINER_UNG_DUNG% bin/rails db:create db:migrate >nul 2>&1
-echo [THANH CONG] Migration hoan thanh!
+docker exec %TEN_CONTAINER_UNG_DUNG% bin/rails db:create db:migrate
+if errorlevel 1 (
+    echo [CANH BAO] Migration co the chua hoan thanh. Kiem tra logs: docker logs %TEN_CONTAINER_UNG_DUNG%
+) else (
+    echo [THANH CONG] Migration hoan thanh!
+)
 
 :: Buoc 13: Hien thi thong tin truy cap
 echo.

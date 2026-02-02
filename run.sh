@@ -38,7 +38,7 @@ echo -e "${XANH_LA}✅ Docker đã sẵn sàng!${KHONG_MAU}"
 
 # Bước 2: Tự động thêm host tùy chỉnh vào /etc/hosts
 echo "🌐 Đang cấu hình host tùy chỉnh '$HOST_TUY_CHINH'..."
-if ! grep -q "$HOST_TUY_CHINH" /etc/hosts; then
+if ! grep -qE "(^|\s)$HOST_TUY_CHINH(\s|$)" /etc/hosts; then
     echo "127.0.0.1 $HOST_TUY_CHINH" | sudo tee -a /etc/hosts > /dev/null
     echo -e "${XANH_LA}✅ Đã thêm '$HOST_TUY_CHINH' vào /etc/hosts!${KHONG_MAU}"
 else
@@ -48,30 +48,34 @@ fi
 # Bước 3: Tải biến môi trường
 if [ -f "$FILE_ENV" ]; then
     echo -e "${XANH_LA}🔐 Đang tải cấu hình từ $FILE_ENV...${KHONG_MAU}"
-    export $(grep -v '^#' "$FILE_ENV" | xargs)
+    while IFS='=' read -r key value; do
+        [[ -z "$key" || "$key" =~ ^# ]] && continue
+        export "$key=$value"
+    done < "$FILE_ENV"
 elif [ -f "$FILE_ENV_PHU" ]; then
     echo -e "${XANH_LA}🔐 Đang tải cấu hình từ $FILE_ENV_PHU...${KHONG_MAU}"
-    export $(grep -v '^#' "$FILE_ENV_PHU" | xargs)
+    while IFS='=' read -r key value; do
+        [[ -z "$key" || "$key" =~ ^# ]] && continue
+        export "$key=$value"
+    done < "$FILE_ENV_PHU"
 else
     echo -e "${VANG}🔐 Không tìm thấy file .env, đang tạo $FILE_ENV_PHU lần đầu...${KHONG_MAU}"
-
     DB_PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
     SECRET_KEY_BASE=$(openssl rand -hex 64)
-
     cat > "$FILE_ENV_PHU" << EOF
-# Quản Lý Hồ Sơ Sinh Viên - Cấu Hình Môi Trường
+# Quản Lý Thông Tin Học Viên - Cấu Hình Môi Trường
 # Tạo ngày: $(date)
-
 DB_PASSWORD=${DB_PASSWORD}
 SECRET_KEY_BASE=${SECRET_KEY_BASE}
 EOF
-
     chmod 600 "$FILE_ENV_PHU"
     echo -e "${XANH_LA}✅ Đã tạo file $FILE_ENV_PHU${KHONG_MAU}"
     echo -e "${VANG}⚠️  Lưu ý: Không chia sẻ file này!${KHONG_MAU}"
     echo -e "${XANH_DUONG}💡 Mẹo: Tạo file .env để dùng mật khẩu tùy chỉnh${KHONG_MAU}"
-
-    export $(grep -v '^#' "$FILE_ENV_PHU" | xargs)
+    while IFS='=' read -r key value; do
+        [[ -z "$key" || "$key" =~ ^# ]] && continue
+        export "$key=$value"
+    done < "$FILE_ENV_PHU"
 fi
 
 # Bước 4: Xác minh biến cần thiết
