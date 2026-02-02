@@ -43,6 +43,8 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/production' }}
+            type=ref,event=tag
+            type=raw,value=release-${{ github.run_number }},enable=${{ github.event_name == 'release' }}
 
       - name: Build and push Docker image
         id: build-push
@@ -55,8 +57,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
-          # Nếu thực sự cần ARM64, uncomment dòng dưới (nhưng sẽ chậm hơn nhiều):
-          # platforms: linux/amd64,linux/arm64
 
       - name: Image digest
         run: echo ${{ steps.build-push.outputs.digest }}

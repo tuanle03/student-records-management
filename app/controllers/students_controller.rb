@@ -189,7 +189,7 @@ class StudentsController < ApplicationController
   end
 
   def student_params
-    params.require(:hssv).permit(
+    permitted = params.require(:hssv).permit(
       :ma_sv, :ho_dem, :ten, :ngay_sinh, :gioi_tinh, :anh, :ma_huyen, :dien_thoai, :dan_toc,
       :ton_giao, :khu_vuc, :doi_tuong, :ngay_doan, :ngay_dang, :so_cmnd, :ngay_cmnd, :noi_cmnd,
       :que_quan, :tru_quan, :ktk_l, :tom_tat_qtct, :ho_ten_cha, :nam_sinh_cha, :nghe_nghiep_cha,
@@ -198,5 +198,11 @@ class StudentsController < ApplicationController
       :ma_hdt, :ma_nganh, :ghi_chu,
       :avatar
     )
+
+    %i[ma_lop ma_khoa ma_hdt ma_nganh].each do |key|
+      permitted[key] = nil if permitted[key].blank?
+    end
+
+    permitted
   end
 end
