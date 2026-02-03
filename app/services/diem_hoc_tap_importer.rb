@@ -15,7 +15,7 @@
 #   - MaHocKy:     Academic term/semester code (ma_hoc_ky)
 #   - Diem BP:     Exam score (diem_gp)
 #   - Diem KTHP:   Exam score (diem_hp)
-#   - Diem ĐGHP:   Average score (optional – if blank it will be
+#   - Diem DGHP:   Average score (optional – if blank it will be
 #                  automatically computed based on diem_gp and diem_hp)
 #   - DiemThiLaiLan1: Score for the first retake exam (optional)
 #   - DiemThiLaiLan2: Score for the second retake exam (optional)
@@ -83,9 +83,9 @@ class DiemHocTapImporter
         raise "Dòng #{index + 1}: MaHocKy trống. Vui lòng điền MaHocKy trong file hoặc nhập Học kỳ mặc định."
       end
 
-      diem_gp    = numeric_or_nil(cell_value(row, header_map, "diem bp"))
-      diem_hp    = numeric_or_nil(cell_value(row, header_map, "diem kthp"))
-      diem_tb    = numeric_or_nil(cell_value(row, header_map, "diem đghp"))
+      diem_gp    = numeric_or_nil(cell_value(row, header_map, "diembp"))
+      diem_hp    = numeric_or_nil(cell_value(row, header_map, "diemkthp"))
+      diem_tb    = numeric_or_nil(cell_value(row, header_map, "diemdghp"))
       diem_thi_lai_lan1 = numeric_or_nil(cell_value(row, header_map, "diemthilailan1"))
       diem_thi_lai_lan2 = numeric_or_nil(cell_value(row, header_map, "diemthilailan2"))
 
