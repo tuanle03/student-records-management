@@ -18,6 +18,8 @@ ActiveAdmin.register DiemRenLuyen do
     column "Tháng", :thang
     column "Điểm", :diem
     column "Ghi chú", :ghi_chu
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 

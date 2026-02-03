@@ -23,6 +23,8 @@ ActiveAdmin.register DiemHocTap do
     column "Điểm thi lại lần 1", :diem_thi_lai_lan1
     column "Điểm thi lại lần 2", :diem_thi_lai_lan2
     column "Ghi chú", :ghi_chu
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 

@@ -33,6 +33,8 @@ ActiveAdmin.register Lop do
       lop.giao_vien.email if lop.giao_vien
     end
     column "Ghi chú", :ghi_chu
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 
@@ -46,6 +48,8 @@ ActiveAdmin.register Lop do
       row("Chủ nhiệm Trung đội") { |lop| lop.ma_cb }
       row("Chủ nhiệm") { |lop| lop.giao_vien.email if lop.giao_vien }
       row("Ghi chú") { |lop| lop.ghi_chu }
+      row("Ngày tạo") { |lop| lop.created_at }
+      row("Cập nhật lần cuối") { |lop| lop.updated_at }
     end
   end
 

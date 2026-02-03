@@ -20,12 +20,20 @@ class LopsController < ApplicationController
 
   def new
     @lop = Lop.new
+    if current_user.teacher?
+      @lop.giao_vien_id = current_user.id
+      @lop.ma_cb = current_user.staff_code
+    end
   end
 
   def edit; end
 
   def create
-    @lop = Lop.new(lop_params)
+    lop_attributes = lop_params
+    if current_user.teacher?
+      lop_attributes = lop_attributes.merge(giao_vien_id: current_user.id, ma_cb: current_user.staff_code)
+    end
+    @lop = Lop.new(lop_attributes)
     if @lop.save
       redirect_to lop_path(@lop), notice: "Tạo lớp thành công."
     else
@@ -70,7 +78,6 @@ class LopsController < ApplicationController
       :khoa_hoc,
       :ma_nganh,
       :ma_he_dt,
-      :ma_cb,
       :ghi_chu
     )
   end

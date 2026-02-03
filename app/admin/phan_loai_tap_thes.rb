@@ -15,6 +15,8 @@ ActiveAdmin.register PhanLoaiTapThe do
     column "Danh hiệu đề nghị", :danh_hieu_de_nghi
     column "Phân loại tập thể", :phan_loai_tap_the
     column "Năm học", :ma_nam_hoc
+    column "Ngày tạo", :created_at
+    column "Cập nhật lần cuối", :updated_at
     actions
   end
 

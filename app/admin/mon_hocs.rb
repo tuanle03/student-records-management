@@ -37,6 +37,8 @@ ActiveAdmin.register MonHoc do
       row("Tên môn học") { |mh| mh.ten }
       row("Số tín chỉ") { |mh| mh.so_tin_chi }
       row("Ghi chú") { |mh| mh.ghi_chu }
+      row("Ngày tạo") { |mh| mh.created_at }
+      row("Cập nhật lần cuối") { |mh| mh.updated_at }
     end
   end
 end
