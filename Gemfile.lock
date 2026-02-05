@@ -172,7 +172,7 @@ GEM
       actionpack (>= 7.0)
       activesupport (>= 7.0)
     htmlentities (4.4.2)
-    i18n (1.14.7)
+    i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
       mini_magick (>= 4.9.5, < 6)
